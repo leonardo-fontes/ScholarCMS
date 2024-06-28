@@ -1,14 +1,15 @@
 
+import Container from './components/layout/Container'
 import './index.css'
+import LandingPage from './pages/LandingPage'
 
 function App() {
   
 
   return (
     <>
-      <h1 className="text-3xl font-bold underline bg-red-400">
-      Hello world!
-    </h1>
+    <Container children={<LandingPage/>}/>
+      
     </>
   )
 }
