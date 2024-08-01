@@ -14,7 +14,7 @@ export default function Invite({
     rightImage = false,
 }: Invite) {
     return (
-        <div className="flex flex-col md:flex-row md:items-center mb-8">
+        <section className="flex flex-col md:flex-row md:items-center mb-8">
             <img
                 className={
                     rightImage
@@ -22,7 +22,7 @@ export default function Invite({
                         : `bg-gray-300 mt-20 rounded-lg mx-7 md:w-[50%]`
                 }
                 src={sourceImage}
-                alt=""
+                alt="imagem ilustrativa de jovens"
             />
             <div className="flex flex-col md:gap-8">
                 <div className="flex md:flex flex-col px-7 py-8 gap-6">
@@ -33,7 +33,7 @@ export default function Invite({
                 </div>
 
                 <Button
-                    isLink={true}
+                    isLink
                     link="/register"
                     text={titleButton}
                     classname="text-lg md:text-xl md:px-40 md:py-2 font-semibold md:self-center text-white bg-gray-500 mx-7 mt-4"
@@ -46,8 +46,8 @@ export default function Invite({
                         : `hidden`
                 }
                 src={sourceImage}
-                alt=""
+                alt="imagem ilustrativa de jovens"
             />
-        </div>
+        </section>
     );
 }

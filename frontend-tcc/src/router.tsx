@@ -15,17 +15,17 @@ export const router = createBrowserRouter(
         <Route
             path="/"
             element={
-                <>
+                <main>
                     <Container>
                         <Navbar />
                         <Outlet />
                     </Container>
                     <Footer />
-                </>
+                </main>
             }
         >
             <Route index element={<LandingPage />} />
-            <Route path="/404-page" element={<BuildingPage />} />
+            <Route path="*" element={<BuildingPage />} />
         </Route>
     )
 );
