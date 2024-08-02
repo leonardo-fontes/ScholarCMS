@@ -1,3 +1,4 @@
+import Clear from "./Clear";
 import Facebook from "./Facebook";
 import Instagram from "./Instagram";
 import Linkedin from "./Linkedin";
@@ -10,4 +11,5 @@ export default {
     facebook: Facebook,
     linkedin: Linkedin,
     maintenance: Maintenance,
+    clear: Clear
 };

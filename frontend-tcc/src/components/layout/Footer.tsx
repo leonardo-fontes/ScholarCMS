@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import Icon from "../icons";
+import useMobile from "../../hooks/useMobile";
 
 export default function Footer() {
+  const isMobile = useMobile();
   return (
     <div className="flex flex-col justify-center items-center w-full bg-primary text-white py-8 md:pt-20 ">
       <Icon size={120} name="logo" className="mb-8 md:hidden left-40" />
@@ -31,7 +33,7 @@ export default function Footer() {
               <Icon
                 name="facebook"
                 className="aspect-square w-12 md:w-16"
-                size={32}
+                size={isMobile ? 32 : 48}
                 color="#5030E5"
               />
             </Link>
@@ -41,7 +43,7 @@ export default function Footer() {
               <Icon
                 name="instagram"
                 className="aspect-square w-12 md:w-16"
-                size={32}
+                size={isMobile ? 32 : 48}
                 color="#5030E5"
               />
             </Link>
@@ -51,7 +53,7 @@ export default function Footer() {
               <Icon
                 name="linkedin"
                 className="aspect-square w-12 md:w-16"
-                size={32}
+                size={isMobile ? 32 : 48}
                 color="#5030E5"
               />
             </Link>
