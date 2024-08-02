@@ -23,7 +23,7 @@ function Button({
         <button
             {...props}
             type={type}
-            className={`rounded-3xl p-1 hover:shadow-xl transition duration-300 ${classname}`}
+            className={`rounded-lg p-1 hover:shadow-2xl shadow-primary transition-all duration-500 ${classname}`}
         >
             {isLink && link ? <Link to={link}>{text}</Link> : text}
         </button>

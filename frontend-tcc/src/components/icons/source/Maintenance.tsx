@@ -10,7 +10,7 @@ const Maintenance = ({
             className={className}
             width={size}
             height={size}
-            viewBox={`0 0 ${size} ${size}`}
+            viewBox="0 0 516 516"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
         >
@@ -18,9 +18,9 @@ const Maintenance = ({
             <g
                 id="Page-1"
                 stroke="none"
-                stroke-width="1"
+                strokeWidth="1"
                 fill="none"
-                fill-rule="evenodd"
+                fillRule="evenodd"
             >
                 <g
                     id="maintenance-warning/maintenance-warning"
