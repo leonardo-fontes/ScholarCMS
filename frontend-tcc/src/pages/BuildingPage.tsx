@@ -13,17 +13,17 @@ function BuildingPage() {
         }
     }, [location.pathname, navigate]);
     return (
-        <section className="bg-slate-600 text-white w-full min-h-[70vh] gap-16 flex flex-col items-center justify-center py-20">
+        <section className="bg-white text-black w-full min-h-[70vh] gap-16 flex flex-col items-center justify-center py-20">
             <h3 className="text-3xl font-bold">Página em desenvolvimento</h3>
 
             <Icon
                 name="maintenance"
                 
-                color="white"
+                color="#5030E5"
                 size={200}
             />
             <Link
-                className="bg-slate-600 text-white rounded-full px-20 font-bold py-4"
+                className="bg-white text-black rounded-full px-20 font-bold py-4"
                 to="/"
             >
                 Voltar para à página Inicial
