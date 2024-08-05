@@ -118,7 +118,7 @@ export default function LandingPage() {
           isLink
           link="/register"
           text={"FAÇA PARTE DO NOSSO TIME"}
-          classname="text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white w-full md:w-[45%] md:py-2 mt-6 mb-12"
+          classname="text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white w-full md:w-[45%] md:py-2 mt-6"
         />
       </section>
     </section>

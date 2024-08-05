@@ -7,7 +7,7 @@ import { AuthContext } from "../../contexts/Auth/AuthContext";
 import Icon from "../icons";
 
 type Inputs = {
-  email: string;
+  cpf: string;
   password: string;
 };
 
@@ -19,14 +19,13 @@ function FormLogin() {
     register,
     handleSubmit,
     watch,
-    // formState: { errors },
   } = useForm<Inputs>({
     defaultValues: {
-      email: searchParams.get("email") ?? "",
+      cpf: searchParams.get("cpf") ?? "",
     },
   });
 
-  const email = watch("email");
+  const cpf = watch("cpf");
 
   const handleLogin: SubmitHandler<Inputs> = async (data) => {
     const isLogged = await auth.signin(data);
@@ -64,7 +63,7 @@ function FormLogin() {
         <div className="flex flex-col gap-10 mt-4 mb-8">
           <div className="flex flex-col gap-5">
             <p className="font-black font-nunito text-2xl">Login</p>
-            <Input register={register} name="cpf" type="tel" label="CPF" />
+            <Input register={register} name="cpf" type="number" label="CPF" />
             <Input
               containerClassName="mt-5"
               register={register}
@@ -75,7 +74,7 @@ function FormLogin() {
           </div>
           <Link
             className="text-sm text-center text-blue-3 font-normal underline py-2"
-            to={`/forgot-password?email=${email}`}
+            to={`/forgot-password?cpf=${cpf}`}
           >
             Esqueceu a senha?
           </Link>
