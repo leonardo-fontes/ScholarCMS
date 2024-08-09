@@ -3,18 +3,17 @@ import { RegisterData } from "../components/forms/FormRegister";
 import { RecoverData } from "../components/forms/FormRecover";
 import { ForgotPasswordData } from "../components/forms/FormForgotPassword";
 import secureLocalStorage from "../lib/secureLocalStorage";
-
+import { User } from "../types/User";
 export type SigninData = {
     cpf: string;
     password: string;
 };
 
 export type SignupData = SigninData & {
-    first_name: string;
-    last_name: string;
+    name: string;
+    surname: string;
     username: string;
-    birthdate: string;
-    mobilelogin: string;
+    birth_date: string;
 };
 
 const token = secureLocalStorage.get("token");
@@ -22,7 +21,6 @@ const token = secureLocalStorage.get("token");
 export const http = axios.create({
     baseURL: `${import.meta.env.VITE_BASE_URL}/api`,
     headers: {
-        "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         Authorization: token ? `Bearer ${token}` : null,
     },
@@ -62,5 +60,9 @@ export default {
     forgotPassword: async (data: ForgotPasswordData) => {
         await http.post("/recover-password", data);
         return true;
+    },
+    profile: async () => {
+        const profile: User = await http.get("/profile");
+        return profile;
     },
 };
