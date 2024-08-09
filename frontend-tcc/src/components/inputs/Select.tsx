@@ -2,10 +2,15 @@ import React from "react";
 import { UseFormRegister } from "react-hook-form";
 import Icon from "../icons";
 
+interface SelectOption {
+    value: number;
+    label: string;
+}
+
 type Props = React.SelectHTMLAttributes<HTMLSelectElement> & {
     label: string;
     name: string;
-    options: string[];
+    options: SelectOption[];
     containerClassName?: string;
     error?: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,11 +41,11 @@ const Select: React.FC<Props> = ({
                 <option value="">Selecione um valor</option>
                 {options.map((option) => (
                     <option
-                        key={option}
-                        value={option}
-                        {...(props.value === option && { selected: true })}
+                        key={option.value}
+                        value={option.value}
+                        {...(props.value === option.value && { selected: true })}
                     >
-                        {option}
+                        {option.label}
                     </option>
                 ))}
             </select>

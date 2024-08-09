@@ -3,47 +3,49 @@ import * as yup from "yup";
 import { subYears } from "date-fns";
 const dateLimit = subYears(new Date(), 18);
 
+export function validatePassword(password: string) {
+    const uppercase = /^(?=.[A-Z])/.test(password);
+    const lowercase = /^(?=.[a-z])/.test(password);
+    const number = /^(?=.[0-9])/.test(password);
+    const specialchar = /^(?=.[!@#$%^&*])/.test(password);
+    return {
+        length: password?.length >= 8,
+        uppercase,
+        lowercase,
+        number,
+        specialchar,
+    };
+}
+
 export default yup
     .object({
-        agree: yup
-            .boolean()
-            .oneOf(
-                [true],
-                "É obrigatório aceitar os nossos termos e políticas.",
-            )
-            .required("É obrigatório aceitar os nossos termos e políticas."),
         name: yup.string().required("Digite o seu nome"),
+        surname: yup.string().required("Digite o seu sobrenome"),
         email: yup
             .string()
             .email("Digite um email válido")
             .required("Digite o seu email"),
-        username: yup.string().required("Digite um nome de usuário"),
-        mobilelogin: yup
-            .string()
-            .matches(
-                /^\s?(\(?\d{2,3}\)?)\s?-?\s?(\(?\d{4,5}\)?)\s?-\s?(\(?\d{4}\)?)?$/,
-                "Digite um telefone válido",
-            )
-            .required(),
+
         cpf: yup
             .string()
-            .matches(
-                /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
-                "Digite um cpf válido",
-            )
+            .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "Digite um cpf válido")
             .required(),
-        cep: yup
+        postal_code: yup
             .string()
-            .matches(
-                /^\d{5}-\d{3}$/,
-                "Digite um CEP válido",
-            )
-            .required(),
-        birthdate: yup
+            .matches(/^\d{5}-\d{3}$/, "Digite um CEP válido")
+            .required()
+            .nonNullable("O campo é obrigatório"),
+        birth_date: yup
             .date()
             .typeError("Digite uma data de nascimento válida")
             .max(dateLimit, "Digite uma data de nascimento válida")
             .required("Digite uma data de nascimento válida"),
-        password: yup.string().required("Sua senha deve conter, pelo menos:"),
+        password: yup
+            .string()
+            .required("Sua senha deve conter, pelo menos:")
+            .matches(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+                "Sua senha deve conter, pelo menos:"
+            ),
     })
     .required();

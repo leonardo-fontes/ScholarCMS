@@ -11,6 +11,7 @@ import LandingPage from "./pages/LandingPage";
 import BuildingPage from "./pages/BuildingPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import { AuthProvider } from "./contexts/Auth/AuthProvider";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,17 +19,20 @@ export const router = createBrowserRouter(
       path="/"
       element={
         <main>
-          <Container>
-            <Navbar />
-            <Outlet />
-          </Container>
-          <Footer />
+          <AuthProvider>
+            <Container>
+              <Navbar />
+              <Outlet />
+            </Container>
+            <Footer />
+          </AuthProvider>
         </main>
       }
     >
       <Route index element={<LandingPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/platform" element={<LoginPage />} />
       <Route path="*" element={<BuildingPage />} />
     </Route>
   )

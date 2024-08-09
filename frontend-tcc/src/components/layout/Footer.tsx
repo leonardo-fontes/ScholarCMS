@@ -5,7 +5,7 @@ import useMobile from "../../hooks/useMobile";
 export default function Footer() {
   const isMobile = useMobile();
   return (
-    <div className="flex flex-col justify-center items-center w-full bg-primary text-white py-8 md:pt-20 ">
+    <div className="flex flex-col justify-center items-center w-full bg-primary text-white py-8 md:pt-20 mt-8 ">
       <Icon size={120} name="logo" className="mb-8 md:hidden left-40" />
       <div className="flex flex-col items-center gap-9">
         <ul className="flex flex-col md:flex-row gap-9 md:gap-20">
