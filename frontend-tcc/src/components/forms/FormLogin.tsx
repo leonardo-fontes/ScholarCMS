@@ -40,7 +40,7 @@ function FormLogin() {
     <section className="grid md:grid-cols-4 items-center">
       <img className="col-span-2 hidden md:block" src="/jovens.png" alt="" />
       <form
-        className="bg-white text-black p-10 flex flex-col font-nunito w-full mt-16 md:mt-20 lg:max-w-[500px] md:col-span-2 mx-auto"
+        className="bg-white text-black p-10 flex flex-col font-nunito w-full mt-12 md:mt-20 lg:max-w-[500px] md:col-span-2 mx-auto"
         onSubmit={handleSubmit(handleLogin)}
       >
         <div className="flex items-start justify-between">
@@ -63,7 +63,7 @@ function FormLogin() {
         <div className="flex flex-col gap-10 mt-4 mb-8">
           <div className="flex flex-col gap-5">
             <p className="font-black font-nunito text-2xl">Login</p>
-            <Input register={register} name="cpf" type="number" label="CPF" />
+            <Input register={register} name="cpf" type="tel" label="CPF" />
             <Input
               containerClassName="mt-5"
               register={register}
