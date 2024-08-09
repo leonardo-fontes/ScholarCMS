@@ -20,14 +20,14 @@ export default function LandingPage() {
     {
       id: 2,
       name: "João Pereira",
-      text: "Sempre quis ajudar pessoas em necessidade, mas muitas vezes não sabia por onde começar. Com o aplicativo, tudo ficou muito mais fácil. Pude contribuir com alimentos e roupas para pessoas da minha comunidade que realmente precisavam. Ver o impacto direto das minhas doações e saber que estou fazendo a diferença na vida de alguém perto de mim é extremamente gratificante. A tecnologia facilitou muito o processo e me deu uma sensação de realização e propósito.",
+      text: "Com o aplicativo, pude contribuir com alimentos e roupas para pessoas da minha comunidade que realmente precisavam. Ver o impacto direto das minhas doações e saber que estou fazendo a diferença na vida de alguém perto de mim é extremamente gratificante. A tecnologia facilitou muito o processo e me deu uma sensação de realização e propósito.",
       img: "/garoto.jpg",
     },
     {
       id: 3,
-      name: "Patrícia Lima",
-      text: "Tive que enfrentar uma situação de emergência com meu filho, e estava desesperada por ajuda. O aplicativo me conectou rapidamente com pessoas que doaram o que precisávamos, desde produtos de higiene até itens básicos. Foi um grande alívio ver como a comunidade se uniu para nos apoiar em um momento tão crítico.",
-      img: "/mulher_2.jpg",
+      name: "Evelyn Ribeiro",
+      text: "Tive que enfrentar uma situação de emergência com meu filho, e estava desesperada por ajuda. O aplicativo me conectou com pessoas que doaram o que precisávamos (itens básicos). Foi um grande alívio ver como a comunidade se uniu para nos apoiar em um momento tão crítico.",
+      img: "/image.png",
     },
     {
       id: 4,
@@ -38,7 +38,7 @@ export default function LandingPage() {
     {
       id: 5,
       name: "Juliana Almeida",
-      text: "Eu sempre estive disposta a ajudar, mas encontrar uma forma eficiente e segura de contribuir era um desafio. O aplicativo mudou isso para mim. Agora posso doar com facilidade e saber que minha ajuda está chegando a quem precisa, sem complicações. A sensação de poder fazer a diferença na vida de pessoas próximas é incrível e o aplicativo tornou tudo muito mais simples e direto. Estou muito feliz por ter encontrado uma maneira tão prática de apoiar a comunidade.",
+      text: "Eu sempre estive disposta a ajudar, mas encontrar uma forma eficiente e segura de contribuir era um desafio. Agora posso doar com facilidade e saber que minha ajuda está chegando a quem precisa, sem complicações. A sensação de poder fazer a diferença na vida de pessoas próximas é incrível e o aplicativo tornou tudo muito mais simples e direto. Estou muito feliz por ter encontrado uma maneira tão prática de apoiar a comunidade.",
       img: "/mulher.jpg",
     },
     {
@@ -50,7 +50,8 @@ export default function LandingPage() {
   ];
 
   const [user, setUser] = useState(0);
-  const imgClassname = "rounded-full aspect-square object-cover w-16 md:w-24 mb-2 cursor-pointer hover:scale-125 duration-300"
+  const imgClassname =
+    "rounded-full aspect-square object-cover w-16 md:w-24 mb-2 cursor-pointer hover:scale-125 duration-300";
 
   useEffect(() => {}, [user]);
   return (
@@ -119,7 +120,7 @@ export default function LandingPage() {
             alt="imagem ilustrativa de jovens"
           />
         </div>
-        <p className="rounded-3xl border-y-[0.2px] border-greyLight shadow-2xl min-h-48 min-w-80 md:w-[55%] text-grey px-4 p-2 text-wrap md:text-lg text-sm relative">
+        <p className="rounded-3xl border-y-[0.2px] border-greyLight shadow-2xl min-h-48 h-64 min-w-80 md:w-[55%] text-grey px-4 p-2 text-wrap md:text-lg text-sm relative">
           {users[user].text}
           <span className="absolute bottom-0 right-0 py-2 px-6 text-primary font-semibold">
             - {users[user].name}

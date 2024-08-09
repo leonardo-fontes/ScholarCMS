@@ -15,9 +15,9 @@ export const AuthProvider = ({
     const navigate = useNavigate();
 
     // persist user
-    // useEffect(() => {
-    //     if (!user && secureLocalStorage.get("user")) getUser();
-    // }, [user]);
+    useEffect(() => {
+        if (!user && secureLocalStorage.get("user")) getUser();
+    }, [user]);
 
     // validate user
     useEffect(() => {
@@ -37,14 +37,14 @@ export const AuthProvider = ({
         }
     }, [navigate, pathname, user]);
 
-    // const getUser = async () => {
-    //     const user = await api.getUser();
-    //     setUser(user);
-    // };
+    const getUser = async () => {
+        const user = await api.profile();
+        setUser(user);
+    };
 
     const signin = async (data: SigninData) => {
         const response = await api.signin(data);
-        // getUser();
+         getUser();
         return response;
     };
 
