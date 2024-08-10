@@ -1,9 +1,8 @@
 import React from "react";
-import { UseFormRegister } from "react-hook-form"
+import { UseFormRegister } from "react-hook-form";
 import Icon from "../icons";
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
-    label: string;
     name: string;
     containerClassName?: string;
     error?: string;
@@ -14,7 +13,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
 const Input: React.FC<Props> = ({
     containerClassName,
     className,
-    label,
+    children,
     name,
     error,
     register,
@@ -22,7 +21,7 @@ const Input: React.FC<Props> = ({
 }) => {
     return (
         <div className={`flex flex-col gap-1 ${containerClassName}`}>
-            <label htmlFor={name}>{label}</label>
+            <label htmlFor={name}>{children}</label>
             <input
                 {...register(name)}
                 {...props}

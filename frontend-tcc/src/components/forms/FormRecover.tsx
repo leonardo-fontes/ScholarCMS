@@ -32,7 +32,7 @@ function FormRegister() {
             hash: query.get("hash") || "",
         },
         resolver: yupResolver<RecoverData>(
-            schema as unknown as ObjectSchema<RecoverData, AnyObject, "">,
+            schema as unknown as ObjectSchema<RecoverData, AnyObject, "">
         ),
     });
 
@@ -41,14 +41,14 @@ function FormRegister() {
             message === "success"
                 ? "Senha redefinida com sucesso! Aguarde, estamos te encaminhando para o login."
                 : "Algo aconteceu, tente novamente.",
-        [message],
+        [message]
     );
     const classNameFeedback = useMemo(
         () =>
             message === "success"
                 ? "border-success bg-[#5fffaf3a] text-success"
                 : "border-error bg-[#FFEDED] text-error",
-        [message],
+        [message]
     );
 
     const handleRegister: SubmitHandler<RecoverData> = async (data) => {
@@ -116,14 +116,14 @@ function FormRegister() {
                     register={register}
                     error={errors.password?.message}
                     type="password"
-                    label="Senha"
+                    children="Senha"
                 />
                 <Input
                     name="confirmPassword"
                     register={register}
                     error={errors.confirmPassword?.message}
                     type="password"
-                    label="Confirmação de senha"
+                    children="Confirmação de senha"
                 />
                 {message ? (
                     <div
@@ -134,7 +134,7 @@ function FormRegister() {
                 ) : null}
                 <Button
                     type="submit"
-                    text="Redefinir"
+                    children="Redefinir"
                     classname="disabled:bg-[#7b50fc93] bg-primary rounded-full text-white text-xl leading-5 font-bold font-nunito-sans w-full py-[1.375rem]"
                 />
             </div>

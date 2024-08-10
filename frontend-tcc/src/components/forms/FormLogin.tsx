@@ -5,9 +5,6 @@ import { useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import Icon from "../icons";
-import api from "../../service/api";
-import { User } from "../../types/User";
-
 type Inputs = {
     cpf: string;
     password: string;
@@ -28,9 +25,7 @@ function FormLogin() {
     const handleLogin: SubmitHandler<Inputs> = async (data) => {
         const isLogged = await auth.signin(data);
         if (isLogged) {
-            const profile: User = await api.profile();
-            console.log(profile);
-            navigate("/plataform");
+            navigate("/platform");
         } else {
             alert("deu errado o login");
         }
@@ -71,14 +66,14 @@ function FormLogin() {
                             register={register}
                             name="cpf"
                             type="text"
-                            label="CPF"
+                            children="CPF"
                         />
                         <Input
                             containerClassName="mt-5"
                             register={register}
                             name="password"
                             type="password"
-                            label="Senha"
+                            children="Senha"
                         />
                     </div>
                     <Link
@@ -90,7 +85,7 @@ function FormLogin() {
                     <div className="flex items-center justify-between">
                         <Button
                             type="submit"
-                            text="Entrar"
+                            children="Entrar"
                             classname="bg-primary rounded-full text-white text-xl leading-5 font-bold font-nunito-sans w-full py-[1.375rem]"
                         />
                     </div>

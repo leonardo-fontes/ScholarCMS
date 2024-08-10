@@ -10,6 +10,7 @@ import { AnyObject, ObjectSchema } from "yup";
 import Icon from "../icons";
 import Select from "../inputs/Select";
 import { useMemo } from "react";
+import helpers from "../../helpers";
 
 export type RegisterData = {
     name: string;
@@ -20,7 +21,7 @@ export type RegisterData = {
     state: string;
     city: string;
     status: string;
-    role_id: number;
+    role_id: string;
     cpf: string;
     birth_date: string;
 };
@@ -43,8 +44,34 @@ function FormRegister() {
     const password = watch("password");
     const passValidate = useMemo(() => validatePassword(password), [password]);
 
+    const cadUnico = [
+        "12345678900",
+        "23456789011",
+        "34567890122",
+        "45678901233",
+        "56789012344",
+        "67890123455",
+        "78901234566",
+        "89012345677",
+        "90123456788",
+        "01234567899",
+    ];
+
     const handleRegister: SubmitHandler<RegisterData> = async (data) => {
         try {
+            data.postal_code = helpers.validate.cep(data.postal_code);
+            data.cpf = helpers.validate.cpf(data.cpf);
+            if (
+                data.role_id === Role.Beneficiario &&
+                !cadUnico.find((value) => value === data.cpf)
+            ) {
+                alert(
+                    "O usuário não está cadastrado no cad único. Caso queira se registrar como doador, mude sua tag."
+                );
+
+                return;
+            }
+
             await api.register(data);
             await auth.signin({ cpf: data.cpf, password: data.password });
             navigate("/home");
@@ -54,13 +81,13 @@ function FormRegister() {
     };
 
     enum Role {
-        Beneficiario = 1,
-        Doador = 2,
+        Beneficiario = "1",
+        Doador = "2",
     }
 
     const roleOptions = [
-        { value: Role.Beneficiario, label: "Beneficiario" },
-        { value: Role.Doador, label: "Doador" },
+        { value: Number(Role.Beneficiario), label: "Beneficiario" },
+        { value: Number(Role.Doador), label: "Doador" },
     ];
 
     return (
@@ -94,14 +121,14 @@ function FormRegister() {
                             register={register}
                             error={errors.name?.message}
                             placeholder="nome"
-                            label="Nome"
+                            children="Nome"
                         />
                         <Input
                             name="surname"
                             register={register}
                             error={errors.surname?.message}
                             placeholder="sobrenome"
-                            label="Sobrenome"
+                            children="Sobrenome"
                         />
                     </div>
                     <Input
@@ -110,7 +137,7 @@ function FormRegister() {
                         error={errors.cpf?.message}
                         type="tel"
                         placeholder="000.000.000-00"
-                        label="CPF"
+                        children="CPF"
                     />
 
                     <Input
@@ -119,14 +146,14 @@ function FormRegister() {
                         error={errors.birth_date?.message}
                         type="date"
                         placeholder="00/00/0000"
-                        label="Data de Nascimento"
+                        children="Data de Nascimento"
                     />
                     <Input
                         name="email"
                         register={register}
                         error={errors.email?.message}
                         type="email"
-                        label="E-mail"
+                        children="E-mail"
                     />
                     <Select
                         options={roleOptions}
@@ -139,7 +166,7 @@ function FormRegister() {
                         register={register}
                         error={errors.password?.message}
                         type="password"
-                        label="Senha"
+                        children="Senha"
                     />
                     {errors.password?.message ? (
                         <div className="flex flex-col gap-1 text-xs font-normal -mt-8 text-[#515151]">
@@ -226,26 +253,26 @@ function FormRegister() {
                         name="postal_code"
                         register={register}
                         error={errors.postal_code?.message}
-                        type="tel"
-                        label="Informe seu CEP"
+                        type="text"
+                        children="Informe seu CEP"
                     />
                     <Input
                         name="state"
                         register={register}
                         type="text"
-                        label="Estado"
+                        children="Estado"
                     />
                     <Input
                         name="city"
                         register={register}
                         type="text"
-                        label="Cidade"
+                        children="Cidade"
                     />
                 </div>
                 <div className="flex items-center justify-between mt-16">
                     <Button
                         type="submit"
-                        text="Cadastrar"
+                        children="Cadastrar"
                         classname="disabled:bg-[#7b50fc93] bg-primary rounded-full text-white text-xl leading-5 font-bold font-nunito-sans w-full py-[1.375rem]"
                     />
                 </div>

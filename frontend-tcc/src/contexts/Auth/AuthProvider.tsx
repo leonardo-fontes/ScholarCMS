@@ -5,12 +5,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "../../types/User";
 import secureLocalStorage from "../../lib/secureLocalStorage";
 
+// eslint-disable-next-line react-refresh/only-export-components
+
 export const AuthProvider = ({
     children,
 }: {
     children: JSX.Element | JSX.Element[];
 }) => {
-    const [user, setUser] = useState<User | string | null>(null);
+    const [user, setUser] = useState<User | null>(null);
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
@@ -22,18 +24,16 @@ export const AuthProvider = ({
     // validate user
     useEffect(() => {
         if (
-            pathname.startsWith("/plataform") &&
+            pathname.startsWith("/platform") &&
             !(user || secureLocalStorage.get("user"))
         ) {
             navigate("/login");
-        } else if (pathname === "/plataform") {
-            navigate("/plataform/user/me");
         } else if (
             ["login", "register"].filter((page) => pathname.includes(page))
                 .length &&
             (user || secureLocalStorage.get("user"))
         ) {
-            navigate("/plataform");
+            navigate("/platform");
         }
     }, [navigate, pathname, user]);
 
@@ -44,7 +44,7 @@ export const AuthProvider = ({
 
     const signin = async (data: SigninData) => {
         const response = await api.signin(data);
-         getUser();
+        await getUser();
         return response;
     };
 
@@ -54,8 +54,12 @@ export const AuthProvider = ({
         setUser(null);
     };
 
+    const isLogged = user && user.id ? true : false;
+
     return (
-        <AuthContext.Provider value={{ user, setUser, signin, signout }}>
+        <AuthContext.Provider
+            value={{ user, setUser, signin, signout, isLogged }}
+        >
             {children}
         </AuthContext.Provider>
     );

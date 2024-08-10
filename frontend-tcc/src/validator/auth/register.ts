@@ -28,11 +28,14 @@ export default yup
 
         cpf: yup
             .string()
-            .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "Digite um cpf válido")
+            .matches(
+                /^(?:\d{3}\.\d{3}\.\d{3}-\d{2}|\d{11})$/,
+                "Digite um cpf válido"
+            )
             .required(),
         postal_code: yup
             .string()
-            .matches(/^\d{5}-\d{3}$/, "Digite um CEP válido")
+            .matches(/^\d{5}-\d{3}|\d{8}$/, "Digite um CEP válido")
             .required()
             .nonNullable("O campo é obrigatório"),
         birth_date: yup

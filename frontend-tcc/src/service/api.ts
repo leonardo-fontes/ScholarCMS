@@ -4,6 +4,7 @@ import { RecoverData } from "../components/forms/FormRecover";
 import { ForgotPasswordData } from "../components/forms/FormForgotPassword";
 import secureLocalStorage from "../lib/secureLocalStorage";
 import { User } from "../types/User";
+
 export type SigninData = {
     cpf: string;
     password: string;
@@ -16,14 +17,23 @@ export type SignupData = SigninData & {
     birth_date: string;
 };
 
-const token = secureLocalStorage.get("token");
-
 export const http = axios.create({
     baseURL: `${import.meta.env.VITE_BASE_URL}/api`,
     headers: {
         "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : null,
+        Authorization: secureLocalStorage.get("token")
+            ? `Bearer ${secureLocalStorage.get("token")}`
+            : null,
     },
+});
+
+http.interceptors.request.use(function (config) {
+    const token = secureLocalStorage.get("token");
+    if (token && !config.headers.Authorization) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
 });
 
 export default {
@@ -46,8 +56,7 @@ export default {
     },
     register: async (data: RegisterData) => {
         try {
-            const response = await http.post("/register", data);
-            console.log(response.data);
+            await http.post("/register", data);
             return true;
         } catch (e) {
             return false;
@@ -62,7 +71,7 @@ export default {
         return true;
     },
     profile: async () => {
-        const profile: User = await http.get("/profile");
-        return profile;
+        const { data } = await http.get("/profile");
+        return data as User;
     },
 };

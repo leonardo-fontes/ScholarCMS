@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 type Props = {
-    text: string;
     classname?: string;
     type?: "button" | "submit";
     isLink?: boolean;
@@ -12,9 +11,9 @@ type Props = {
 >;
 
 function Button({
-    text,
     classname,
     link,
+    children,
     type = "button",
     isLink = false,
     ...props
@@ -25,7 +24,7 @@ function Button({
             type={type}
             className={`rounded-lg p-1 hover:shadow-2xl shadow-primary transition-all duration-500 ${classname}`}
         >
-            {isLink && link ? <Link to={link}>{text}</Link> : text}
+            {isLink && link ? <Link to={link}>{children}</Link> : children}
         </button>
     );
 }
