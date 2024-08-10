@@ -1,9 +1,10 @@
 import axios from "axios";
-import { RegisterData } from "../components/forms/FormRegister";
 import { RecoverData } from "../components/forms/FormRecover";
 import { ForgotPasswordData } from "../components/forms/FormForgotPassword";
 import secureLocalStorage from "../lib/secureLocalStorage";
 import { User } from "../types/User";
+import helpers from "../helpers";
+import { RegisterData } from "../types/RegisterData";
 
 export type SigninData = {
     cpf: string;
@@ -74,4 +75,21 @@ export default {
         const { data } = await http.get("/profile");
         return data as User;
     },
+    searchCep: async (cep: string) => {
+        try {
+            const cepFormatted = helpers.validate.cep(cep);
+            const response = await fetch(`https://viacep.com.br/ws/${cepFormatted}/json/`);
+            
+            if (!response.ok) {
+                throw new Error(`Erro ao buscar CEP: ${response.statusText}`);
+            }
+            
+            const address = await response.json();
+            return address;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+    
 };
