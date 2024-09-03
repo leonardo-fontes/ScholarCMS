@@ -5,6 +5,7 @@ import Instagram from "./Instagram";
 import Linkedin from "./Linkedin";
 import Logo from "./Logo";
 import Maintenance from "./Maintenance";
+import ProfileIcon from "./ProfileIcon"
 
 export default {
     logo: Logo,
@@ -13,5 +14,6 @@ export default {
     linkedin: Linkedin,
     maintenance: Maintenance,
     clear: Clear,
-    check: Check
+    check: Check,
+    profileIcon: ProfileIcon
 };

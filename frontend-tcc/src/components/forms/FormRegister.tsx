@@ -180,40 +180,35 @@ function FormRegister() {
             <div className="flex flex-col gap-1 text-xs font-normal -mt-8 text-[#515151]">
               <div>Sua senha deve conter, pelo menos:</div>
               <span
-                className={`flex gap-2 ${
-                  passValidate.length ? "text-success" : "text-error"
-                }`}
+                className={`flex gap-2 ${passValidate.length ? "text-success" : "text-error"
+                  }`}
               >
                 <Icon name={passValidate.length ? "check" : "clear"} /> 8
                 caracteres
               </span>
               <span
-                className={`flex gap-2 ${
-                  passValidate.lowercase ? "text-success" : "text-error"
-                }`}
+                className={`flex gap-2 ${passValidate.lowercase ? "text-success" : "text-error"
+                  }`}
               >
                 <Icon name={passValidate.lowercase ? "check" : "clear"} />1
                 letra minúscula
               </span>
               <span
-                className={`flex gap-2 ${
-                  passValidate.uppercase ? "text-success" : "text-error"
-                }`}
+                className={`flex gap-2 ${passValidate.uppercase ? "text-success" : "text-error"
+                  }`}
               >
                 <Icon name={passValidate.uppercase ? "check" : "clear"} />1
                 letra maiscúla
               </span>
               <span
-                className={`flex gap-2 ${
-                  passValidate.number ? "text-success" : "text-error"
-                }`}
+                className={`flex gap-2 ${passValidate.number ? "text-success" : "text-error"
+                  }`}
               >
                 <Icon name={passValidate.number ? "check" : "clear"} />1 número
               </span>
               <span
-                className={`flex gap-2 ${
-                  passValidate.specialchar ? "text-success" : "text-error"
-                }`}
+                className={`flex gap-2 ${passValidate.specialchar ? "text-success" : "text-error"
+                  }`}
               >
                 <Icon name={passValidate.specialchar ? "check" : "clear"} />1
                 caractere especial (!@#$%)

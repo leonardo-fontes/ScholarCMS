@@ -54,8 +54,8 @@ export const AuthProvider = ({
         setUser(null);
     };
 
-    const isLogged = user && user.id ? true : false;
-
+    //const isLogged = user && user.id ? true : false;
+    const isLogged: boolean = true;
     return (
         <AuthContext.Provider
             value={{ user, setUser, signin, signout, isLogged }}

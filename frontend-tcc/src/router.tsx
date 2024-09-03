@@ -14,6 +14,7 @@ import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./contexts/Auth/AuthProvider";
 import PlatformPage from "./pages/PlatformPage";
 import Privacy from "./pages/Privacy";
+import ProfilePage from "./pages/ProfilePage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +37,7 @@ export const router = createBrowserRouter(
       <Route path="/login" element={<LoginPage />} />
       <Route path="/platform" element={<PlatformPage />} />
       <Route path="/privacy-policies" element={<Privacy />} />
+      <Route path="/profile" element={<ProfilePage />} />
       <Route path="*" element={<BuildingPage />} />
     </Route>
   )
