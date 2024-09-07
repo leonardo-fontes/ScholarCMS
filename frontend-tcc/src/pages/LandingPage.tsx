@@ -120,7 +120,7 @@ export default function LandingPage() {
                         alt="imagem ilustrativa de jovens"
                     />
                 </div>
-                <p className="rounded-3xl border-y-[0.2px] border-greyLight shadow-2xl min-h-48 h-64 min-w-80 md:w-[55%] text-grey px-4 p-2 text-wrap md:text-lg text-sm relative">
+                <p className="rounded-3xl border-y-[0.2px] border-lightGray shadow-2xl min-h-48 h-64 min-w-80 md:w-[55%] text-gray px-4 p-2 text-wrap md:text-lg text-sm relative">
                     {users[user].text}
                     <span className="absolute bottom-0 right-0 py-2 px-6 text-primary font-semibold">
                         - {users[user].name}

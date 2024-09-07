@@ -25,14 +25,14 @@ function FormLogin() {
             message === "success"
                 ? "E-mail enviado com link para redefinação de senha."
                 : "Algo aconteceu, tente novamente.",
-        [message],
+        [message]
     );
     const classNameFeedback = useMemo(
         () =>
             message === "success"
                 ? "border-success bg-[#5fffaf3a] text-success"
                 : "border-error bg-[#FFEDED] text-error",
-        [message],
+        [message]
     );
     const email = watch("email");
     const handleForgot: SubmitHandler<ForgotPasswordData> = async (data) => {
@@ -110,7 +110,7 @@ function FormLogin() {
                 <div className="flex items-center justify-between">
                     <Button
                         type="submit"
-                        text="Recuperar senha"
+                        children="Recuperar senha"
                         classname="bg-primary rounded-full text-white text-xl leading-5 font-bold font-nunito-sans w-full py-[1.375rem]"
                     />
                 </div>
