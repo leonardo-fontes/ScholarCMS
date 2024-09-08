@@ -6,6 +6,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
     name: string;
     containerClassName?: string;
     error?: string;
+    label?: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     register: UseFormRegister<any>;
 };
@@ -13,7 +14,7 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
 const Input: React.FC<Props> = ({
     containerClassName,
     className,
-    children,
+    label,
     name,
     error,
     register,
@@ -21,7 +22,7 @@ const Input: React.FC<Props> = ({
 }) => {
     return (
         <div className={`flex flex-col gap-1 ${containerClassName}`}>
-            <label htmlFor={name}>{children}</label>
+            <label htmlFor={name}>{label}</label>
             <input
                 {...register(name)}
                 {...props}

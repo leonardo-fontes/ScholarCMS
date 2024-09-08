@@ -1,6 +1,7 @@
 import Check from "./Check";
 import Clear from "./Clear";
 import Facebook from "./Facebook";
+import Information from "./Information";
 import Instagram from "./Instagram";
 import Linkedin from "./Linkedin";
 import Logo from "./Logo";
@@ -15,5 +16,6 @@ export default {
     maintenance: Maintenance,
     clear: Clear,
     check: Check,
+    information: Information,,
     profileIcon: ProfileIcon
 };

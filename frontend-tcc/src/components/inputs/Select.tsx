@@ -20,7 +20,7 @@ type Props = React.SelectHTMLAttributes<HTMLSelectElement> & {
 const Select: React.FC<Props> = ({
     containerClassName,
     className,
-    children,
+    label,
     name,
     error,
     options,
@@ -29,7 +29,7 @@ const Select: React.FC<Props> = ({
 }) => {
     return (
         <div className={`flex flex-col gap-1 ${containerClassName}`}>
-            <label htmlFor={name}>{children}</label>
+            <label htmlFor={name}>{label}</label>
             <select
                 {...register(name)}
                 {...props}

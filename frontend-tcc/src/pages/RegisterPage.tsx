@@ -1,9 +1,10 @@
-import FormRegister from "../components/forms/FormRegister";
+// import FormRegister from "../components/forms/FormRegister";
+import Publication from "../components/partials/Publication";
 
 function RegisterPage() {
     return (
         <div className="w-full flex items-center justify-between mx-auto container relative bg-gradient-to-br from-gradient to-primary">
-            <div className="max-w-[50%] hidden md:block text-xl font-medium">
+            {/* <div className="max-w-[50%] hidden md:block text-xl font-medium">
                 <h2 className="text-5xl font-bold mb-20 text-primary">
                     JUNTE-SE À NOSSA REDE DE SOLIDARIEDADE!
                 </h2>
@@ -47,7 +48,8 @@ function RegisterPage() {
                     </strong>
                 </p>
             </div>
-            <FormRegister />
+            <FormRegister /> */}
+            <Publication />
         </div>
     );
 }

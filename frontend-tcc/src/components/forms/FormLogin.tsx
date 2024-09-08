@@ -67,14 +67,14 @@ function FormLogin() {
                             register={register}
                             name="cpf"
                             type="text"
-                            children="CPF"
+                            label="CPF"
                         />
                         <Input
                             containerClassName="mt-5"
                             register={register}
                             name="password"
                             type="password"
-                            children="Senha"
+                            label="Senha"
                         />
                     </div>
                     <Link

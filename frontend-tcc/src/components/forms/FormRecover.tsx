@@ -116,14 +116,14 @@ function FormRegister() {
                     register={register}
                     error={errors.password?.message}
                     type="password"
-                    children="Senha"
+                    label="Senha"
                 />
                 <Input
                     name="confirmPassword"
                     register={register}
                     error={errors.confirmPassword?.message}
                     type="password"
-                    children="Confirmação de senha"
+                    label="Confirmação de senha"
                 />
                 {message ? (
                     <div
