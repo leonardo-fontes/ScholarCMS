@@ -5,6 +5,7 @@ import secureLocalStorage from "../lib/secureLocalStorage";
 import { User } from "../types/User";
 import helpers from "../helpers";
 import { RegisterData } from "../types/RegisterData";
+import { Post } from "../types/publications/Post";
 
 export type SigninData = {
     cpf: string;
@@ -37,6 +38,25 @@ http.interceptors.request.use(function (config) {
     return config;
 });
 
+http.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        if (error.response.status === 401) {
+            const token = await getNewToken();
+            error.config.headers.Authorization = `Bearer ${token}`;
+            return http.request(error.config);
+        }
+    }
+);
+
+const getNewToken = async () => {
+    const refresh_token = secureLocalStorage.get("refresh_token");
+    const response = await http.post("/refresh-token", { refresh_token });
+    const { access_token } = response.data;
+    secureLocalStorage.set("token", access_token);
+    return access_token;
+};
+
 export default {
     validateToken: async () => {
         const response = await http.post("/auth");
@@ -45,11 +65,13 @@ export default {
     signin: async (data: SigninData) => {
         try {
             const response = await http.post("/login", data);
+            const { access_token, refresh_token, user } = response.data;
             http.defaults.headers.common[
                 "Authorization"
-            ] = `Bearer ${response.data.access_token}`;
-            secureLocalStorage.set("token", response.data.access_token);
-            secureLocalStorage.set("user", response.data.user);
+            ] = `Bearer ${access_token}`;
+            secureLocalStorage.set("token", access_token);
+            secureLocalStorage.set("refresh_token", refresh_token);
+            secureLocalStorage.set("user", user);
             return true;
         } catch (e) {
             return false;
@@ -78,18 +100,46 @@ export default {
     searchCep: async (cep: string) => {
         try {
             const cepFormatted = helpers.validate.cep(cep);
-            const response = await fetch(`https://viacep.com.br/ws/${cepFormatted}/json/`);
-            
+            const response = await fetch(
+                `https://viacep.com.br/ws/${cepFormatted}/json/`
+            );
+
             if (!response.ok) {
                 throw new Error(`Erro ao buscar CEP: ${response.statusText}`);
             }
-            
+
             const address = await response.json();
             return address;
         } catch (error) {
             console.error(error);
             throw error;
         }
-    }
-    
+    },
+    createPost: async (data: Post) => {
+        try {
+            await http.post("/posts", data);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    },
+
+    getPostbyId: async (id: number) => {
+        try {
+            const { data } = await http.get(`/posts/${id}`);
+            return data as Post;
+        } catch (e) {
+            console.error(e);
+            return null;
+        }
+    },
+
+    createComment: async (data: string, postId: number) => {
+        try {
+            await http.post(`/comments/${postId}`, data);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    },
 };

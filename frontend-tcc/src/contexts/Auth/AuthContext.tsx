@@ -3,7 +3,7 @@ import { SigninData } from "../../service/api";
 import { User } from "../../types/User";
 
 export type AuthContextType = {
-    user: User | string | null;
+    user: User | null;
     isLogged: boolean;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     signin: (data: SigninData) => Promise<boolean>;
