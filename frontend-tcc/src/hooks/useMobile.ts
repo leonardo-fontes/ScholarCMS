@@ -1,14 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
 
 export default function useMobile() {
-    const [width, setWidth] = useState(0)
+    const [width, setWidth] = useState(window.innerWidth)
     const isMobile = useMemo(() => width < 768, [width])
 
     useEffect(() => {
-        setWidth(window.innerWidth)
-        window.addEventListener("resize", (e) => { setWidth(e.view?.innerWidth as number) })
+        const handleResize = () => {
+            setWidth(window.innerWidth);
+        }
+        window.addEventListener('resize', handleResize)
+        // Função de limpeza para remover o listener de resize
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
     }, [])
-    
+
     return isMobile
-    
 }
