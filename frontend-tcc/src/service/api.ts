@@ -134,6 +134,15 @@ export default {
         }
     },
 
+    sendVerifiedEmail: async (token: string) => {
+        try {
+            await http.get(`/verify-email?token=${token}`);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    },
+
     createComment: async (data: string, postId: number) => {
         try {
             await http.post(`/comments/${postId}`, data);
