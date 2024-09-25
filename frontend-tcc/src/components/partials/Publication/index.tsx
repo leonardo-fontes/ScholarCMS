@@ -32,7 +32,7 @@ export default function Publication({
     const { user } = useAuth();
 
     return (
-        <div className="flex flex-col w-full mt-20">
+        <div className="flex flex-col w-full max-w-[680px] mt-20">
             <div className="flex gap-6 items-center">
                 <img
                     className="rounded-full aspect-square object-cover w-12 md:w-16 mb-2 cursor-pointer"
@@ -80,7 +80,7 @@ export default function Publication({
                 ))}
                 <form
                     onSubmit={handleSubmit(handleComment)}
-                    className="flex w-full gap-2 items-center py-2 px-4"
+                    className="flex w-full items-center justify-between py-2 px-4"
                 >
                     <div className="flex">
                         <img
@@ -89,7 +89,7 @@ export default function Publication({
                             alt="Imagem do usuario"
                         />
                         <Input
-                            className="py-0 min-w-96"
+                            className="py-0 min-w-[480px]"
                             placeholder="Digite seu comentário..."
                             name="content"
                             register={register}
