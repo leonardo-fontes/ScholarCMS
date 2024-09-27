@@ -16,6 +16,7 @@ import PlatformPage from "./pages/Platform";
 import Privacy from "./pages/Privacy";
 import { PlatformProvider, pub } from "./pages/Platform/usePlatform";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
+import ProfilePage from "./pages/Platform/Profile/ProfilePage";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -49,6 +50,7 @@ export const router = createBrowserRouter(
             />
             <Route path="/privacy-policies" element={<Privacy />} />
             <Route path="verify-email" element={<VerifyEmailPage />} />
+            <Route path="/profile/:id" element={<ProfilePage />} /> 
             <Route path="*" element={<BuildingPage />} />
         </Route>
     )

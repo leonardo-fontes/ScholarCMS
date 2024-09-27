@@ -4,29 +4,17 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../../hooks/useAuth";
 import { Comments } from "../../../types/publications/Comments";
 import { usePlatform } from "../../../pages/Platform/usePlatform";
-
-export interface PublicationType {
-    comments: Comments[];
-    post_caption: string;
-    post_image: string;
-    author_photo: string;
-    author_name: string;
-    author_city: string;
-    post_id: number;
-}
+import { PublicationType } from "../../../types/publications";
+import { Link } from "react-router-dom";
 
 export default function Publication({
-    author_city,
-    author_name,
-    author_photo,
-    comments,
-    post_caption,
-    post_image,
-    post_id,
+    post,
+    comments
+
 }: PublicationType) {
     const { handleComment } = usePlatform();
     const { register, handleSubmit } = useForm<Comments>({
-        defaultValues: { post_id },
+        defaultValues: { post_id: post.id },
     });
 
     const { user } = useAuth();
@@ -34,25 +22,29 @@ export default function Publication({
     return (
         <div className="flex flex-col w-full max-w-[680px] mt-20">
             <div className="flex gap-6 items-center">
-                <img
-                    className="rounded-full aspect-square object-cover w-12 md:w-16 mb-2 cursor-pointer"
-                    src={author_photo || ""}
-                    alt=""
-                />
+                <Link to={`/profile/${post.user_id}`}>
+                    <img
+                        className="rounded-full aspect-square object-cover w-12 md:w-16 mb-2 cursor-pointer"
+                        src={post.author_photo || ""}
+                        alt="Author"
+                    />
+                </Link>
                 <div>
-                    <p>{author_name}</p>
-                    <span className="text-gray text-sm">{author_city}</span>
+                    <p>{post.author_name}</p>
+                    <span className="text-gray text-sm">{post.author_city}</span>
                 </div>
             </div>
             <div className="w-full">
-                <p className="text-sm my-3">{post_caption || ""}</p>
+                <p className="text-sm my-3">{post.description || ""}</p>
                 <div className="relative min-w-full border-2 border-lightGray">
                     <img
                         className="w-full aspect-square object-cover"
-                        src={post_image}
+                        src={post.photos?.[0] || ""}
                         alt="foto do usuário"
                     />
                     <Button
+                        isLink
+                        link={`/profile/${post.user_id}`}
                         children="DOAR"
                         classname="absolute bottom-8 right-8 text-lg md:text-xl text-white bg-primary px-6 md:px-8 py-1 md:py-2 font-extrabold"
                     />
@@ -65,11 +57,12 @@ export default function Publication({
                 {comments.map((comment) => (
                     <div className="flex flex-col border-b-[2px] px-4 py-2 gap-1 border-[#e9e9e9]">
                         <div className="flex items-center gap-3">
-                            <img
+                            <Link to={`/profile/${comment.user_id}`}><img
                                 className="rounded-full aspect-square object-cover w-12 md:w-10 cursor-pointer"
                                 src={comment.author_photo}
                                 alt=""
-                            />
+                            /></Link>
+
                             <p className="text-md text-primary">
                                 {comment.author_name}
                             </p>
@@ -89,7 +82,7 @@ export default function Publication({
                             alt="Imagem do usuario"
                         />
                         <Input
-                            className="py-0 min-w-[480px]"
+                            className="py-0 min-w-96"
                             placeholder="Digite seu comentário..."
                             name="content"
                             register={register}

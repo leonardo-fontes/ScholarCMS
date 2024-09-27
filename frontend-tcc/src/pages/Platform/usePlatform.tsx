@@ -1,10 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, PropsWithChildren, useContext } from "react";
-import { PublicationType } from "../../components/partials/Publication";
+
 import { useLoaderData } from "react-router-dom";
 import { Comments } from "../../types/publications/Comments";
 import { SubmitHandler } from "react-hook-form";
 import api from "../../service/api";
+import { PublicationType } from "../../types/publications";
 
 type Props = {
     publications: PublicationType[];
@@ -28,7 +29,7 @@ const comments: Comments[] = [
         post_id: 1,
         created_at: "2021-10-10",
         updated_at: "2021-10-10",
-        user_id: 1,
+        user_id: 2,
         author_photo: "/garotos.jpg",
         author_name: "Leonardo Fontes",
         content:
@@ -39,7 +40,7 @@ const comments: Comments[] = [
         post_id: 1,
         created_at: "2021-10-10",
         updated_at: "2021-10-10",
-        user_id: 1,
+        user_id: 3,
         author_photo: "/garotos.jpg",
         author_name: "Alisson de Sousa",
         content: "This is a test This is a test This is a test This is a test",
@@ -47,12 +48,17 @@ const comments: Comments[] = [
 ];
 
 export const pub: PublicationType = {
-    post_id: 1,
-    author_city: "Cubatao",
-    author_name: "Leonardo Fontes",
-    author_photo: "/garotos.jpg",
-    post_caption: "This is a post caption",
-    post_image: "/garotos.jpg",
+    post: {
+        description: "This is a test",
+        author_city: "São Paulo",
+        author_name: "Leonardo Lucas Fontes",
+        author_photo: "/garotos.jpg",
+        created_at: "2021-10-10",
+        id: 1,
+        photos: ["/garotos.jpg"],
+        updated_at: "2021-10-10",
+        user_id: 1,
+    },
     comments,
 };
 

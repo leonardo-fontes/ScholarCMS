@@ -6,6 +6,7 @@ import { User } from "../types/User";
 import helpers from "../helpers";
 import { RegisterData } from "../types/RegisterData";
 import { Post } from "../types/publications/Post";
+import { Pay } from "../types/Pay";
 
 export type SigninData = {
     cpf: string;
@@ -151,4 +152,13 @@ export default {
             return false;
         }
     },
-};
+
+    pay: async (data: Pay) => {
+        try {
+            const res = await http.post("/pay", data);
+            return res.data ;
+        } catch (e) {
+            return false;
+        }
+    }
+}
