@@ -5,7 +5,7 @@ export default function PlatformPage() {
 
 
     return (
-        <div>
+        <div className="flex flex-col gap-20 w-full mx-auto container items-center justify-center">
             <h1>Profile Page</h1>
 
             <Payment username="teste" />

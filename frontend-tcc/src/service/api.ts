@@ -158,12 +158,25 @@ export default {
         }
     },
 
-    pay: async (data: Pay) => {
+    generateQrCode: async (data: Pay) => {
         try {
             const res = await http.post("/pay", data);
             return res.data;
         } catch (e) {
             return false;
         }
-    }
+    },
+
+    checkPayment: async (data: string) => {
+        try {
+            const res = await http.get(`/pay/status/${data}`);
+            console.log(res)
+            return res.data;
+        } catch (e) {
+            return false;
+        }
+    },
+
+
+   
 }
