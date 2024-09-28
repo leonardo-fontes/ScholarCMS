@@ -14,7 +14,7 @@ import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./contexts/Auth/AuthProvider";
 import PlatformPage from "./pages/Platform";
 import Privacy from "./pages/Privacy";
-import { PlatformProvider, pub } from "./pages/Platform/usePlatform";
+import { PlatformProvider, pubs } from "./pages/Platform/usePlatform";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import ProfilePage from "./pages/Platform/Profile/ProfilePage";
 
@@ -40,7 +40,7 @@ export const router = createBrowserRouter(
             <Route
                 path="/platform"
                 loader={async () => {
-                    return [pub, pub];
+                    return pubs;
                 }}
                 element={
                     <PlatformProvider>

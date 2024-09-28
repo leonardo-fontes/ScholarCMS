@@ -64,7 +64,7 @@ function FormRegister() {
                 navigate("/login");
             }, 3000);
         } catch (err) {
-            console.log((err as AxiosError).message);
+            console.error((err as AxiosError).message);
             setMessage("error");
         }
         setTimeout(() => {

@@ -3,7 +3,6 @@ import Input from "../inputs/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import api from "../../service/api";
-import { useAuth } from "../../hooks/useAuth";
 import schema, { validatePassword } from "../../validator/auth/register";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnyObject, ObjectSchema } from "yup";
@@ -16,8 +15,6 @@ import { RegisterData } from "../../types/RegisterData";
 
 function FormRegister() {
     const navigate = useNavigate();
-    const auth = useAuth();
-
     const {
         register,
         handleSubmit,
@@ -61,10 +58,9 @@ function FormRegister() {
             }
 
             await api.register(data);
-            await auth.signin({ cpf: data.cpf, password: data.password });
-            navigate("/home");
+            navigate("/verify-email");
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     };
 
@@ -81,11 +77,9 @@ function FormRegister() {
     const onCepChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const cep = event.currentTarget.value;
         const formattedCep = helpers.validate.cep(cep);
-        console.log(formattedCep);
         if (formattedCep.length === 8) {
             try {
                 const result: Address = await api.searchCep(formattedCep);
-                console.log(result);
                 setValue("city", result.localidade);
                 setValue("state", result.uf);
             } catch (error) {

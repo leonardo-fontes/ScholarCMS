@@ -55,7 +55,7 @@ export default function Publication({
                     Comentários
                 </span>
                 {comments.map((comment) => (
-                    <div className="flex flex-col border-b-[2px] px-4 py-2 gap-1 border-[#e9e9e9]">
+                    <div key={comment.id} className="flex flex-col border-b-[2px] px-4 py-2 gap-1 border-[#e9e9e9]">
                         <div className="flex items-center gap-3">
                             <Link to={`/profile/${comment.user_id}`}><img
                                 className="rounded-full aspect-square object-cover w-12 md:w-10 cursor-pointer"

@@ -78,6 +78,7 @@ export default {
             return false;
         }
     },
+
     register: async (data: RegisterData) => {
         try {
             await http.post("/register", data);
@@ -95,8 +96,12 @@ export default {
         return true;
     },
     profile: async () => {
-        const { data } = await http.get("/profile");
-        return data as User;
+        try {
+            const { data } = await http.get("/profile");
+            return data as User;
+        } catch (e) {
+            return null
+        }
     },
     searchCep: async (cep: string) => {
         try {
@@ -156,7 +161,7 @@ export default {
     pay: async (data: Pay) => {
         try {
             const res = await http.post("/pay", data);
-            return res.data ;
+            return res.data;
         } catch (e) {
             return false;
         }

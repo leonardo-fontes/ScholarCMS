@@ -40,7 +40,7 @@ function FormLogin() {
             await api.forgotPassword(data);
             setMessage("success");
         } catch (err) {
-            console.log(err);
+            console.error(err);
             setMessage("error");
         }
         setTimeout(() => {

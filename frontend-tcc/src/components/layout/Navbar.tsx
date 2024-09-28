@@ -1,12 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Icon from "../icons";
 import Button from "../inputs/Button";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function Navbar() {
     const { isLogged, signout } = useAuth();
-
+    const { pathname } = useLocation();
     return (
+        !(["verify-email"].filter((page) => pathname.includes(page))
+            .length) &&
         <div className="bg-primary flex justify-between px-7 items-center py-4 md:py-7 z-10 fixed w-full top-0 shadow-lg rounded-b-sm">
             <Link to={isLogged ? "/platform" : "/"}>
                 <Icon

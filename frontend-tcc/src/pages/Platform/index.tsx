@@ -8,7 +8,7 @@ export default function PlatformPage() {
         <div className="w-full flex flex-col bg-white py-1 items-center container mx-auto">
             <section className="w-[40%] m-20">
                 {publications.map((publication) => (
-                    <Publication {...publication} />
+                    <Publication key={publication.post.id} {...publication} />
                 ))}
             </section>
         </div>

@@ -51,6 +51,7 @@ export const AuthProvider = ({
     const signout = async () => {
         secureLocalStorage.remove("token");
         secureLocalStorage.remove("user");
+        secureLocalStorage.remove("refresh_token");
         setUser(null);
     };
 

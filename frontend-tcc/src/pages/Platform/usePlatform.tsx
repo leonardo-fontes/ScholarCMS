@@ -47,7 +47,7 @@ const comments: Comments[] = [
     },
 ];
 
-export const pub: PublicationType = {
+export const pubs: PublicationType[] = [{
     post: {
         description: "This is a test",
         author_city: "São Paulo",
@@ -60,7 +60,22 @@ export const pub: PublicationType = {
         user_id: 1,
     },
     comments,
-};
+
+}, {
+    post: {
+        description: "This is a test",
+        author_city: "São Paulo",
+        author_name: "Leonardo Lucas Fontes",
+        author_photo: "/garotos.jpg",
+        created_at: "2021-10-10",
+        id: 2,
+        photos: ["/garotos.jpg"],
+        updated_at: "2021-10-10",
+        user_id: 1,
+    },
+    comments,
+
+}];
 
 export const PlatformProvider = ({ children }: PropsWithChildren) => {
     const data = useLoaderData() as PublicationType[];
@@ -71,7 +86,7 @@ export const PlatformProvider = ({ children }: PropsWithChildren) => {
         try {
             await api.createComment(content, post_id);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     };
     return (
