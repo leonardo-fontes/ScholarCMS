@@ -13,6 +13,7 @@ export const AuthProvider = ({
     children: JSX.Element | JSX.Element[];
 }) => {
     const [user, setUser] = useState<User | null>(null);
+    console.log(user)
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
@@ -37,10 +38,22 @@ export const AuthProvider = ({
         }
     }, [navigate, pathname, user]);
 
-    const getUser = async () => {
-        const user = await api.profile();
-        setUser(user);
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+    const getUser = async (retries = 3) => {
+        try {
+            const user = await api.profile();
+            setUser(user);
+        } catch (e) {
+            if (retries > 0) {
+                await delay(1000);
+                getUser(retries - 1);
+            } else {
+                console.error('failed to get user');
+            }
+        }
     };
+
 
     const signin = async (data: SigninData) => {
         const response = await api.signin(data);

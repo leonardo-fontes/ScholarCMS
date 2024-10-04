@@ -163,7 +163,8 @@ export default {
             const res = await http.post("/pay", data);
             return res.data;
         } catch (e) {
-            return false;
+            alert("Erro ao gerar QR Code");
+            console.error(e);
         }
     },
 

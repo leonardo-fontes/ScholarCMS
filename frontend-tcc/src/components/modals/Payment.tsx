@@ -33,17 +33,15 @@ export default function Payment({ username }: Name) {
     });
 
     const handlePayment: SubmitHandler<Pay> = async (data) => {
-        try {
-            const { external_id } = await api.generateQrCode({
-                amount: data.amount as number,
-                receiver_id: receiver_id,
-                idempotency_key: uuidv4(),
-            });
 
-            navigate(`/payment/${external_id}`);
-        } catch (error) {
-            console.error(error);
-        }
+        const { external_id } = await api.generateQrCode({
+            amount: data.amount as number,
+            receiver_id: receiver_id,
+            idempotency_key: uuidv4(),
+        });
+
+        external_id && navigate(`/payment/${external_id}`);
+
     };
 
     const currentAmount = watch("amount", 0);
