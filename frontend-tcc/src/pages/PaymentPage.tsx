@@ -1,12 +1,32 @@
-import { useLoaderData } from "react-router-dom"
-import Button from "../components/inputs/Button"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useLoaderData } from "react-router-dom";
+import Button from "../components/inputs/Button";
+import api from "../service/api";
+import { useEffect, useState } from "react";
 
 export default function PaymentPage() {
-    const data = useLoaderData() as any
+    const { external_id } = useLoaderData() as any;
+
+    const [data, setData] = useState({
+        qr_code: "",
+    });
+
+    useEffect(() => {
+        const res = async () => {
+            try {
+                const { data } = await api.checkPayment(external_id);
+                setData(data);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+        res();
+    }, [external_id]);
+
+    console.log(data);
 
     return (
         <div className="w-full max-w-[580px] flex flex-col items-center justify-center shadow-lg p-8">
-
             <div className="flex flex-col">
                 <span className="text-xl font-bold mb-2">
                     Escaneie o código QR para doar:
@@ -16,7 +36,11 @@ export default function PaymentPage() {
                     <li>2. Escolha pagar via pix</li>
                     <li>3. Escaneie o código:</li>
                 </ol>
-                <img className="w-96" src={`data:image/png;base64,${data.qr_code}`} alt="" />
+                <img
+                    className="w-96"
+                    src={`data:image/png;base64,${data.qr_code}`}
+                    alt=""
+                />
                 <span className="text-gray mb-2">
                     pague e será creditado na hora.
                 </span>
@@ -45,5 +69,5 @@ export default function PaymentPage() {
                 link="/home"
             />
         </div>
-    )
+    );
 }

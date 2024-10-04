@@ -100,7 +100,7 @@ export default {
             const { data } = await http.get("/profile");
             return data as User;
         } catch (e) {
-            return null
+            return null;
         }
     },
     searchCep: async (cep: string) => {
@@ -170,13 +170,9 @@ export default {
     checkPayment: async (data: string) => {
         try {
             const res = await http.get(`/pay/status/${data}`);
-            console.log(res)
             return res.data;
         } catch (e) {
             return false;
         }
     },
-
-
-   
-}
+};
