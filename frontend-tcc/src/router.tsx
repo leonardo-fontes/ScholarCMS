@@ -64,7 +64,7 @@ export const router = createBrowserRouter(
                 }}
             />
             <Route
-                path="/:id/create-pub" element={<CreatePubPage />}
+                path="/create-pub" element={<CreatePubPage />}
             />
             <Route path="*" element={<BuildingPage />} />
         </Route>
