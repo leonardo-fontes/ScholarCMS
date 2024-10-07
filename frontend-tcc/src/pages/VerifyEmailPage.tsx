@@ -55,7 +55,7 @@ export default function VerifyEmailPage() {
                                 isLink
                                 link="/platform"
                                 children="ACESSAR PLATAFORMA"
-                                classname="text-lg md:text-xl font-semibold md:font-extrabold text-white bg-primary w-full md:py-2 mt-"
+                                classname="text-lg md:text-xl font-semibold md:font-extrabold text-white bg-primary w-full md:py-2"
                             />
                         </div>
                     </div>

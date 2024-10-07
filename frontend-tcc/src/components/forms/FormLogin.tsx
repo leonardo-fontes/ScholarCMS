@@ -19,12 +19,12 @@ function FormLogin() {
             cpf: searchParams.get("cpf") ?? "",
         },
     });
-
+    
     const cpf = watch("cpf");
 
     const handleLogin: SubmitHandler<Inputs> = async (data) => {
-        const isLogged = await auth.signin(data);
-        if (isLogged) {
+        const res = await auth.signin(data);
+        if (res) {
             navigate("/platform");
         } else {
             alert("deu errado o login");

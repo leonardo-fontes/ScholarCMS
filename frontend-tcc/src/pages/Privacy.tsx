@@ -2,7 +2,7 @@ function Privacy() {
   const classnameLi = "underline text-md text-[#333]";
   return (
     <>
-      <div className="flex flex-col justify-center container mx-7 md:mx-auto w-full mt-40 font-merriweather">
+      <div className="flex flex-col justify-center  mx-7 md:mx-auto w-full font-merriweather">
         <h2 className="md:text-5xl text-4xl mb-12">
           Política de Privacidade e Segurança da <strong>SOLIDARIZA</strong>
         </h2>

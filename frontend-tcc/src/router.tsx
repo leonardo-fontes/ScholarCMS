@@ -18,8 +18,8 @@ import Privacy from "./pages/Privacy";
 import { PlatformProvider, pubs } from "./pages/Platform/usePlatform";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import ProfilePage from "./pages/Platform/Profile/ProfilePage";
-import PaymentPage from "./pages/PaymentPage";
-import api from "./service/api";
+import PaymentPage from "./pages/Platform/PaymentPage";
+import CreatePubPage from "./pages/Platform/CreatePubPage";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -28,8 +28,8 @@ export const router = createBrowserRouter(
             element={
                 <main>
                     <AuthProvider>
-                        <Container>
                             <Navbar />
+                        <Container>
                             <Outlet />
                         </Container>
                         <Footer />
@@ -58,11 +58,13 @@ export const router = createBrowserRouter(
                 path="/payment/:id"
                 element={<PaymentPage />}
                 loader={({ params }: any) => {
-                    console.log(params);
                     return {
                         external_id: params.id,
                     };
                 }}
+            />
+            <Route
+                path="/create-pub" element={<CreatePubPage />}
             />
             <Route path="*" element={<BuildingPage />} />
         </Route>

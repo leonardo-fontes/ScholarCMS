@@ -10,7 +10,7 @@ function Container({ children, classname }: Props) {
         window.scrollTo(0, 0);
     }, []);
     return (
-        <div className={`flex mx-auto w-full min-h-screen z-0 relative font-manrope bg-white ${classname}`}>
+        <div className={`flex mx-auto container mt-32 min-h-screen z-0 relative font-manrope bg-white ${classname}`}>
             {children}
         </div>
     );
