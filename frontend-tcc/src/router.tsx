@@ -28,7 +28,7 @@ export const router = createBrowserRouter(
             element={
                 <main>
                     <AuthProvider>
-                            <Navbar />
+                        <Navbar />
                         <Container>
                             <Outlet />
                         </Container>
@@ -37,7 +37,7 @@ export const router = createBrowserRouter(
                 </main>
             }
         >
-            <Route index element={<LandingPage />} />
+            <Route path="/" index element={<LandingPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route
@@ -53,7 +53,11 @@ export const router = createBrowserRouter(
             />
             <Route path="/privacy-policies" element={<Privacy />} />
             <Route path="verify-email" element={<VerifyEmailPage />} />
-            <Route path="/profile/:id" element={<ProfilePage />} />
+            <Route path="/profile/:id" element={<ProfilePage />} loader={({ params }: any) => {
+                return {
+                    id: params.id,
+                };
+            }} />
             <Route
                 path="/payment/:id"
                 element={<PaymentPage />}

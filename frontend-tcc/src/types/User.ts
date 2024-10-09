@@ -15,3 +15,8 @@ export type User = {
     description?: string;
     points: number;
 };
+
+export enum Role {
+    Beneficiario = "1",
+    Doador = "2",
+}

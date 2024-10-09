@@ -13,7 +13,6 @@ export const AuthProvider = ({
     children: JSX.Element | JSX.Element[];
 }) => {
     const [user, setUser] = useState<User | null>(null);
-    console.log(user)
     const { pathname } = useLocation();
     const navigate = useNavigate();
 

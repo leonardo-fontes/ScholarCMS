@@ -16,7 +16,7 @@ export default function Publication({ post, comments }: PublicationType) {
     const { user } = useAuth();
 
     return (
-        <div className="flex flex-col w-full max-w-[680px] mt-20">
+        <div className="flex flex-col w-full max-w-[560px] mt-20">
             <div className="flex gap-6 items-center">
                 <Link to={`/profile/${post.user_id}`}>
                     <img
@@ -66,7 +66,7 @@ export default function Publication({ post, comments }: PublicationType) {
                                 />
                             </Link>
 
-                            <p className="text-md text-primary">
+                            <p className="text-primary">
                                 {comment.author_name}
                             </p>
                         </div>
@@ -81,11 +81,11 @@ export default function Publication({ post, comments }: PublicationType) {
                     <div className="flex">
                         <img
                             className="rounded-full mr-4 aspect-square object-cover w-16 cursor-pointer"
-                            src={user?.profile_picture_url || "/garotos.jpg"}
+                            src={user?.profile_picture_url || "/mulher_2.jpg"}
                             alt="Imagem do usuario"
                         />
                         <Input
-                            className="py-0 min-w-96"
+                            className="py-0 min-w-80"
                             placeholder="Digite seu comentário..."
                             name="content"
                             register={register}

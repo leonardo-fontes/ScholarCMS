@@ -4,22 +4,19 @@ import Textarea from "../../components/inputs/Textarea";
 import FileInput from "../../components/inputs/FileInput";
 import { useEffect, useState } from "react";
 import Button from "../../components/inputs/Button";
-
-type CreatePub = {
-    description: string;
-    photos: FileList;
-};
+import api from "../../service/api";
+import { CreatePost } from "../../types/publications/Post";
 
 export default function CreatePubPage() {
     const { user } = useAuth();
     const { register, handleSubmit, watch, setValue, getValues } =
-        useForm<CreatePub>();
+        useForm<CreatePost>();
 
     const photos = watch("photos");
     const [imageUrls, setImageUrls] = useState<string[]>([]);
 
-    const handleCreatePub: SubmitHandler<CreatePub> = async (data) => {
-        console.log(data);
+    const handleCreatePub: SubmitHandler<CreatePost> = async (data) => {
+        api.createPost(data);
     };
 
     const updateFileList = (newFiles: FileList) => {
@@ -41,7 +38,6 @@ export default function CreatePubPage() {
 
     useEffect(() => {
         generateImageUrls(photos);
-        console.log(photos);
     }, [photos]);
 
     return (
@@ -75,11 +71,10 @@ export default function CreatePubPage() {
                     <div className="flex items-end gap-4">
                         <FileInput
                             label="Adicionar fotos"
-                            className={`${
-                                imageUrls.length < 3
+                            className={`${imageUrls.length < 3
                                     ? "max-w-32 bg-lightGray"
                                     : "bg-gray border-none cursor-not-allowed"
-                            }`}
+                                }`}
                             disabled={imageUrls.length >= 3}
                             name="photos"
                             register={register}

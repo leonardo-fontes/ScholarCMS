@@ -5,7 +5,7 @@ import secureLocalStorage from "../lib/secureLocalStorage";
 import { User } from "../types/User";
 import helpers from "../helpers";
 import { RegisterData } from "../types/RegisterData";
-import { Post } from "../types/publications/Post";
+import { CreatePost, Post } from "../types/publications/Post";
 import { Pay } from "../types/Pay";
 
 export type SigninData = {
@@ -122,7 +122,7 @@ export default {
         }
     },
 
-    createPost: async (data: Post) => {
+    createPost: async (data: CreatePost) => {
         try {
             await http.post("/posts", data);
             return true;

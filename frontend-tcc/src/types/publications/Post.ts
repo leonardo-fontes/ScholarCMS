@@ -9,3 +9,8 @@ export type Post = {
     created_at?: string;
     updated_at?: string;
 };
+
+export type CreatePost = {
+    description: string;
+    photos: FileList;
+};

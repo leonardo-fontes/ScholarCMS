@@ -12,6 +12,7 @@ import { useMemo } from "react";
 import helpers from "../../helpers";
 import { Address } from "../../types/Addres";
 import { RegisterData } from "../../types/RegisterData";
+import { Role } from "../../types/User";
 
 function FormRegister() {
     const navigate = useNavigate();
@@ -64,10 +65,7 @@ function FormRegister() {
         }
     };
 
-    enum Role {
-        Beneficiario = "1",
-        Doador = "2",
-    }
+
 
     const roleOptions = [
         { value: Number(Role.Beneficiario), label: "Beneficiario" },
@@ -184,11 +182,10 @@ function FormRegister() {
                         <div className="flex flex-col gap-1 text-xs font-normal -mt-8 text-[#515151]">
                             <div>Sua senha deve conter, pelo menos:</div>
                             <span
-                                className={`flex gap-2 ${
-                                    passValidate.length
+                                className={`flex gap-2 ${passValidate.length
                                         ? "text-success"
                                         : "text-error"
-                                }`}
+                                    }`}
                             >
                                 <Icon
                                     name={
@@ -198,11 +195,10 @@ function FormRegister() {
                                 8 caracteres
                             </span>
                             <span
-                                className={`flex gap-2 ${
-                                    passValidate.lowercase
+                                className={`flex gap-2 ${passValidate.lowercase
                                         ? "text-success"
                                         : "text-error"
-                                }`}
+                                    }`}
                             >
                                 <Icon
                                     name={
@@ -214,11 +210,10 @@ function FormRegister() {
                                 1 letra minúscula
                             </span>
                             <span
-                                className={`flex gap-2 ${
-                                    passValidate.uppercase
+                                className={`flex gap-2 ${passValidate.uppercase
                                         ? "text-success"
                                         : "text-error"
-                                }`}
+                                    }`}
                             >
                                 <Icon
                                     name={
@@ -230,11 +225,10 @@ function FormRegister() {
                                 1 letra maiscúla
                             </span>
                             <span
-                                className={`flex gap-2 ${
-                                    passValidate.number
+                                className={`flex gap-2 ${passValidate.number
                                         ? "text-success"
                                         : "text-error"
-                                }`}
+                                    }`}
                             >
                                 <Icon
                                     name={
@@ -244,11 +238,10 @@ function FormRegister() {
                                 1 número
                             </span>
                             <span
-                                className={`flex gap-2 ${
-                                    passValidate.specialchar
+                                className={`flex gap-2 ${passValidate.specialchar
                                         ? "text-success"
                                         : "text-error"
-                                }`}
+                                    }`}
                             >
                                 <Icon
                                     name={
