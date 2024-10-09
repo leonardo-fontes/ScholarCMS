@@ -7,11 +7,7 @@ import { usePlatform } from "../../../pages/Platform/usePlatform";
 import { PublicationType } from "../../../types/publications";
 import { Link } from "react-router-dom";
 
-export default function Publication({
-    post,
-    comments
-
-}: PublicationType) {
+export default function Publication({ post, comments }: PublicationType) {
     const { handleComment } = usePlatform();
     const { register, handleSubmit } = useForm<Comments>({
         defaultValues: { post_id: post.id },
@@ -30,8 +26,10 @@ export default function Publication({
                     />
                 </Link>
                 <div>
-                    <p>{post.author_name}</p>
-                    <span className="text-gray text-sm">{post.author_city}</span>
+                    <p className="text-primary">{post.author_name}</p>
+                    <span className="text-gray text-sm">
+                        {post.author_city}
+                    </span>
                 </div>
             </div>
             <div className="w-full">
@@ -46,7 +44,7 @@ export default function Publication({
                         isLink
                         link={`/profile/${post.user_id}`}
                         children="DOAR"
-                        classname="absolute bottom-8 right-8 text-lg md:text-xl text-white bg-primary px-6 md:px-8 py-1 md:py-2 font-extrabold"
+                        classname="absolute bottom-8 right-8 text-lg md:text-2xl text-white bg-primary px-6 md:px-12 py-1 md:py-2 font-extrabold"
                     />
                 </div>
             </div>
@@ -55,13 +53,18 @@ export default function Publication({
                     Comentários
                 </span>
                 {comments.map((comment) => (
-                    <div key={comment.id} className="flex flex-col border-b-[2px] px-4 py-2 gap-1 border-[#e9e9e9]">
+                    <div
+                        key={comment.id}
+                        className="flex flex-col border-b-[2px] px-4 py-2 gap-1 border-[#e9e9e9]"
+                    >
                         <div className="flex items-center gap-3">
-                            <Link to={`/profile/${comment.user_id}`}><img
-                                className="rounded-full aspect-square object-cover w-12 md:w-10 cursor-pointer"
-                                src={comment.author_photo}
-                                alt=""
-                            /></Link>
+                            <Link to={`/profile/${comment.user_id}`}>
+                                <img
+                                    className="rounded-full aspect-square object-cover w-12 md:w-10 cursor-pointer"
+                                    src={comment.author_photo}
+                                    alt=""
+                                />
+                            </Link>
 
                             <p className="text-md text-primary">
                                 {comment.author_name}

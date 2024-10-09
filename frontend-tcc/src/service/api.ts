@@ -121,6 +121,7 @@ export default {
             throw error;
         }
     },
+
     createPost: async (data: Post) => {
         try {
             await http.post("/posts", data);
