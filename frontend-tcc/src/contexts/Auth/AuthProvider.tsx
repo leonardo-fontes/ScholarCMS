@@ -4,6 +4,7 @@ import api, { SigninData } from "../../service/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "../../types/User";
 import secureLocalStorage from "../../lib/secureLocalStorage";
+import Loading from "../../components/Loading/Loading"
 
 // eslint-disable-next-line react-refresh/only-export-components
 
@@ -14,25 +15,29 @@ export const AuthProvider = ({
 }) => {
     const [user, setUser] = useState<User | null>(null);
     console.log(user)
+    const [isLoading, setIsLoading] = useState(false);
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
     // persist user
     useEffect(() => {
-        if (!user && secureLocalStorage.get("user")) getUser();
+        const storedUser = secureLocalStorage.get("user");
+        if (!user && storedUser) {
+            getUser();
+        }
     }, [user]);
 
     // validate user
     useEffect(() => {
+        const storedUser = secureLocalStorage.get("user");
         if (
             pathname.startsWith("/platform") &&
-            !(user || secureLocalStorage.get("user"))
+            !(user || storedUser)
         ) {
             navigate("/login");
         } else if (
-            ["login", "register"].filter((page) => pathname.includes(page))
-                .length &&
-            (user || secureLocalStorage.get("user"))
+            ["login", "register"].some((page) => pathname.includes(page)) &&
+            (user || storedUser)
         ) {
             navigate("/platform");
         }
@@ -56,9 +61,15 @@ export const AuthProvider = ({
 
 
     const signin = async (data: SigninData) => {
-        const response = await api.signin(data);
-        await getUser();
-        return response;
+        setIsLoading(true);
+        try {
+            const response = await api.signin(data);
+            await getUser();
+            return response;
+        }
+        finally {
+            setIsLoading(false);
+        }
     };
 
     const signout = async () => {
@@ -74,7 +85,7 @@ export const AuthProvider = ({
         <AuthContext.Provider
             value={{ user, setUser, signin, signout, isLogged }}
         >
-            {children}
+            {isLoading ? <Loading queryKey="loading" queryFn={() => new Promise(() => { })} /> : children}
         </AuthContext.Provider>
     );
 };

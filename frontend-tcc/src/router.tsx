@@ -17,7 +17,7 @@ import PlatformPage from "./pages/Platform";
 import Privacy from "./pages/Privacy";
 import { PlatformProvider, pubs } from "./pages/Platform/usePlatform";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
-import ProfilePage from "./pages/Platform/Profile/ProfilePage";
+import ProfilePage from "./pages/ProfilePage";
 import PaymentPage from "./pages/Platform/PaymentPage";
 import CreatePubPage from "./pages/Platform/CreatePubPage";
 
@@ -28,7 +28,7 @@ export const router = createBrowserRouter(
             element={
                 <main>
                     <AuthProvider>
-                            <Navbar />
+                        <Navbar />
                         <Container>
                             <Outlet />
                         </Container>
@@ -53,7 +53,7 @@ export const router = createBrowserRouter(
             />
             <Route path="/privacy-policies" element={<Privacy />} />
             <Route path="verify-email" element={<VerifyEmailPage />} />
-            <Route path="/profile/:id" element={<ProfilePage />} />
+            <Route path="/profile/:id" element={<PlatformPage />} />
             <Route
                 path="/payment/:id"
                 element={<PaymentPage />}
@@ -67,6 +67,7 @@ export const router = createBrowserRouter(
                 path="/create-pub" element={<CreatePubPage />}
             />
             <Route path="*" element={<BuildingPage />} />
+            <Route path="profile" element={<ProfilePage />} />
         </Route>
     )
 );

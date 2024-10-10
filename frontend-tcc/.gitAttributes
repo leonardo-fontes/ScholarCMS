@@ -1,0 +1,5 @@
+# Define o final de linha como LF para todos os arquivos
+* text=auto eol=lf
+
+# Define o final de linha como LF especificamente para o arquivo yarn.lock
+yarn.lock text eol=lf
