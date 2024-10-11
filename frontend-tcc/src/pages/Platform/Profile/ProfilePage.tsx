@@ -46,9 +46,9 @@ export default function ProfilePage() {
     return (
         <div className="flex flex-col w-full items-center">
             <section className="flex max-w-[560px] w-full mb-4 gap-12 mt-20 items-center justify-between relative">
-                <div className="flex items-center  gap-4">
+                <div className="flex items-center gap-4">
                     <img
-                        className="rounded-full aspect-square object-cover w-12 md:w-24 mb-2 cursor-pointer"
+                        className="rounded-full aspect-square object-cover w-12 md:w-24 mb-2"
                         src={user?.profile_picture_url || "/mulher_2.jpg"}
                         alt="Author"
                     />
