@@ -95,8 +95,8 @@ export default function ProfilePage() {
             <Button classname="my-12 text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white w-[560px] md:py-2" href="/" children={'VOLTAR PARA A PÁGINA INICIAL'} />
 
 
-
-            {isModalOpen && <Payment username="teste" />}
+            <Payment username="teste" />
+            {/* {isModalOpen ? <Payment username="teste" /> : null} */}
         </div>
     )
 }

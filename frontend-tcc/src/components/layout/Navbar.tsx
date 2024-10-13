@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import Icon from "../icons";
 import Button from "../inputs/Button";
 import { useAuth } from "../../hooks/useAuth";
+import { Role } from "../../types/User";
 
 export default function Navbar() {
     const { signout, user } = useAuth();
@@ -19,20 +20,20 @@ export default function Navbar() {
                 />
             </Link>
             {
-                //user && 
+                user &&
                 <div className="flex gap-4">
                     <Link className={linkClassname} to={"/filter"}>
                         Buscar perfis
                         <Icon name="magnifyingGlass" size={20} color="white" />
                     </Link>
 
-                    {//user?.role_id === parseInt(Role.Beneficiario) && mudar icones e links
+                    {user?.role_id === parseInt(Role.Beneficiario) ?
                         <Link className={linkClassname} to={'/platform/create-pub'}>
                             Criar Publicação
                             <Icon name="addItem" size={24} color="white" />
-                        </Link>
+                        </Link> : null
                     }
-                    <Link className={linkClassname} to={'/platform/create-pub'}>
+                    <Link className={linkClassname} to={`/platform/profile/${user.id}`}>
                         Meu perfil
                         <Icon name="addItem" size={24} color="white" />
                     </Link>

@@ -40,7 +40,7 @@ export default function Payment({ username }: Name) {
             idempotency_key: uuidv4(),
         });
 
-        external_id && navigate(`/payment/${external_id}`);
+        external_id && navigate(`/platform/payment/${external_id}`);
 
     };
 
