@@ -68,8 +68,7 @@ export default function PaymentPage() {
                 <Button
                     children={"VOLTAR"}
                     classname="w-[60%] border-primary border-2 text-primary font-bold text-lg mt-12"
-                    isLink
-                    link="/platform"
+                    href="/platform"
                 />
             </div>) : (<div className="w-full flex items-center justify-center">
                 <div className="p-16 flex items-center justify-center border-y-[0.2px] border-lightGray shadow-xl">
@@ -82,8 +81,7 @@ export default function PaymentPage() {
                         </span>
                         <img className="m-20" src="/donation.png" alt="" />
                         <Button
-                            isLink
-                            link="/platform"
+                            href="/platform"
                             children="VOLTAR PARA A PLATAFORMA"
                             classname="text-lg md:text-xl font-semibold md:font-extrabold text-white bg-primary px-4 md:py-2 "
                         />

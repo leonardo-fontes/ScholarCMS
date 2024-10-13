@@ -52,8 +52,7 @@ export default function VerifyEmailPage() {
                             </h3>
                             <img className="" src="/verified-email.png" alt="" />
                             <Button
-                                isLink
-                                link="/platform"
+                                href="/platform"
                                 children="ACESSAR PLATAFORMA"
                                 classname="text-lg md:text-xl font-semibold md:font-extrabold text-white bg-primary w-full md:py-2"
                             />

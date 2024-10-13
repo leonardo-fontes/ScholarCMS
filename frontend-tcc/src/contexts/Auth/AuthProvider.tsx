@@ -23,16 +23,13 @@ export const AuthProvider = ({
 
     // validate user
     useEffect(() => {
+        const hasUser = user || secureLocalStorage.get("user")
         if (
             pathname.startsWith("/platform") &&
-            !(user || secureLocalStorage.get("user"))
+            !(hasUser)
         ) {
             navigate("/login");
-        } else if (
-            ["login", "register"].filter((page) => pathname.includes(page))
-                .length &&
-            (user || secureLocalStorage.get("user"))
-        ) {
+        } else if (["login", "register"].some((page) => pathname.includes(page)) && (hasUser)){
             navigate("/platform");
         }
     }, [navigate, pathname, user]);

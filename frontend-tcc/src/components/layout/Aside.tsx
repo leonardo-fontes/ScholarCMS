@@ -21,8 +21,7 @@ export default function Aside() {
                 Através da página de busca de perfil:
             </p>
             <Button
-                isLink
-                link=""
+                href="/platform/search"
                 classname="w-[90%] bg-primary text-white font-bold text-lg mt-10 ml-3 py-2"
                 children="VISITAR BUSCA DE PERFIS"
             />

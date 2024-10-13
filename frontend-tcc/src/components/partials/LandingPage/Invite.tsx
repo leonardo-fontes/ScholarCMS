@@ -39,8 +39,8 @@ export default function Invite({
                 </div>
 
                 <Button
-                    isLink
-                    link="/register"
+                    
+                    href="/register"
                     children={titleButton}
                     classname="text-lg md:text-xl w-80 md:py-2 font-semibold md:font-bold md:self-center text-white bg-primary hover:text-primary hover:bg-white mx-7 "
                 />

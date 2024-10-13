@@ -83,16 +83,16 @@ export default function ProfilePage() {
                     <Publication {...publication} />
                 </div>}
             {//!publication && user?.role_id === parseInt(Role.Beneficiario) && (descomentar, logica certa)
-            <div className="max-w-[560px] mt-20 pt-20 border-t-[1px] border-primaryLight">
-                <div className="flex flex-col items-center justify-center bg-primaryLight text-primary text-xl rounded-md p-4 text-center">
+                <div className="max-w-[560px] mt-20 pt-20 border-t-[1px] border-primaryLight">
+                    <div className="flex flex-col items-center justify-center bg-primaryLight text-primary text-xl rounded-md p-4 text-center">
 
-                    <p>VOCÊ AINDA NÃO PUBLICOU NADA, CRIE SUA PRIMEIRA PUBLICAÇÃO PARA RECEBER DOAÇÕES</p>
-                    <Button classname="my-12 text-lg md:text-2xl font-semibold md:font-bold text-primary bg-white hover:text-white hover:bg-primary w-[380px] md:py-2" link="create-pub" isLink children={'CRIAR PUBLICAÇÃO'} />
-                </div>
-            </div>}
+                        <p>VOCÊ AINDA NÃO PUBLICOU NADA, CRIE SUA PRIMEIRA PUBLICAÇÃO PARA RECEBER DOAÇÕES</p>
+                        <Button classname="my-12 text-lg md:text-2xl font-semibold md:font-bold text-primary bg-white hover:text-white hover:bg-primary w-[380px] md:py-2" href="create-pub"  children={'CRIAR PUBLICAÇÃO'} />
+                    </div>
+                </div>}
 
 
-            <Button classname="my-12 text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white w-[560px] md:py-2" link="" isLink children={'VOLTAR PARA A PÁGINA INICIAL'} />
+            <Button classname="my-12 text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white w-[560px] md:py-2" href="/" children={'VOLTAR PARA A PÁGINA INICIAL'} />
 
 
 

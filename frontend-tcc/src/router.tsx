@@ -42,15 +42,26 @@ export const router = createBrowserRouter(
             <Route path="/login" element={<LoginPage />} />
             <Route
                 path="/platform"
-                loader={async () => {
-                    return pubs;
-                }}
                 element={
                     <PlatformProvider>
-                        <PlatformPage />
+                        <Outlet />
                     </PlatformProvider>
                 }
-            />
+            >
+                <Route
+                    index
+                    loader={async () => {
+                        return pubs;
+                    }}
+                    element={
+                        <PlatformProvider>
+                            <PlatformPage />
+                        </PlatformProvider>
+                    } />
+                <Route
+                    path="create-pub" element={<CreatePubPage />}
+                />
+            </Route>
             <Route path="/privacy-policies" element={<Privacy />} />
             <Route path="verify-email" element={<VerifyEmailPage />} />
             <Route path="/profile/:id" element={<ProfilePage />} loader={({ params }: any) => {
@@ -67,9 +78,7 @@ export const router = createBrowserRouter(
                     };
                 }}
             />
-            <Route
-                path="/create-pub" element={<CreatePubPage />}
-            />
+
             <Route path="*" element={<BuildingPage />} />
         </Route>
     )

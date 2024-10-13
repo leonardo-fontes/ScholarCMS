@@ -124,7 +124,19 @@ export default {
 
     createPost: async (data: CreatePost) => {
         try {
-            await http.post("/posts", data);
+            const body = Object.entries(data).reduce((prev, [key, value]) => {
+                console.log(value);
+                if (value instanceof FileList) {
+                    for (const file in value) {
+                        prev.append(`${key}[]`, new Blob([file]))
+                    }
+                } else {
+                    prev.append(key, value)
+                }
+                return prev
+            }, new FormData())
+
+            await http.post("/posts", body, { headers: { 'Content-Type': 'multipart/form-data' } });
             return true;
         } catch (e) {
             return false;

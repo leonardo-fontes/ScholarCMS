@@ -16,7 +16,7 @@ function Container({ children, classname }: Props) {
     const { pathname } = useLocation();
     return (
         <div className={`flex mx-auto container mt-32 min-h-screen z-0 relative font-manrope bg-white ${classname}`}>
-            {!isMobile && ["platform", "profile"].filter((page) => pathname.includes(page)).length && <Aside />}
+            {!isMobile && ["platform", "profile"].filter((page) => pathname.includes(page)).length ? <Aside /> : null}
             {children}
         </div>
     );

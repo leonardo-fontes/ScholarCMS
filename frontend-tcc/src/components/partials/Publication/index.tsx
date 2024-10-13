@@ -41,8 +41,7 @@ export default function Publication({ post, comments }: PublicationType) {
                         alt="foto do usuário"
                     />
                     <Button
-                        isLink
-                        link={`/profile/${post.user_id}`}
+                        href={`/profile/${post.user_id}`}
                         children="DOAR"
                         classname="absolute bottom-8 right-8 text-lg md:text-2xl text-white bg-primary px-6 md:px-12 py-1 md:py-2 font-extrabold"
                     />

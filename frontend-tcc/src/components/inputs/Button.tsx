@@ -1,31 +1,33 @@
-import { Link } from "react-router-dom";
+import { useMemo } from "react";
+import { Link, LinkProps } from 'react-router-dom'
 
-type Props = {
-    classname?: string;
-    type?: "button" | "submit";
-    isLink?: boolean;
-    link?: string;
-} & React.DetailedHTMLProps<
+type Props = (React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
->;
+> & (React.DetailedHTMLProps<
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    HTMLAnchorElement
+>)) & {
+    classname?: string;
+    type?: "button" | "submit";
+};
 
 function Button({
     classname,
-    link,
     children,
     type = "button",
-    isLink = false,
     ...props
 }: Props) {
+    const Component = useMemo(() => props?.href ? Link : 'button', [props?.href])
     return (
-        <button
+        <Component
             {...props}
+            to={props.href as LinkProps['to']}
             type={type}
-            className={`rounded-lg p-1 hover:shadow-2xl shadow-primary transition-all duration-500 ${classname}`}
+            className={`rounded-lg text-center p-1 hover:shadow-2xl shadow-primary transition-all duration-500 ${classname}`}
         >
-            {isLink && link ? <Link to={link}>{children}</Link> : children}
-        </button>
+            {children}
+        </Component>
     );
 }
 

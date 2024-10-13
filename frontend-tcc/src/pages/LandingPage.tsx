@@ -153,8 +153,7 @@ export default function LandingPage() {
                     />
                 </div>
                 <Button
-                    isLink
-                    link="/register"
+                    href="/register"
                     children={"FAÇA PARTE DO NOSSO TIME"}
                     classname="text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white w-full md:w-[45%] md:py-2 mt-6"
                 />

@@ -27,12 +27,12 @@ export default function Navbar() {
                     </Link>
 
                     {//user?.role_id === parseInt(Role.Beneficiario) && mudar icones e links
-                        <Link className={linkClassname} to={'/create-pub'}>
+                        <Link className={linkClassname} to={'/platform/create-pub'}>
                             Criar Publicação
                             <Icon name="addItem" size={24} color="white" />
                         </Link>
                     }
-                    <Link className={linkClassname} to={'/create-pub'}>
+                    <Link className={linkClassname} to={'/platform/create-pub'}>
                         Meu perfil
                         <Icon name="addItem" size={24} color="white" />
                     </Link>
@@ -43,12 +43,10 @@ export default function Navbar() {
 
 
             <Button
-                link="/login"
-                isLink
-                children={user ? "Sair" : "Entrar"}
+                href="/login"
                 classname="text-lg md:text-xl text-primary bg-white px-6 md:px-8 py-1 md:py-2 font-semibold"
-                onClick={(user && signout) || undefined}
-            />
+                onClick={user ? signout : undefined}
+            >{user ? "Sair" : "Entrar"}</Button>
         </div>
     );
 }

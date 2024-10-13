@@ -16,6 +16,7 @@ export default function CreatePubPage() {
     const [imageUrls, setImageUrls] = useState<string[]>([]);
 
     const handleCreatePub: SubmitHandler<CreatePost> = async (data) => {
+        console.log(data);
         api.createPost(data);
     };
 
