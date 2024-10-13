@@ -4,6 +4,7 @@ import api, { SigninData } from "../../service/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "../../types/User";
 import secureLocalStorage from "../../lib/secureLocalStorage";
+import Loading from "../../components/layout/Loading";
 
 // eslint-disable-next-line react-refresh/only-export-components
 
@@ -15,6 +16,7 @@ export const AuthProvider = ({
     const [user, setUser] = useState<User | null>(null);
     const { pathname } = useLocation();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     // persist user
     useEffect(() => {
@@ -29,7 +31,7 @@ export const AuthProvider = ({
             !(hasUser)
         ) {
             navigate("/login");
-        } else if (["login", "register"].some((page) => pathname.includes(page)) && (hasUser)){
+        } else if (["login", "register"].some((page) => pathname.includes(page)) && (hasUser)) {
             navigate("/platform");
         }
     }, [navigate, pathname, user]);
@@ -52,9 +54,17 @@ export const AuthProvider = ({
 
 
     const signin = async (data: SigninData) => {
-        const response = await api.signin(data);
-        await getUser();
-        return response;
+        setIsLoading(true);
+        try {
+            const response = await api.signin(data);
+            await getUser();
+            return response;
+        }
+        finally {
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 2000);
+        }
     };
 
     const signout = async () => {
@@ -70,7 +80,10 @@ export const AuthProvider = ({
         <AuthContext.Provider
             value={{ user, setUser, signin, signout, isLogged }}
         >
-            {children}
+            <>
+                {isLoading ? <Loading size={60} /> : children}
+                {console.log(isLoading)}
+            </>
         </AuthContext.Provider>
     );
 };
