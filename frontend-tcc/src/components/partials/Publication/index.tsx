@@ -18,7 +18,7 @@ export default function Publication({ post, comments }: PublicationType) {
     return (
         <div className="flex flex-col w-full max-w-[560px] mt-20">
             <div className="flex gap-6 items-center">
-                <Link to={`/profile/${post.user_id}`}>
+                <Link to={`/platform/profile/${post.user_id}`}>
                     <img
                         className="rounded-full aspect-square object-cover w-12 md:w-16 mb-2 cursor-pointer"
                         src={post.author_photo || ""}
@@ -41,7 +41,7 @@ export default function Publication({ post, comments }: PublicationType) {
                         alt="foto do usuário"
                     />
                     <Button
-                        href={`/profile/${post.user_id}`}
+                        href={`/platform/profile/${post.user_id}`}
                         children="DOAR"
                         classname="absolute bottom-8 right-8 text-lg md:text-2xl text-white bg-primary px-6 md:px-12 py-1 md:py-2 font-extrabold"
                     />
@@ -57,7 +57,7 @@ export default function Publication({ post, comments }: PublicationType) {
                         className="flex flex-col border-b-[2px] px-4 py-2 gap-1 border-[#e9e9e9]"
                     >
                         <div className="flex items-center gap-3">
-                            <Link to={`/profile/${comment.user_id}`}>
+                            <Link to={`/platform/profile/${comment.user_id}`}>
                                 <img
                                     className="rounded-full aspect-square object-cover w-12 md:w-10 cursor-pointer"
                                     src={comment.author_photo}

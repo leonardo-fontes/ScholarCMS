@@ -77,11 +77,11 @@ export default function ProfilePage() {
             <p className="bg-white rounded-md p-4 max-w-[560px] border-[1px] border-primary ">
                 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam accusantium harum minus, accusamus optio esse vel minima cumque et dolores commodi debitis explicabo, hic non qui cupiditate. Quibusdam, optio maiores. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla exercitationem minus nostrum quam. Eveniet explicabo possimus facere quos eos quo delectus quam, id obcaecati repellendus voluptates excepturi totam praesentium? Mollitia?
             </p>
-            {publication && //retirar ! (negação) na validação 
+            {publication ? 
                 <div className="border-t-[1px] border-primaryLight mt-20">
 
                     <Publication {...publication} />
-                </div>}
+                </div> : null} 
             {//!publication && user?.role_id === parseInt(Role.Beneficiario) && (descomentar, logica certa)
                 <div className="max-w-[560px] mt-20 pt-20 border-t-[1px] border-primaryLight">
                     <div className="flex flex-col items-center justify-center bg-primaryLight text-primary text-xl rounded-md p-4 text-center">
@@ -95,8 +95,8 @@ export default function ProfilePage() {
             <Button classname="my-12 text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white w-[560px] md:py-2" href="/" children={'VOLTAR PARA A PÁGINA INICIAL'} />
 
 
-
-            {isModalOpen && <Payment username="teste" />}
+            <Payment username="teste" />
+            {/* {isModalOpen ? <Payment username="teste" /> : null} */}
         </div>
     )
 }

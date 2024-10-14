@@ -61,23 +61,23 @@ export const router = createBrowserRouter(
                 <Route
                     path="create-pub" element={<CreatePubPage />}
                 />
+                <Route path="profile/:id" element={<ProfilePage />} loader={({ params }: any) => {
+                    return {
+                        id: params.id,
+                    };
+                }} />
+                <Route
+                    path="payment/:id"
+                    element={<PaymentPage />}
+                    loader={({ params }: any) => {
+                        return {
+                            external_id: params.id,
+                        };
+                    }}
+                />
             </Route>
             <Route path="/privacy-policies" element={<Privacy />} />
             <Route path="verify-email" element={<VerifyEmailPage />} />
-            <Route path="/profile/:id" element={<ProfilePage />} loader={({ params }: any) => {
-                return {
-                    id: params.id,
-                };
-            }} />
-            <Route
-                path="/payment/:id"
-                element={<PaymentPage />}
-                loader={({ params }: any) => {
-                    return {
-                        external_id: params.id,
-                    };
-                }}
-            />
 
             <Route path="*" element={<BuildingPage />} />
         </Route>
