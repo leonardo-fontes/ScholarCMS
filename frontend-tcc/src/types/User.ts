@@ -11,7 +11,7 @@ export type User = {
     cpf: string;
     birth_date: string;
     id: string;
-    profile_picture_url: string;
+    user_picture: string;
     description?: string;
     points: number;
 };

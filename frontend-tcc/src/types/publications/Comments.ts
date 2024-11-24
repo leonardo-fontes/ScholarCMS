@@ -7,4 +7,5 @@ export type Comments = {
     created_at: string;
     updated_at: string;
     author_photo: string;
+    user_picture: string;
 };

@@ -16,13 +16,13 @@ export default function Navbar() {
                 <Icon
                     className="hover:cursor-pointer w-20 md:w-28"
                     name="logo"
-                    size={110}
+                    size={120}
                 />
             </Link>
             {
                 user &&
                 <div className="flex gap-4">
-                    <Link className={linkClassname} to={"/filter"}>
+                    <Link className={linkClassname} to={"platform/filter"}>
                         Buscar perfis
                         <Icon name="magnifyingGlass" size={20} color="white" />
                     </Link>
@@ -35,13 +35,11 @@ export default function Navbar() {
                     }
                     <Link className={linkClassname} to={`/platform/profile/${user.id}`}>
                         Meu perfil
-                        <Icon name="addItem" size={24} color="white" />
+                        <Icon name="profileIcon" size={24} color="white" />
                     </Link>
 
                 </div>
             }
-
-
 
             <Button
                 href="/login"

@@ -1,6 +1,5 @@
 export type Pay = {
-    amount: number;
-    receiver_id: number;
-    idempotency_key: string
-  }
-  
+  amount: number;
+  receiver_id: number | string;
+  idempotency_key: string
+}

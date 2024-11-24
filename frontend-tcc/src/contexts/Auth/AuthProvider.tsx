@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "../../types/User";
 import secureLocalStorage from "../../lib/secureLocalStorage";
 import Loading from "../../components/layout/Loading";
+import { json } from "stream/consumers";
 
 // eslint-disable-next-line react-refresh/only-export-components
 
@@ -17,38 +18,58 @@ export const AuthProvider = ({
     const { pathname } = useLocation();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const [isVerifying, setIsVerifying] = useState(true);
+    const [isVerifyingToken, setIsVerifyingToken] = useState(true);
 
+    const hasUser = !!(user || secureLocalStorage.get("user"))
     // persist user
     useEffect(() => {
-        if (!user && secureLocalStorage.get("user")) getUser();
+        const storedUser = secureLocalStorage.get("user");
+        if (!user && storedUser) {
+            setUser(JSON.parse(storedUser));
+            getUser()
+        }
+        else {
+            setIsVerifying(false);
+            setIsVerifyingToken(false);
+        }
     }, [user]);
 
     // validate user
     useEffect(() => {
-        const hasUser = user || secureLocalStorage.get("user")
-        if (
-            pathname.startsWith("/platform") &&
-            !(hasUser)
-        ) {
+        if (!isVerifyingToken && pathname.startsWith("/platform") && !hasUser) {
             navigate("/login");
-        } else if (["login", "register"].some((page) => pathname.includes(page)) && (hasUser)) {
+        } else if (!isVerifyingToken && ["login", "register"].some((page) => pathname.includes(page)) && hasUser) {
             navigate("/platform");
         }
-    }, [navigate, pathname, user]);
+        console.log("valor de hasUser:", JSON.stringify(hasUser, null, 2));
+        console.log("valor do user:", JSON.stringify(user, null, 2));
+    }, [navigate, pathname, user, isVerifyingToken]);
+
+
 
     const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
     const getUser = async (retries = 3) => {
         try {
             const user = await api.profile();
+            if (user == null) {
+                console.error('Usuário não encontrado. Redirecionando para login.');
+                navigate("/login");
+            }
             setUser(user);
+            secureLocalStorage.set("user", JSON.stringify(user)); //Armazena os dados do usuário localmente. 
         } catch (e) {
             if (retries > 0) {
                 await delay(1000);
                 getUser(retries - 1);
             } else {
                 console.error('failed to get user');
+                signout();
+                navigate("/login");
             }
+        } finally {
+            setIsVerifying(false);
         }
     };
 
@@ -57,8 +78,15 @@ export const AuthProvider = ({
         setIsLoading(true);
         try {
             const response = await api.signin(data);
+            const { access_token, refresh_token } = response.data;
+            secureLocalStorage.set("token", access_token);
+            secureLocalStorage.set("refresh_token", refresh_token);
+            console.log(access_token);
             await getUser();
-            return response;
+            return true;
+        } catch (e) {
+            console.error('Falha ao realizar login', e);
+            throw e;
         }
         finally {
             setTimeout(() => {
@@ -66,6 +94,19 @@ export const AuthProvider = ({
             }, 2000);
         }
     };
+
+    const updateUserPicture = async (newPictureUrl: string): Promise<void> => {
+        setUser((prevUser) => {
+            if (prevUser === null) {
+                return null;
+            }
+            return {
+                ...prevUser,
+                user_picture: newPictureUrl,
+            };
+        });
+    };
+
 
     const signout = async () => {
         secureLocalStorage.remove("token");
@@ -76,13 +117,16 @@ export const AuthProvider = ({
 
     const isLogged = user && user.id ? true : false;
 
+    useEffect(() => {
+        console.log('valor do user' + user)
+    }, [])
+
     return (
         <AuthContext.Provider
-            value={{ user, setUser, signin, signout, isLogged }}
+            value={{ user, setUser, signin, signout, isLogged, updateUserPicture }}
         >
             <>
                 {isLoading ? <Loading size={60} /> : children}
-                {console.log(isLoading)}
             </>
         </AuthContext.Provider>
     );

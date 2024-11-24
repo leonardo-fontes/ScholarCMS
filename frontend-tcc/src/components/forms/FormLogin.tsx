@@ -19,7 +19,7 @@ function FormLogin() {
             cpf: searchParams.get("cpf") ?? "",
         },
     });
-    
+
     const cpf = watch("cpf");
 
     const handleLogin: SubmitHandler<Inputs> = async (data) => {
@@ -27,7 +27,7 @@ function FormLogin() {
         if (res) {
             navigate("/platform");
         } else {
-            alert("deu errado o login");
+            //alert("deu errado o login");
         }
     };
 
@@ -45,10 +45,9 @@ function FormLogin() {
                 <div className="flex items-start justify-between">
                     <div className="flex flex-col gap-6">
                         <h3 className="font-black text-2xl text-primary flex gap-[10px] items-center">
-                            <Link className="bg-black" to="/">
-                                <Icon name="logo" size={80} color="black" />
+                            <Link className="bg-primary rounded-xl p-2" to="/">
+                                <Icon name="logo" size={110} color="black" />
                             </Link>
-                            Teste
                         </h3>
                         <Link
                             className="text-sm font-normal text-blue-3 underline"

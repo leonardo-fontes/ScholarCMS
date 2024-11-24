@@ -42,6 +42,8 @@ function FormRegister() {
         "89012345677",
         "90123456788",
         "01234567899",
+        "04972704047",
+        "47262022865"
     ];
 
     const handleRegister: SubmitHandler<RegisterData> = async (data) => {
@@ -100,10 +102,9 @@ function FormRegister() {
             >
                 <div className="flex flex-col gap-6 mt-16 md:mt-20">
                     <h3 className="font-black text-2xl text-primary flex gap-[10px] items-center">
-                        <Link className="bg-black" to="/">
-                            <Icon name="logo" size={80} color="black" />
+                        <Link className="bg-primary rounded-xl p-2" to="/">
+                            <Icon name="logo" size={110} color="black" />
                         </Link>
-                        Teste
                     </h3>
                     <Link
                         className="text-sm font-normal text-blue-3 underline"
@@ -183,8 +184,8 @@ function FormRegister() {
                             <div>Sua senha deve conter, pelo menos:</div>
                             <span
                                 className={`flex gap-2 ${passValidate.length
-                                        ? "text-success"
-                                        : "text-error"
+                                    ? "text-success"
+                                    : "text-error"
                                     }`}
                             >
                                 <Icon
@@ -196,8 +197,8 @@ function FormRegister() {
                             </span>
                             <span
                                 className={`flex gap-2 ${passValidate.lowercase
-                                        ? "text-success"
-                                        : "text-error"
+                                    ? "text-success"
+                                    : "text-error"
                                     }`}
                             >
                                 <Icon
@@ -211,8 +212,8 @@ function FormRegister() {
                             </span>
                             <span
                                 className={`flex gap-2 ${passValidate.uppercase
-                                        ? "text-success"
-                                        : "text-error"
+                                    ? "text-success"
+                                    : "text-error"
                                     }`}
                             >
                                 <Icon
@@ -226,8 +227,8 @@ function FormRegister() {
                             </span>
                             <span
                                 className={`flex gap-2 ${passValidate.number
-                                        ? "text-success"
-                                        : "text-error"
+                                    ? "text-success"
+                                    : "text-error"
                                     }`}
                             >
                                 <Icon
@@ -239,8 +240,8 @@ function FormRegister() {
                             </span>
                             <span
                                 className={`flex gap-2 ${passValidate.specialchar
-                                        ? "text-success"
-                                        : "text-error"
+                                    ? "text-success"
+                                    : "text-error"
                                     }`}
                             >
                                 <Icon

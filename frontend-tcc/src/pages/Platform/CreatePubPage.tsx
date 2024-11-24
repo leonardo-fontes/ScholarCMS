@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import Button from "../../components/inputs/Button";
 import api from "../../service/api";
 import { CreatePost } from "../../types/publications/Post";
+import Loading from "../../components/layout/Loading";
+import { toast, ToastContainer } from 'react-toastify';
 
 export default function CreatePubPage() {
     const { user } = useAuth();
@@ -14,10 +16,36 @@ export default function CreatePubPage() {
 
     const photos = watch("photos");
     const [imageUrls, setImageUrls] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [userPicture, setUserPicture] = useState<string | null>(null);
 
     const handleCreatePub: SubmitHandler<CreatePost> = async (data) => {
-        console.log(data);
-        api.createPost(data);
+        const formData = new FormData();
+        formData.append("description", data.description);
+        if (user?.name) {
+            formData.append("author_name", user.name);
+        }
+
+        // Verifica se há fotos, adiciona cada uma delas no formData
+        if (data.photos) {
+            Array.from(data.photos).forEach((photo) => {
+                formData.append("photos", photo);
+            });
+        }
+
+        try {
+            // Faz a requisição com o formData (que inclui as fotos se houver)
+            setIsLoading(true)
+            const response = await api.createPost(formData)
+            console.log(response);
+            setIsLoading(false);
+            toast.success('Publicação criada com sucesso', {
+                autoClose: 3000,
+            }); // Fechar após 3 segundos;
+
+        } catch (error) {
+            toast.error("Erro ao criar a publicação:");
+        }
     };
 
     const updateFileList = (newFiles: FileList) => {
@@ -41,12 +69,27 @@ export default function CreatePubPage() {
         generateImageUrls(photos);
     }, [photos]);
 
+    useEffect(() => {
+        const fetchUserPicture = async () => {
+            if (user?.user_picture) {
+                const pictureUrl = await api.getPicture(user.user_picture);
+                setUserPicture(pictureUrl); // Define a URL da imagem
+                setIsLoading(false);
+            }
+        };
+        fetchUserPicture();
+    }, [user?.user_picture])
+
+    if (isLoading) {
+        return <> <Loading size={60} /> </>
+    }
+
     return (
         <div className="w-full flex flex-col items-center">
             <div className="flex gap-6 items-center">
                 <img
                     className="rounded-full aspect-square object-cover w-12 md:w-16 mb-2"
-                    src={user?.profile_picture_url || "/garotos.jpg"}
+                    src={userPicture || "/garotos.jpg"}
                     alt="Author"
                 />
                 <div>
@@ -60,6 +103,7 @@ export default function CreatePubPage() {
             <form
                 className="w-[50%] flex flex-col gap-4"
                 onSubmit={handleSubmit(handleCreatePub)}
+                encType="multipart/form-data"
             >
                 <Textarea
                     className="resize-none"
@@ -73,8 +117,8 @@ export default function CreatePubPage() {
                         <FileInput
                             label="Adicionar fotos"
                             className={`${imageUrls.length < 3
-                                    ? "max-w-32 bg-lightGray"
-                                    : "bg-gray border-none cursor-not-allowed"
+                                ? "max-w-32 bg-lightGray"
+                                : "bg-gray border-none cursor-not-allowed"
                                 }`}
                             disabled={imageUrls.length >= 3}
                             name="photos"

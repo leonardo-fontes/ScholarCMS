@@ -8,15 +8,21 @@ import { useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AnyObject, ObjectSchema } from "yup";
+import { useAuth } from "../../hooks/useAuth";
 
-interface Name {
-    username: string;
+interface PaymentProps {
+    username?: string;
+    className?: string;
 }
 
-export default function Payment({ username }: Name) {
+export default function Payment({ username, className }: PaymentProps) {
+
+    const { user } = useAuth()
+
     const navigate = useNavigate();
 
     const { id } = useParams<{ id: string }>();
+
     const receiver_id = Number(id);
 
     const {
@@ -36,7 +42,7 @@ export default function Payment({ username }: Name) {
 
         const { external_id } = await api.generateQrCode({
             amount: data.amount as number,
-            receiver_id: receiver_id,
+            receiver_id: 1, //ajustar esse parâmetro
             idempotency_key: uuidv4(),
         });
 
@@ -51,7 +57,7 @@ export default function Payment({ username }: Name) {
     return (
         <form
             onSubmit={handleSubmit(handlePayment)}
-            className="w-full max-w-[580px] h-[460px] flex flex-col items-center shadow-lg p-8"
+            className={`w-full max-w-[580px] h-[460px] flex flex-col items-center shadow-lg p-8 ${className}`}
         >
             <h2 className="text-xl mb-8 text-center">
                 Doar para <strong className="font-bold">{username}</strong>

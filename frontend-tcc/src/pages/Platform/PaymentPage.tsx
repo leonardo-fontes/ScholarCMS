@@ -4,7 +4,40 @@ import Button from "../../components/inputs/Button";
 import api from "../../service/api";
 import { useEffect, useState } from "react";
 import calcAmount from "../../helpers/calculate/payment";
+import payment from "../../validator/payment";
 
+
+interface PaymentData {
+    qr_code: string;
+    amount: number;
+    status: number;
+}
+
+
+interface MockPaymentResponse {
+    data: {
+        qr_code: string;
+        amount: number;
+        status: number;
+    };
+}
+
+
+const mockApi = {
+    checkPayment: async (external_id: string): Promise<MockPaymentResponse> => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve({
+                    data: {
+                        qr_code: "mocked_qr_code",
+                        amount: 100,
+                        status: 1, // Status de pagamento bem-sucedido
+                    },
+                });
+            }, 20000); // Simula um atraso de 1 segundo
+        })
+    }
+}
 export default function PaymentPage() {
     const { external_id } = useLoaderData() as any;
 
@@ -15,6 +48,31 @@ export default function PaymentPage() {
     });
 
     const { recalculatedAmount, threePercent } = calcAmount(data.amount);
+
+
+    // useEffect(() => {
+    //     const checkPayment = async () => {
+    //         try {
+    //             const response = await mockApi.checkPayment(external_id);
+    //             const paymentData: PaymentData = response.data as PaymentData;
+    //             setData(paymentData);
+    //             if (data.status === 1) {
+    //                 clearInterval(intervalId);
+    //             }
+    //         } catch (e) {
+    //             console.error(e);
+    //         }
+    //     };
+    //     const intervalId = setInterval(checkPayment, 5000);
+    //     const timeoutId = setTimeout(() => clearInterval(intervalId), 30 * 60 * 1000);
+    //     checkPayment();
+
+    //     return () => {
+    //         clearInterval(intervalId);
+    //         clearTimeout(timeoutId);
+    //     };
+    // }, [external_id]);
+
 
     useEffect(() => {
         const checkPayment = async () => {
@@ -39,6 +97,8 @@ export default function PaymentPage() {
 
 
     }, [external_id]);
+
+
 
     return (
 
@@ -74,10 +134,10 @@ export default function PaymentPage() {
                 <div className="p-16 flex items-center justify-center border-y-[0.2px] border-lightGray shadow-xl">
                     <div className="flex flex-col items-center justify-center">
                         <h3 className="text-2xl">
-                            Obrigado por contribuir! 
+                            Obrigado por contribuir!
                         </h3>
                         <span className="text-2xl">
-                        Sua doação faz toda a diferença!
+                            Sua doação faz toda a diferença!
                         </span>
                         <img className="m-20" src="/donation.png" alt="" />
                         <Button
