@@ -7,7 +7,7 @@ export default function Footer() {
     const { pathname } = useLocation();
     return (
         !["verify-email"].filter((page) => pathname.includes(page)).length && (
-            <div className="flex flex-col justify-center items-center w-full bg-primary text-white py-8 md:pt-20 mt-8 z-20">
+            <div className="flex flex-col justify-center items-center w-full bg-primary text-white py-8 md:pt-20 mt-0 z-20">
                 <Icon
                     size={120}
                     name="logo"

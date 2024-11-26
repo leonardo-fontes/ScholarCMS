@@ -8,6 +8,7 @@ import Linkedin from "./Linkedin";
 import Logo from "./Logo";
 import MagnifyingGlass from "./MagnifyingGlass";
 import Maintenance from "./Maintenance";
+import ProfileIcon from "./ProfileIcon";
 
 export default {
     logo: Logo,
@@ -20,4 +21,6 @@ export default {
     information: Information,
     magnifyingGlass: MagnifyingGlass,
     addItem: AddItem,
+    profileIcon: ProfileIcon
+
 };

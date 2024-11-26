@@ -15,11 +15,12 @@ import LoginPage from "./pages/LoginPage";
 import { AuthProvider } from "./contexts/Auth/AuthProvider";
 import PlatformPage from "./pages/Platform";
 import Privacy from "./pages/Privacy";
-import { PlatformProvider, pubs } from "./pages/Platform/usePlatform";
+import { PlatformProvider } from "./pages/Platform/usePlatform";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import ProfilePage from "./pages/Platform/Profile/ProfilePage";
 import PaymentPage from "./pages/Platform/PaymentPage";
 import CreatePubPage from "./pages/Platform/CreatePubPage";
+import UsersSearch from "./pages/UsersSearch";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -50,9 +51,6 @@ export const router = createBrowserRouter(
             >
                 <Route
                     index
-                    loader={async () => {
-                        return pubs;
-                    }}
                     element={
                         <PlatformProvider>
                             <PlatformPage />
@@ -75,6 +73,7 @@ export const router = createBrowserRouter(
                         };
                     }}
                 />
+                <Route path="filter" element={<UsersSearch />} />
             </Route>
             <Route path="/privacy-policies" element={<Privacy />} />
             <Route path="verify-email" element={<VerifyEmailPage />} />

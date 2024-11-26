@@ -8,6 +8,7 @@ export type AuthContextType = {
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     signin: (data: SigninData) => Promise<boolean>;
     signout: () => void;
+    updateUserPicture: (newPictureUrl: string) => Promise<void> //atualizando para aceitar um arquivo do tipo File
 };
 
 
