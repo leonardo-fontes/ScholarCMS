@@ -159,7 +159,7 @@ export default {
     }
   },
 
-  getPostbyId: async (id: string) => {
+  getPostbyId: async (id: string | number) => {
     try {
       const response = await http.get(`/posts/${id}`);
       return response.data

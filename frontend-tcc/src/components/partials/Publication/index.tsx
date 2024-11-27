@@ -126,7 +126,7 @@ export default function Publication({ post, comments }: PublicationType) {
                             <Link to={`/platform/profile/${comment.user_id}`}>
                                 <img
                                     className="rounded-full aspect-square object-cover w-12 md:w-10 cursor-pointer"
-                                    src={photoComments[comment.id] || "/mulher_2.jpg"}
+                                    src={photoComments[comment.id] || "/fotodeperfilVinni.jpg"}
                                     alt=""
                                 />
                             </Link>
