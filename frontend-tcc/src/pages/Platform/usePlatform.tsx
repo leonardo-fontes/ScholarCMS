@@ -77,26 +77,13 @@ export const PlatformProvider = ({ children }: PropsWithChildren) => {
   const [publications, setPublications] = useState<PublicationType[]>([]);
   const [userPicture, setUserPicture] = useState<string>();
   const [isLoading, setIsLoading] = useState(true);
-  const data = useLoaderData() as PublicationType[];
 
-  const handleComment: SubmitHandler<Comments> = async ({
-    content,
-    post_id,
-  }) => {
-    try {
-      const payload = { content };
-      await api.createComment(payload, post_id);
-      toast.success("Publicação criada com sucesso");
-      setIsLoading(false)
-    } catch (err) {
-      console.error(err);
-    }
-    setIsLoading(false);
-  };
   useEffect(() => {
+    console.log("useEffect no usePlatform executado");
     const fetchPublications = async () => {
       try {
         const response = await api.getPublications();
+        console.log('oi')
         const limitedResponse = response.slice(0, 10); //Pega as dez primeiras requisições
         const formattedPublications: PublicationType[] = limitedResponse.map((post: Post) => ({
           post: {
@@ -126,22 +113,35 @@ export const PlatformProvider = ({ children }: PropsWithChildren) => {
     fetchPublications();
   }, [])
 
+  const handleComment: SubmitHandler<Comments> = async ({
+    content,
+    post_id,
+  }) => {
+    try {
+      const payload = { content };
+      const response = await api.createComment(payload, post_id);
+      toast.success("comentário criado com sucesso");
+
+      const updatedPublication = await api.getPostbyId(post_id);
+      if (updatedPublication) {
+        setPublications((prevPublications) =>
+          prevPublications.map((publication) =>
+            publication.post.id === post_id
+              ? { ...publication, comments: updatedPublication.comments }
+              : publication
+          )
+        );
+      }
+      setIsLoading(false)
+    } catch (err) {
+      console.error(err);
+    }
+    setIsLoading(false);
+  };
+
   if (isLoading) {
     return <> <Loading size={60} /> </>
   }
-
-  // useEffect(() => {
-  //   const fetchUserPicture = async () => {
-  //     if (userPicture) {
-  //       const pictureUrl = await api.getPicture(userPicture); // Define a URL da imagem
-  //       setPictureRendering(pictureUrl);
-  //       setIsLoading(false);
-  //       console.log("valor de pictureUrl dentro do useEffect: " + pictureUrl)
-  //     }
-  //   };
-  //   fetchUserPicture();
-  // }, [])
-  // console.log("valor de userPicture " + userPicture)
 
   return (
     <PlatformContext.Provider

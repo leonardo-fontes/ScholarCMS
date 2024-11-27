@@ -52,9 +52,7 @@ export const router = createBrowserRouter(
                 <Route
                     index
                     element={
-                        <PlatformProvider>
-                            <PlatformPage />
-                        </PlatformProvider>
+                        <PlatformPage />
                     } />
                 <Route
                     path="create-pub" element={<CreatePubPage />}
