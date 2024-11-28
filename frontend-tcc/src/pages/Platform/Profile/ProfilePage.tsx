@@ -25,8 +25,7 @@ export default function ProfilePage() {
   const [userExternal, setUserExternal] = useState<User>();
   const [publication, setPublication] = useState<PublicationType | null>(null);
   const [isProfilePicFormOpen, setIsProfilePicFormOpen] = useState(false); //Estado para controlar o modal ProfilePicForm
-  const isExternalProfile =
-    user && id !== undefined ? parseInt(id) !== parseInt(user.id) : true;
+  const isExternalProfile = user && id && id !== user.id.toString();
 
   const getProfileExternal = async (id: string) => {
     const profileExternal = await api.profile(id);
@@ -34,36 +33,6 @@ export default function ProfilePage() {
     console.log("publicationID" + publicationId);
     profileExternal && setUserExternal(profileExternal);
     return profileExternal;
-  };
-
-  const fetchPublicationsByUser = async () => {
-    try {
-      setIsLoading(true);
-      const response = await api.getPostByUser();
-      const lastPublication = response[0];
-      if (response && response.length > 0) {
-        const formattedPublication: PublicationType = {
-          post: {
-            id: lastPublication.id,
-            user_id: lastPublication.user_id,
-            author_name: lastPublication.author_name,
-            author_photo: lastPublication.user_picture,
-            description: lastPublication.description,
-            photos: lastPublication.photos,
-            created_at: lastPublication.created_at,
-            updated_at: lastPublication.updated_at,
-            author_city: lastPublication.author_city,
-            user_picture: lastPublication.user_picture,
-          },
-          comments: lastPublication.comments || [],
-        };
-        setPublication(formattedPublication);
-        console.log("Publicação formatada by user:", formattedPublication);
-        setIsLoading(false);
-      }
-    } catch (e) {
-      console.error("Erro ao buscar publicação do próprio usuário " + e);
-    }
   };
 
   const fetchPublication = async (publicationId: string) => {
@@ -108,11 +77,38 @@ export default function ProfilePage() {
   }, [isExternalProfile, id, publicationId]);
 
   useEffect(() => {
-    if (!isExternalProfile) {
-      fetchPublicationsByUser();
-      console.log("chegou aqui!");
-    }
-  }, []);
+    const fetchPublicationsByUser = async () => {
+      try {
+        setIsLoading(true);
+        const response = await api.getPostByUserId(id);
+        const lastPublication = response[0];
+        if (response && response.length > 0) {
+          const formattedPublication: PublicationType = {
+            post: {
+              id: lastPublication.id,
+              user_id: lastPublication.user_id,
+              author_name: lastPublication.author_name,
+              author_photo: lastPublication.user_picture,
+              description: lastPublication.description,
+              photos: lastPublication.photos,
+              created_at: lastPublication.created_at,
+              updated_at: lastPublication.updated_at,
+              author_city: lastPublication.author_city,
+              user_picture: lastPublication.user_picture,
+            },
+            comments: lastPublication.comments || [],
+          };
+          setPublication(formattedPublication);
+          console.log("Publicação formatada by user:", formattedPublication);
+          setIsLoading(false);
+        }
+      } catch (e) {
+        console.error("Erro ao buscar publicação do próprio usuário " + e);
+      }
+    };
+
+    fetchPublicationsByUser();
+  }, [id]);
 
   // useEffect(() => {
   // 	if (publicationId) {
