@@ -46,17 +46,23 @@ http.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response && error.response.status === 403 && !originalRequest._retry) {
-      originalRequest._retry = true
+    if (
+      error.response &&
+      error.response.status === 403 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
       try {
         const refreshToken = secureLocalStorage.get("refresh_token");
-        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/refresh-token`, { refresh_token: refreshToken });
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/api/refresh-token`,
+          { refresh_token: refreshToken }
+        );
         const { access_token } = response.data;
-        secureLocalStorage.set("token", access_token)
+        secureLocalStorage.set("token", access_token);
         originalRequest.headers["Authorization"] = `Bearer ${access_token}`;
         return http(originalRequest);
-      }
-      catch (e) {
+      } catch (e) {
         console.error("Erro ao renovar o token " + e);
         secureLocalStorage.remove("token");
         secureLocalStorage.remove("refresh_token");
@@ -80,7 +86,6 @@ http.interceptors.response.use(
 // };
 
 export default {
-
   validateToken: async () => {
     const response = await http.post("/auth");
     return response.data;
@@ -116,7 +121,9 @@ export default {
       return data as User;
     } catch (e: any) {
       if (e.response && e.response.status === 403) {
-        console.error('Erro 403: Acesso negado. Verifique o token de autenticação.');
+        console.error(
+          "Erro 403: Acesso negado. Verifique o token de autenticação."
+        );
         secureLocalStorage.remove("token");
         secureLocalStorage.remove("refresh_token");
         secureLocalStorage.remove("user");
@@ -149,8 +156,8 @@ export default {
       // 'data' agora é do tipo FormData
       await http.post("/posts", data, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
       return true;
     } catch (e) {
@@ -162,7 +169,7 @@ export default {
   getPostbyId: async (id: string | number) => {
     try {
       const response = await http.get(`/posts/${id}`);
-      return response.data
+      return response.data;
     } catch (e) {
       console.error(e);
       return null;
@@ -227,18 +234,24 @@ export default {
         },
       });
       return res.data;
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
       return false;
     }
   },
 
-  getPicture: async (url: string) => {
+  getPicture: (url: string) => {
+    const R2PublicUrl = "https://pub-5d82528941b04bcb962eb65081d077e5.r2.dev/";
+
+    return R2PublicUrl + url;
+  },
+
+  // função antiga
+  getPictureV2: async (url: string) => {
     try {
       const response = await http.get(`/photos/${encodeURIComponent(url)}`, {
         //const response = await http.get("https://pub-5d82528941b04bcb962eb65081d077e5.r2.dev/" + url, {
-        responseType: 'blob', // Retorna a imagem como um blob
+        responseType: "blob", // Retorna a imagem como um blob
       });
 
       // Cria uma URL a partir do blob
@@ -252,12 +265,13 @@ export default {
 
   getPublications: async (city?: string) => {
     try {
-      const url = city ? `/posts/city?city=${encodeURIComponent(city)}` : "/posts/city";
+      const url = city
+        ? `/posts/city?city=${encodeURIComponent(city)}`
+        : "/posts/city";
       const response = await http.get(url);
       return response.data;
-    }
-    catch (e) {
-      console.log('Erro ao buscar publicações', e);
+    } catch (e) {
+      console.log("Erro ao buscar publicações", e);
     }
   },
 
@@ -265,12 +279,13 @@ export default {
     try {
       const user = secureLocalStorage.get("user");
       const userCity = user ? JSON.parse(user).city : null;
-      const url = city ? `/Users/?city=${encodeURIComponent(city)}` : `Users/?city=${encodeURIComponent(userCity)}`;
+      const url = city
+        ? `/Users/?city=${encodeURIComponent(city)}`
+        : `Users/?city=${encodeURIComponent(userCity)}`;
       const response = await http.get(url);
       return response.data;
+    } catch (error) {
+      console.log("Erro ao buscar usuários", error);
     }
-    catch (error) {
-      console.log('Erro ao buscar usuários', error);
-    }
-  }
+  },
 };
