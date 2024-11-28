@@ -78,7 +78,7 @@ export default function UsersSearch() {
 
   return (
     <div className="w-full flex flex-col bg-white items-center container mx-auto">
-      <form onSubmit={handleSearch} className="mb-4 flex items-center space-x-2">
+      <form onSubmit={handleSearch} className="mb-2 mt-4 flex items-center space-x-2">
         <Input
           type="text"
           value={city}

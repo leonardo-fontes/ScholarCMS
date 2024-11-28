@@ -147,7 +147,6 @@ export const PlatformProvider = ({ children }: PropsWithChildren) => {
     <PlatformContext.Provider
       value={{ publications, setPublications, handleComment }}
     >
-      <ToastContainer />
       {children}
     </PlatformContext.Provider>
   );
