@@ -8,51 +8,52 @@ import { User } from "../types/User";
 import { PublicationType } from "../types/publications";
 import { Post } from "../types/publications/Post";
 import Input from "../components/inputs/Input";
-import { register } from "module";
 import { useForm } from "react-hook-form";
 import Loading from "../components/layout/Loading";
 import Modal from "../components/modals/ModalPublications";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 export default function UsersSearch() {
   const { user } = useAuth() as { user: User };
   const { publications, setPublications } = usePlatform();
-  const [city, setCity] = useState(user?.city || '');
-  const { register, handleSubmit, reset } = useForm();
+  const [city, setCity] = useState(user?.city || "");
+  const { register, reset } = useForm();
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [, setSearchParams] = useSearchParams();
 
   const fetchGetPublications = async (city?: string) => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const response = await api.getPublications(city);
 
       const limitedResponse = response.slice(0, 10);
-      const formattedPublications: PublicationType[] = limitedResponse.map((post: Post) => ({
-        post: {
-          id: post.id,
-          user_id: post.user_id,
-          author_name: post.author_name,
-          author_photo: post.user_picture,
-          description: post.description,
-          photos: post.photos,
-          created_at: post.created_at,
-          updated_at: post.updated_at,
-          author_city: post.author_city,
-          user_picture: post.user_picture
-        },
-        comments: post.comments || []
-      }));
+      const formattedPublications: PublicationType[] = limitedResponse.map(
+        (post: Post) => ({
+          post: {
+            id: post.id,
+            user_id: post.user_id,
+            author_name: post.author_name,
+            author_photo: post.user_picture,
+            description: post.description,
+            photos: post.photos,
+            created_at: post.created_at,
+            updated_at: post.updated_at,
+            author_city: post.author_city,
+            user_picture: post.user_picture,
+          },
+          comments: post.comments || [],
+        })
+      );
       setPublications(formattedPublications);
-      setIsLoading(false)
+      setIsLoading(false);
 
       if (formattedPublications.length === 0) {
-        setShowModal(true)
+        setShowModal(true);
       }
-      reset({ city: '' });
-      setCity('');
+      reset({ city: "" });
+      setCity("");
     } catch (error) {
       console.error("Ocorreu um erro ao buscar as publicações", error);
     }
@@ -69,16 +70,24 @@ export default function UsersSearch() {
   };
 
   if (isLoading) {
-    return <> <Loading size={60} /> </>
+    return (
+      <>
+        {" "}
+        <Loading size={60} />{" "}
+      </>
+    );
   }
 
   const handleCloseModal = () => {
-    setShowModal(false)
-  }
+    setShowModal(false);
+  };
 
   return (
     <div className="w-full flex flex-col bg-white items-center container mx-auto">
-      <form onSubmit={handleSearch} className="mb-2 mt-4 flex items-center space-x-2">
+      <form
+        onSubmit={handleSearch}
+        className="mb-2 mt-4 flex items-center space-x-2"
+      >
         <Input
           type="text"
           value={city}
@@ -100,7 +109,10 @@ export default function UsersSearch() {
         ))}
       </div>
       {showModal && (
-        <Modal message="Nenhuma publicação foi encontrada na cidade especificada." onClose={handleCloseModal} />
+        <Modal
+          message="Nenhuma publicação foi encontrada na cidade especificada."
+          onClose={handleCloseModal}
+        />
       )}
     </div>
   );

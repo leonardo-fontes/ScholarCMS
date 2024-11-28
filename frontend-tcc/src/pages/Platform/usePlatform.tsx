@@ -1,14 +1,19 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-import { useLoaderData } from "react-router-dom";
 import { Comments } from "../../types/publications/Comments";
 import { SubmitHandler } from "react-hook-form";
 import api from "../../service/api";
 import { PublicationType } from "../../types/publications";
 import { Post } from "../../types/publications/Post";
 import Loading from "../../components/layout/Loading";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type Props = {
@@ -19,7 +24,9 @@ type Props = {
 
 const PlatformContext = createContext({} as Props);
 
-const comments: Comments[] = [
+export const pubs = [];
+
+/* const comments: Comments[] = [
   {
     id: 1,
     post_id: 1,
@@ -71,7 +78,7 @@ Estamos em uma missão importante e precisamos da sua ajuda! Estamos arrecadando
   },
   comments,
 
-}];
+}]; */
 
 export const PlatformProvider = ({ children }: PropsWithChildren) => {
   const [publications, setPublications] = useState<PublicationType[]>([]);
@@ -83,35 +90,36 @@ export const PlatformProvider = ({ children }: PropsWithChildren) => {
     const fetchPublications = async () => {
       try {
         const response = await api.getPublications();
-        console.log('oi')
+        console.log("oi");
         const limitedResponse = response.slice(0, 10); //Pega as dez primeiras requisições
-        const formattedPublications: PublicationType[] = limitedResponse.map((post: Post) => ({
-          post: {
-            id: post.id,
-            user_id: post.user_id,
-            author_name: post.author_name,
-            author_photo: post.user_picture,
-            description: post.description,
-            photos: post.photos,
-            created_at: post.created_at,
-            updated_at: post.updated_at,
-            author_city: "",
+        const formattedPublications: PublicationType[] = limitedResponse.map(
+          (post: Post) => ({
+            post: {
+              id: post.id,
+              user_id: post.user_id,
+              author_name: post.author_name,
+              author_photo: post.user_picture,
+              description: post.description,
+              photos: post.photos,
+              created_at: post.created_at,
+              updated_at: post.updated_at,
+              author_city: "",
+              comments: post.comments,
+              user_picture: post.user_picture,
+            },
             comments: post.comments,
-            user_picture: post.user_picture
-          },
-          comments: post.comments
-        }));
+          })
+        );
         const combinedPublications = [...pubs, ...formattedPublications]; // Combine as publicações mockadas com as publicações da API
         setPublications(combinedPublications);
         setUserPicture(combinedPublications[0]?.post?.user_picture);
         setIsLoading(false);
+      } catch (error) {
+        console.log("Erro ao buscar publicações " + error);
       }
-      catch (error) {
-        console.log('Erro ao buscar publicações ' + error);
-      };
     };
     fetchPublications();
-  }, [])
+  }, []);
 
   const handleComment: SubmitHandler<Comments> = async ({
     content,
@@ -132,7 +140,7 @@ export const PlatformProvider = ({ children }: PropsWithChildren) => {
           )
         );
       }
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -140,7 +148,12 @@ export const PlatformProvider = ({ children }: PropsWithChildren) => {
   };
 
   if (isLoading) {
-    return <> <Loading size={60} /> </>
+    return (
+      <>
+        {" "}
+        <Loading size={60} />{" "}
+      </>
+    );
   }
 
   return (

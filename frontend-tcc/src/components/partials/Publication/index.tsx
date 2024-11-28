@@ -51,7 +51,6 @@ export default function Publication({ post, comments }: PublicationType) {
           setPhotoPublication(pictureUrl);
         }
         setIsLoading(false);
-        console.log("Valor de photo da publicação " + photoPublication);
       }
       if (post?.user_picture) {
         //onst limitedPhotos = post.photos.slice(0, 10);
@@ -95,7 +94,12 @@ export default function Publication({ post, comments }: PublicationType) {
           />
         </Link>
         <div>
-          <p className="text-primary">{post.author_name}</p>
+          <p className="text-primary">
+            {post.author_name}
+            {post.user_id === user?.id && (
+              <span className="text-gray-500 text-sm ml-1">(você)</span>
+            )}
+          </p>
           <span className="text-gray text-sm">{city || user?.city}</span>
         </div>
       </div>
@@ -111,11 +115,13 @@ export default function Publication({ post, comments }: PublicationType) {
               alt="foto da publicação"
             />
           )}
-          <Button
-            href={`/platform/profile/${post.user_id}?publicationId=${post.id}`}
-            children="DOAR"
-            classname="absolute bottom-8 right-8 text-lg md:text-2xl text-white bg-primary px-6 md:px-12 py-1 md:py-2 font-extrabold"
-          />
+          {post.user_id !== user?.id && (
+            <Button
+              href={`/platform/profile/${post.user_id}?publicationId=${post.id}`}
+              children="DOAR"
+              classname="absolute bottom-8 right-8 text-lg md:text-2xl text-white bg-primary px-6 md:px-12 py-1 md:py-2 font-extrabold"
+            />
+          )}
         </div>
       </div>
       <div className="w-full bg-lightGray flex flex-col">

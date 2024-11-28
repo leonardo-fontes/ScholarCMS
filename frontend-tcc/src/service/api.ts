@@ -5,10 +5,8 @@ import secureLocalStorage from "../lib/secureLocalStorage";
 import { User } from "../types/User";
 import helpers from "../helpers";
 import { RegisterData } from "../types/RegisterData";
-import { CreatePost, Post } from "../types/publications/Post";
 import { Pay } from "../types/Pay";
-import { error } from "console";
-import { PublicationType } from "../types/publications";
+import { Notification } from "../types/Notification";
 
 export type SigninData = {
   cpf: string;
@@ -260,6 +258,36 @@ export default {
     } catch (e) {
       console.error("Erro ao buscar a imagem: " + e);
       return null;
+    }
+  },
+
+  getCities: async () => {
+    try {
+      const response = await http.get<string[]>("/cities");
+      return response.data;
+    } catch (e) {
+      console.error("Erro ao buscar cidades", e);
+      return [];
+    }
+  },
+
+  getNotifications: async () => {
+    try {
+      const response = await http.get<Notification[]>("/notifications");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      return [];
+    }
+  },
+
+  markNotificationAsRead: async (notificationId: number) => {
+    try {
+      await http.post(`/notification/${notificationId}/read`);
+      return true;
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+      return false;
     }
   },
 
