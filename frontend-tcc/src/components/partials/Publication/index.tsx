@@ -21,6 +21,7 @@ export default function Publication({ post, comments }: PublicationType) {
     string | undefined
   >(undefined);
   const { user } = useAuth();
+
   const [photoPublication, setPhotoPublication] = useState<string | undefined>(
     undefined
   );
@@ -170,7 +171,11 @@ export default function Publication({ post, comments }: PublicationType) {
           <div className="flex">
             <img
               className="rounded-full mr-4 aspect-square object-cover w-16 cursor-pointer"
-              src={userInternalPicture || "/fotodeperfilVinni.jpg"}
+              src={
+                user?.user_picture
+                  ? api.getPicture(user.user_picture)
+                  : "/fotodeperfilVinni.jpg"
+              }
               alt="Imagem do usuario"
             />
             <Input
