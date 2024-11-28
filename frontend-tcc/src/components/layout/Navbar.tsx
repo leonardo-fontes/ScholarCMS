@@ -38,7 +38,7 @@ export default function Navbar() {
     };
 
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 30000); // Every 30s
+    const interval = setInterval(fetchNotifications, 30000);
 
     return () => clearInterval(interval);
   }, [user]);

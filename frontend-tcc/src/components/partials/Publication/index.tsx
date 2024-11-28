@@ -30,6 +30,10 @@ export default function Publication({ post, comments }: PublicationType) {
   const [searchParams] = useSearchParams();
   const city = searchParams.get("city");
 
+  const [showAllComments, setShowAllComments] = useState(false);
+  const displayedComments = showAllComments ? comments : comments?.slice(0, 4);
+  const hasMoreComments = comments?.length > 4;
+
   useEffect(() => {
     const fetchUserPicture = async () => {
       if (post?.user_picture) {
@@ -128,7 +132,8 @@ export default function Publication({ post, comments }: PublicationType) {
         <span className="text-gray text-sm text-end pr-4 py-1 border-b-[1px] border-[#e9e9e9]">
           Comentários
         </span>
-        {comments?.map((comment) => (
+
+        {displayedComments?.map((comment) => (
           <div
             key={comment.id}
             className="flex flex-col border-b-[2px] px-4 py-2 gap-1 border-[#e9e9e9]"
@@ -141,13 +146,23 @@ export default function Publication({ post, comments }: PublicationType) {
                   alt=""
                 />
               </Link>
-
               <p className="text-primary">{comment.author_name}</p>
             </div>
-
             <span className="text-sm">{comment.content}</span>
           </div>
         ))}
+
+        {hasMoreComments && (
+          <button
+            onClick={() => setShowAllComments(!showAllComments)}
+            className="text-primary hover:text-primary/80 text-sm py-2 text-center"
+          >
+            {showAllComments
+              ? "Ver menos"
+              : `Ver mais ${comments.length - 4} comentários`}
+          </button>
+        )}
+
         <form
           onSubmit={handleSubmit(handleComment)}
           className="flex w-full items-center justify-between py-2 px-4"
