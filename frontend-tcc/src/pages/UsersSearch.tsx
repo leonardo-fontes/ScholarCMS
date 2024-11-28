@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import api from "../service/api";
 import { useAuth } from "../hooks/useAuth";
 import { usePlatform } from "./Platform/usePlatform";
@@ -21,47 +21,51 @@ export default function UsersSearch() {
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const fetchGetPublications = async (city?: string) => {
-    try {
-      setIsLoading(true);
-      const response = await api.getPublications(city);
+  const fetchGetPublications = useCallback(
+    async (city?: string) => {
+      try {
+        setIsLoading(true);
+        const response = await api.getPublications(city);
 
-      const limitedResponse = response.slice(0, 10);
-      const formattedPublications: PublicationType[] = limitedResponse.map(
-        (post: Post) => ({
-          post: {
-            id: post.id,
-            user_id: post.user_id,
-            author_name: post.author_name,
-            author_photo: post.user_picture,
-            description: post.description,
-            photos: post.photos,
-            created_at: post.created_at,
-            updated_at: post.updated_at,
-            author_city: post.author_city,
-            user_picture: post.user_picture,
-          },
-          comments: post.comments || [],
-        })
-      );
-      setPublications(formattedPublications);
-      setIsLoading(false);
+        const limitedResponse = response.slice(0, 10);
+        const formattedPublications: PublicationType[] = limitedResponse.map(
+          (post: Post) => ({
+            post: {
+              id: post.id,
+              user_id: post.user_id,
+              author_name: post.author_name,
+              author_photo: post.user_picture,
+              description: post.description,
+              photos: post.photos,
+              created_at: post.created_at,
+              updated_at: post.updated_at,
+              author_city: post.author_city,
+              user_picture: post.user_picture,
+            },
+            comments: post.comments || [],
+          })
+        );
+        setPublications(formattedPublications);
+        setIsLoading(false);
 
-      if (formattedPublications.length === 0) {
-        setShowModal(true);
+        if (formattedPublications.length === 0) {
+          setShowModal(true);
+        }
+        reset({ city: "" });
+        setCity("");
+      } catch (error) {
+        console.error("Ocorreu um erro ao buscar as publicações", error);
       }
-      reset({ city: "" });
-      setCity("");
-    } catch (error) {
-      console.error("Ocorreu um erro ao buscar as publicações", error);
-    }
-  };
+    },
+    [reset, setPublications]
+  );
 
   useEffect(() => {
-    fetchGetPublications(user.city);
-  }, [user.city]);
+    const cityParam = searchParams.get("city");
+    fetchGetPublications(cityParam || user.city);
+  }, [fetchGetPublications, searchParams, user.city]);
 
   const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
