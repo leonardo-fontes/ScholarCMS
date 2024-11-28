@@ -91,7 +91,8 @@ export const NotificationModal = ({
                           {notification.fromUser.name}{" "}
                           {notification.fromUser.surname}
                         </span>{" "}
-                        enviou R$ {notification.transaction.amount.toFixed(2)}
+                        enviou R$ {notification.transaction.amount.toFixed(2)} a
+                        você.
                       </p>
                       <p className="text-xs text-gray-500 mt-1">
                         {formatDate(notification.createdAt)}
