@@ -7,7 +7,7 @@ import Button from "../../components/inputs/Button";
 import api from "../../service/api";
 import { CreatePost } from "../../types/publications/Post";
 import Loading from "../../components/layout/Loading";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export default function CreatePubPage() {

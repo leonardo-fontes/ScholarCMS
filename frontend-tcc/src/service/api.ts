@@ -129,6 +129,7 @@ export default {
       const url = id ? `/profile/${id}` : "/profile";
       const { data } = await http.get(url);
       return data as User;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       if (e.response && e.response.status === 403) {
         console.error(
