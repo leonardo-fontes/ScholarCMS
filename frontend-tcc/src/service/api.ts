@@ -5,10 +5,8 @@ import secureLocalStorage from "../lib/secureLocalStorage";
 import { User } from "../types/User";
 import helpers from "../helpers";
 import { RegisterData } from "../types/RegisterData";
-import { CreatePost, Post } from "../types/publications/Post";
 import { Pay } from "../types/Pay";
-import { error } from "console";
-import { PublicationType } from "../types/publications";
+import { Notification } from "../types/Notification";
 
 export type SigninData = {
   cpf: string;
@@ -54,10 +52,22 @@ http.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const refreshToken = secureLocalStorage.get("refresh_token");
-        const response = await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/api/refresh-token`,
-          { refresh_token: refreshToken }
-        );
+        if (!refreshToken) return Promise.reject(error);
+        const response = await axios
+          .post(`${import.meta.env.VITE_BASE_URL}/api/refresh-token`, {
+            refresh_token: refreshToken,
+          })
+          .catch((e) => {
+            console.log("Erro ao renovar o token " + e);
+            secureLocalStorage.remove("token");
+            secureLocalStorage.remove("refresh_token");
+            secureLocalStorage.remove("user");
+            window.location.href = "/login";
+          });
+
+        if (!response) {
+          return Promise.reject(error);
+        }
         const { access_token } = response.data;
         secureLocalStorage.set("token", access_token);
         originalRequest.headers["Authorization"] = `Bearer ${access_token}`;
@@ -168,7 +178,17 @@ export default {
 
   getPostbyId: async (id: string | number) => {
     try {
-      const response = await http.get(`/posts/${id}`);
+      const response = await http.get(`/post/${id}`);
+      return response.data;
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  },
+
+  getPostByUserId: async (id: string | number) => {
+    try {
+      const response = await http.get(`/posts/user/${id}`);
       return response.data;
     } catch (e) {
       console.error(e);
@@ -200,6 +220,16 @@ export default {
       await http.post(`/comments/${postId}`, data);
       return true;
     } catch (e) {
+      return false;
+    }
+  },
+
+  deleteComment: async (commentId: number) => {
+    try {
+      await http.delete(`/comments/${commentId}`);
+      return true;
+    } catch (error) {
+      console.error("Error deleting comment:", error);
       return false;
     }
   },
@@ -260,6 +290,36 @@ export default {
     } catch (e) {
       console.error("Erro ao buscar a imagem: " + e);
       return null;
+    }
+  },
+
+  getCities: async () => {
+    try {
+      const response = await http.get<string[]>("/cities");
+      return response.data;
+    } catch (e) {
+      console.error("Erro ao buscar cidades", e);
+      return [];
+    }
+  },
+
+  getNotifications: async () => {
+    try {
+      const response = await http.get<Notification[]>("/notifications");
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      return [];
+    }
+  },
+
+  markNotificationAsRead: async (notificationId: number) => {
+    try {
+      await http.post(`/notification/${notificationId}/read`);
+      return true;
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+      return false;
     }
   },
 
