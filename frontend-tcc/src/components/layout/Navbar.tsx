@@ -47,7 +47,6 @@ export default function Navbar() {
   return (
     !["verify-email"].filter((page) => pathname.includes(page)).length && (
       <div className="bg-primary flex flex-col md:flex-row justify-between px-4 md:px-7 items-center py-4 z-10 fixed w-full top-0 shadow-lg">
-        {/* Top bar with logo and hamburger */}
         <div className="w-full flex justify-between items-center md:w-auto">
           <Link to={user ? "/platform" : "/"}>
             <Icon
@@ -81,7 +80,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Desktop navigation - centered */}
         <div className="hidden md:flex flex-1 justify-center items-center">
           {user && (
             <div className="flex items-center gap-8">
@@ -108,7 +106,6 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Move notifications and logout to right side */}
         <div className="hidden md:flex items-center">
           {user && (
             <div className="relative">
@@ -157,7 +154,6 @@ export default function Navbar() {
           </Button>
         </div>
 
-        {/* Mobile menu */}
         <div
           className={`${
             isMobileMenuOpen ? "flex" : "hidden"
