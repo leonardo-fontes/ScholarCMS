@@ -10,11 +10,24 @@ export default function PaymentPage() {
 
   const [data, setData] = useState({
     qr_code: "",
+    copy_paste_code: "",
     amount: 0,
     status: 0,
   });
 
   const { recalculatedAmount, threePercent } = calcAmount(data.amount);
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(data.copy_paste_code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy text:", err);
+    }
+  };
 
   useEffect(() => {
     const checkPayment = async () => {
@@ -47,13 +60,32 @@ export default function PaymentPage() {
         <div className="w-full max-w-[580px] flex flex-col items-center justify-center shadow-lg p-8">
           <div className="flex flex-col">
             <span className="text-xl font-bold mb-2">
-              Escaneie o código QR para doar:
+              Escaneie o código QR ou copie o código para doar:
             </span>
             <ol className="flex flex-col gap-3">
               <li>1. Acesse seu internet banking ou app de pagamentos</li>
               <li>2. Escolha pagar via pix</li>
-              <li>3. Escaneie o código:</li>
+              <li>3. Escaneie o código ou cole o código copiado:</li>
             </ol>
+
+            {/* Copy PIX Code section */}
+            <div className="w-full flex flex-col items-center gap-2 my-4 p-4 bg-gray-50 rounded-lg">
+              <div className="w-full relative flex items-center">
+                <input
+                  type="text"
+                  value={data.copy_paste_code}
+                  readOnly
+                  className="w-full p-3 pr-24 bg-white border rounded text-sm"
+                />
+                <button
+                  onClick={handleCopy}
+                  className="absolute right-2 px-4 py-1 bg-primary text-white rounded hover:bg-primary/90 transition-colors"
+                >
+                  {copied ? "Copiado!" : "Copiar"}
+                </button>
+              </div>
+            </div>
+
             <img
               className="w-96 self-center"
               src={`data:image/png;base64,${data.qr_code}`}

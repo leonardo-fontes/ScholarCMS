@@ -30,6 +30,7 @@ export default function UsersSearch() {
         const response = await api.getPublications(city);
 
         const limitedResponse = response.slice(0, 10);
+
         const formattedPublications: PublicationType[] = limitedResponse.map(
           (post: Post) => ({
             post: {
@@ -41,7 +42,7 @@ export default function UsersSearch() {
               photos: post.photos,
               created_at: post.created_at,
               updated_at: post.updated_at,
-              author_city: post.author_city,
+              user_city: post.user_city,
               user_picture: post.user_picture,
             },
             comments: post.comments || [],
@@ -87,37 +88,42 @@ export default function UsersSearch() {
   };
 
   return (
-    <div className="w-full flex flex-col bg-white items-center container mx-auto">
-      <form
-        onSubmit={handleSearch}
-        className="mb-2 mt-4 flex items-center space-x-2"
-      >
-        <Input
-          type="text"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          placeholder="Digite a cidade que deseja pesquisar"
-          name="Digite a cidade que deseja pesquisar"
-          className="py-2 min-w-80 mb-2"
-          register={register}
-        />
-        <Button
-          type="submit"
-          classname="w-28 py-2 space-x-2 bg-white border-[1px]  border-primary text-primary"
-          children="Pesquisar"
-        />
-      </form>
-      <div>
-        {publications.map((publication) => (
-          <Publication key={publication.post.id} {...publication} />
-        ))}
+    <div className="w-full min-h-screen bg-white">
+      <div className="max-w-[600px] mx-auto px-4 md:px-6 pt-8 md:pt-12">
+        {/* Search Form */}
+        <form onSubmit={handleSearch} className="w-full flex items-center">
+          <Input
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder="Digite a cidade para pesquisar"
+            name="Digite a cidade para pesquisar"
+            className="h-12"
+            containerClassName="w-full"
+            register={register}
+          />
+          <Button
+            type="submit"
+            classname="h-12 mt-1 w-full md:w-auto px-6 bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+          >
+            Pesquisar
+          </Button>
+        </form>
+
+        {/* Publications List */}
+        <div className="w-full space-y-6">
+          {publications.map((publication) => (
+            <Publication key={publication.post.id} {...publication} />
+          ))}
+        </div>
+
+        {showModal && (
+          <Modal
+            message="Nenhuma publicação foi encontrada na cidade especificada."
+            onClose={handleCloseModal}
+          />
+        )}
       </div>
-      {showModal && (
-        <Modal
-          message="Nenhuma publicação foi encontrada na cidade especificada."
-          onClose={handleCloseModal}
-        />
-      )}
     </div>
   );
 }

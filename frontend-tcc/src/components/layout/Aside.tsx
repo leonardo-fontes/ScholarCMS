@@ -2,7 +2,7 @@ import Button from "../inputs/Button";
 
 export default function Aside() {
   return (
-    <aside className="fixed px-4 border-2 border-primary h-[70vh] text-black bg-white left-0 bottom-28 w-[320px] flex flex-col">
+    <aside className="hidden fixed px-4 border-2 border-primary h-[70vh] text-black bg-white left-0 bottom-28 w-[320px] md:flex flex-col">
       <img className="my-4 bg-primary rounded-md" src="/jovens.png" alt="" />
       <span className="font-bold text-3xl text-primary mb-2">
         Seja bem vindo à Solidariza

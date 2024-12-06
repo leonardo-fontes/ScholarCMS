@@ -5,21 +5,20 @@ import { useAuth } from "../../../hooks/useAuth";
 import { Comments } from "../../../types/publications/Comments";
 import { usePlatform } from "../../../pages/Platform/usePlatform";
 import { PublicationType } from "../../../types/publications";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../../../service/api";
 import Loading from "../../layout/Loading";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 export default function Publication({ post, comments }: PublicationType) {
-  const { handleComment } = usePlatform();
-  const { register, handleSubmit } = useForm<Comments>({
+  const { handleComment, handleDeleteComment } = usePlatform();
+  const { register, handleSubmit, reset } = useForm<Comments>({
     defaultValues: { post_id: post.id },
   });
   const [userPicture, setUserPicture] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [userInternalPicture, setUserInternalPicture] = useState<
-    string | undefined
-  >(undefined);
+  const [, setUserInternalPicture] = useState<string | undefined>(undefined);
   const { user } = useAuth();
 
   const [photoPublication, setPhotoPublication] = useState<string | undefined>(
@@ -28,8 +27,6 @@ export default function Publication({ post, comments }: PublicationType) {
   const [photoComments, setPhotoComments] = useState<{ [key: number]: string }>(
     {}
   );
-  const [searchParams] = useSearchParams();
-  const city = searchParams.get("city");
 
   const [showAllComments, setShowAllComments] = useState(false);
   const displayedComments = showAllComments ? comments : comments?.slice(0, 4);
@@ -38,7 +35,6 @@ export default function Publication({ post, comments }: PublicationType) {
   useEffect(() => {
     const fetchUserPicture = async () => {
       if (post?.user_picture) {
-        const limitedPhotos = post.user_picture.slice(0, 10);
         const pictureUrl = await api.getPicture(post?.user_picture); // Define a URL da imagem
         //const pictureUrl = await api.getPicture(limitedPhotos?.map); // Define a URL da imagem
         setUserPicture(pictureUrl);
@@ -88,31 +84,47 @@ export default function Publication({ post, comments }: PublicationType) {
     fetchCommentPictures();
   }, [comments]);
 
+  const onSubmit = async (data: Comments) => {
+    try {
+      await handleComment(data);
+      reset({ content: "", post_id: post.id });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div className="flex flex-col w-full max-w-[560px] mt-20">
-      <div className="flex gap-6 items-center">
+    <div className="flex flex-col w-full max-w-[560px] my-8 md:my-20 px-4 md:px-0">
+      {/* Author section */}
+      <div className="flex gap-3 md:gap-6 items-center">
         <Link to={`/platform/profile/${post.user_id}`}>
           <img
-            className="rounded-full aspect-square object-cover w-12 md:w-16 mb-2 cursor-pointer"
+            className="rounded-full aspect-square object-cover w-10 h-10 md:w-16 md:h-16 cursor-pointer"
             src={userPicture || "/homem_2.jpg"}
             alt="Author"
           />
         </Link>
         <div>
-          <p className="text-primary">
+          <p className="text-primary text-sm md:text-base">
             {post.author_name}
             {post.user_id === user?.id && (
-              <span className="text-gray-500 text-sm ml-1">(você)</span>
+              <span className="text-gray-500 text-xs md:text-sm ml-1">
+                (você)
+              </span>
             )}
           </p>
-          <span className="text-gray text-sm">{city || user?.city}</span>
+          <span className="text-gray text-xs md:text-sm">{post.user_city}</span>
         </div>
       </div>
-      <div className="w-full">
-        <p className="text-sm my-3">{post.description || ""}</p>
-        <div className="relative min-w-full border-2 border-lightGray">
+
+      {/* Publication content */}
+      <div className="w-full mt-2 md:mt-4">
+        <p className="text-xs md:text-sm my-2 md:my-3">
+          {post.description || ""}
+        </p>
+        <div className="relative w-full border border-lightGray rounded-lg overflow-hidden">
           {isLoading ? (
-            <Loading size={60} />
+            <Loading size={40} />
           ) : (
             <img
               className="w-full aspect-square object-cover"
@@ -122,10 +134,11 @@ export default function Publication({ post, comments }: PublicationType) {
           )}
           {post.user_id !== user?.id && (
             <Button
-              href={`/platform/profile/${post.user_id}?publicationId=${post.id}`}
-              children="DOAR"
-              classname="absolute bottom-8 right-8 text-lg md:text-2xl text-white bg-primary px-6 md:px-12 py-1 md:py-2 font-extrabold"
-            />
+              href={`/platform/profile/${post.user_id}/pay?publicationId=${post.id}`}
+              classname="absolute bottom-4 md:bottom-8 right-4 md:right-8 text-base md:text-2xl text-white bg-primary px-4 md:px-12 py-1 md:py-2 font-bold md:font-extrabold rounded-md"
+            >
+              DOAR
+            </Button>
           )}
         </div>
       </div>
@@ -137,19 +150,33 @@ export default function Publication({ post, comments }: PublicationType) {
         {displayedComments?.map((comment) => (
           <div
             key={comment.id}
-            className="flex flex-col border-b-[2px] px-4 py-2 gap-1 border-[#e9e9e9]"
+            className="flex flex-col border-b-[2px] px-3 md:px-4 py-2 md:py-3 gap-1 md:gap-2 border-[#e9e9e9]"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               <Link to={`/platform/profile/${comment.user_id}`}>
                 <img
-                  className="rounded-full aspect-square object-cover w-12 md:w-10 cursor-pointer"
+                  className="rounded-full aspect-square object-cover w-8 h-8 md:w-10 md:h-10 cursor-pointer"
                   src={photoComments[comment.id] || "/fotodeperfilVinni.jpg"}
                   alt=""
                 />
               </Link>
-              <p className="text-primary">{comment.author_name}</p>
+              <p className="text-primary text-sm md:text-base">
+                {comment.author_name}
+              </p>
             </div>
-            <span className="text-sm">{comment.content}</span>
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-xs md:text-sm flex-1">
+                {comment.content}
+              </span>
+              {comment.user_id === Number(user?.id) && post.id && (
+                <button
+                  onClick={() => handleDeleteComment(comment.id, post.id!)}
+                  className="p-1.5 md:p-2 transition-colors group relative shrink-0"
+                >
+                  <DeleteOutlineIcon className="w-4 h-4 md:w-5 md:h-5 transition-colors group-hover:text-red-500" />
+                </button>
+              )}
+            </div>
           </div>
         ))}
 
@@ -165,12 +192,12 @@ export default function Publication({ post, comments }: PublicationType) {
         )}
 
         <form
-          onSubmit={handleSubmit(handleComment)}
-          className="flex w-full items-center justify-between py-2 px-4"
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col md:flex-row w-full items-start md:items-center gap-4 md:gap-2 py-2 px-4"
         >
-          <div className="flex">
+          <div className="flex w-full items-center gap-4">
             <img
-              className="rounded-full mr-4 aspect-square object-cover w-16 cursor-pointer"
+              className="rounded-full aspect-square object-cover w-10 h-10 md:w-12 md:h-12 shrink-0"
               src={
                 user?.user_picture
                   ? api.getPicture(user.user_picture)
@@ -179,7 +206,8 @@ export default function Publication({ post, comments }: PublicationType) {
               alt="Imagem do usuario"
             />
             <Input
-              className="py-0 min-w-80"
+              className="w-full py-2 md:py-0 h-12"
+              containerClassName="md:w-full"
               placeholder="Digite seu comentário..."
               name="content"
               register={register}
@@ -187,9 +215,10 @@ export default function Publication({ post, comments }: PublicationType) {
           </div>
           <Button
             type="submit"
-            classname="w-20 py-3 bg-white border-[1px]  border-primary text-primary"
-            children="Enviar"
-          />
+            classname="w-full h-12 mt-1 md:w-20 py-2 md:py-3 bg-white border-[1px] border-primary text-primary"
+          >
+            Enviar
+          </Button>
         </form>
       </div>
     </div>
