@@ -27,6 +27,13 @@ export const http = axios.create({
   },
 });
 
+// export const tarefa = axios.create({
+//   baseURL: `https://accesso-dev-mocks.wiremockapi.cloud/`,
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });
+
 http.interceptors.request.use(
   (config) => {
     const token = secureLocalStorage.get("token");
@@ -349,4 +356,22 @@ export default {
       console.log("Erro ao buscar usuários", error);
     }
   },
+  sendDescription: async (description: string) => {
+    try {
+      const response = await http.post("/description", { description });
+      return response.data;
+    }
+    catch (error) {
+      throw new Error;
+    }
+  }
+  // getTarefas: async () => {
+  //   try {
+  //     const response = await tarefa.get("tarefas");
+  //     return response.data;
+  //   }
+  //   catch (error) {
+  //     console.log("Erro ao buscar tarefas " + error);
+  //   }
+  // }
 };
