@@ -9,6 +9,7 @@ import ProfilePicForm from "../../../components/modals/ProfilePicForm";
 import api from "../../../service/api";
 import Loading from "../../../components/layout/Loading";
 import { PlatformProvider, usePlatform } from "../usePlatform";
+import Description from "../../../components/modals/Description";
 
 interface ProfileData {
   name: string;
@@ -45,6 +46,7 @@ function ProfilePageContent({
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isProfilePicFormOpen, setIsProfilePicFormOpen] = useState(false);
+  const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
   const { publications } = usePlatform();
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
 
@@ -107,6 +109,18 @@ function ProfilePageContent({
     closeProfilePicForm();
   };
 
+  const openDescriptionModal = () => setIsDescriptionModalOpen(true);
+
+  const closeDescriptionModal = () => setIsDescriptionModalOpen(false);
+
+  const handleAddDescription = () => {
+    openDescriptionModal();
+  }
+
+  const handleSaveDescription = (newDescription: string) => {
+    setProfileData((prevData) => prevData ? { ...prevData, description: newDescription } : null);
+  };
+
   if (isLoading) {
     return <Loading size={60} />;
   }
@@ -115,8 +129,8 @@ function ProfilePageContent({
     <div className={`flex flex-col w-full items-center`}>
       <div className="flex">
         <section className="w-full">
-          <section className="md:flex w-full mb-4 mt-20 items-center justify-between relative">
-            <div className="flex items-center gap-4">
+          <section className="md:flex w-full mb-4 mt-20 items-center justify-between relative border-r border-l border-primaryLight">
+            <div className="mx-2 flex items-center gap-4">
               <img
                 className="rounded-full aspect-square object-cover w-12 md:w-24 mb-2"
                 src={profileData?.user_picture ? profileData?.user_picture : ""}
@@ -130,7 +144,7 @@ function ProfilePageContent({
               </div>
             </div>
             {!isExternalProfile && (
-              <div className="flex flex-col w-full md:w-auto gap-3 mt-4 px-4 md:px-0">
+              <div className="flex flex-col w-full md:w-auto gap-3 mt-4 px-6 mx-4 md:px-0">
                 <Button
                   classname="bg-primaryLight w-full md:w-auto"
                   onClick={openProfilePicForm}
@@ -143,7 +157,7 @@ function ProfilePageContent({
                   </div>
                 </Button>
 
-                <Button classname="bg-primaryLight w-full md:w-auto">
+                <Button classname="bg-primaryLight w-full md:w-auto" onClick={handleAddDescription}>
                   <div className="flex items-center justify-center gap-2 w-full md:w-52 py-2 px-3 md:px-4 text-primary rounded-md">
                     <span className="text-sm md:text-base whitespace-nowrap">
                       Editar informações
@@ -168,14 +182,8 @@ function ProfilePageContent({
               </div>
             )}
           </section>
-          {/* <p className="bg-white rounded-md p-4 max-w-[560px] border-[1px] border-primary ">Sou o Vinnicius, um entusiasta da tecnologia e inovação,
-          atualmente cursando Análise e Desenvolvimento de Sistemas. Morando
-          em Cubatão, me dedico a aprender e aplicar meus conhecimentos para
-          criar soluções que possam beneficiar a comunidade. Estou sempre em
-          busca de novos desafios e oportunidades para contribuir com causas
-          importantes.</p> */}
           {profileData?.description && (
-            <p className="bg-white rounded-md p-4 max-w-[560px] border-[1px] border-primary ">
+            <p className="bg-white rounded-md p-4 max-w-[560px]">
               {profileData?.description}
             </p>
           )}
@@ -186,6 +194,13 @@ function ProfilePageContent({
               onClose={closeProfilePicForm}
               onUpdatePicture={handleUpdatePicture}
             />
+          )}
+
+          {isDescriptionModalOpen && (
+            <Description
+              onClose={closeDescriptionModal}
+              description={profileData?.description ? profileData.description : ""}
+              onSave={handleSaveDescription} />
           )}
         </div>
       </div>

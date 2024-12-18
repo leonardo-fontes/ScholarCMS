@@ -122,7 +122,7 @@ export default function Publication({ post, comments }: PublicationType) {
         <p className="text-xs md:text-sm my-2 md:my-3">
           {post.description || ""}
         </p>
-        <div className="relative w-full border border-lightGray rounded-lg overflow-hidden">
+        <div className="w-full border border-lightGray rounded-lg overflow-hidden">
           {isLoading ? (
             <Loading size={40} />
           ) : (
@@ -173,7 +173,7 @@ export default function Publication({ post, comments }: PublicationType) {
                   onClick={() => handleDeleteComment(comment.id, post.id!)}
                   className="p-1.5 md:p-2 transition-colors group relative shrink-0"
                 >
-                  <DeleteOutlineIcon className="w-4 h-4 md:w-5 md:h-5 transition-colors group-hover:text-red-500" />
+                  <DeleteOutlineIcon className="w-4 h-4 md:w-5 md:h-5 bg-blend-color text-primary transition-colors group-hover:text-red-500" fontSize="medium" />
                 </button>
               )}
             </div>
