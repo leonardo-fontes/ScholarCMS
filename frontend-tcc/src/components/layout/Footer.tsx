@@ -14,27 +14,27 @@ export default function Footer() {
                     className="mb-8 md:hidden left-40"
                 />
                 <div className="flex flex-col items-center gap-9">
-                    <ul className="flex flex-col md:flex-row gap-9 md:gap-20">
-                        <li>
+                    <ul className="flex md:flex-row gap-9 md:gap-20 text-sm md:text-xl">
+                        <li className={`${isMobile ? "flex-1" : ""}`}>
                             <Link
                                 to={"/register"}
-                                className="text-xl hover:underline"
+                                className="hover:underline "
                             >
                                 Faça parte do nosso time
                             </Link>
                         </li>
-                        <li>
+                        <li className={`${isMobile ? "flex-1" : ""}`}>
                             <Link
                                 to={"/about"}
-                                className="text-xl hover:underline"
+                                className="hover:underline"
                             >
                                 Sobre nós
                             </Link>
                         </li>
-                        <li>
+                        <li className={`${isMobile ? "flex-1" : ""}`}>
                             <Link
                                 to={"/contact"}
-                                className="text-xl hover:underline"
+                                className="hover:underline"
                             >
                                 Contate-nos
                             </Link>
@@ -42,7 +42,7 @@ export default function Footer() {
                     </ul>
                     <p className="border-b-[1px] border-gray-400 w-screen md:hidden"></p>
 
-                    <ul className="flex items-center justify-center gap-20 hover:cursor-pointer">
+                    <ul className="flex items-center justify-center gap-20 hover:cursor-pointer md:w-full h-8">
                         <li className="aspect-square bg-primaryLight hover:bg-[#ffffffea] transition-colors duration-300 rounded-xl items-center flex">
                             <Link to={"/facebook"}>
                                 <Icon

@@ -4,6 +4,7 @@ import { ptBR } from "date-fns/locale";
 import { Notification } from "../../types/Notification";
 import api from "../../service/api";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 interface NotificationModalProps {
   isOpen: boolean;
@@ -48,9 +49,9 @@ export const NotificationModal = ({
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-start justify-center">
+    <div className="fixed inset-0 z-50 flex items-start md:justify-end m-8">
       <div className="fixed inset-0 bg-black/30" onClick={onClose} />
-      <div className="relative mt-20 w-[480px] bg-white rounded-lg shadow-xl">
+      <div className="relative mt-20 w-[480px] bg-white rounded-lg shadow-xl md:mr-4">
         <div className="p-4 border-b">
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-semibold">Notificações</h2>
@@ -62,7 +63,7 @@ export const NotificationModal = ({
             </button>
           </div>
         </div>
-        <div className="max-h-[70vh] overflow-y-auto">
+        <div className="max-h-[70vh] overflow-y-auto rounded-lg">
           {notifications.length === 0 ? (
             <div className="text-gray-500 text-center py-8">
               Nenhuma notificação
@@ -75,16 +76,17 @@ export const NotificationModal = ({
                   onClick={() =>
                     !notification.isRead && handleMarkAsRead(notification.id)
                   }
-                  className={`p-4 hover:bg-gray-50 cursor-pointer ${
-                    notification.isRead ? "bg-white" : "bg-blue-50"
-                  }`}
+                  className={`p-4 hover:bg-gray-50 cursor-pointer ${notification.isRead ? "bg-white" : "bg-blue-50"
+                    }`}
                 >
                   <div className="flex gap-3">
-                    <img
-                      src={api.getPicture(notification.fromUser.user_picture)}
-                      className="w-10 h-10 rounded-full object-cover"
-                      alt={`${notification.fromUser.name} ${notification.fromUser.surname}`}
-                    />
+                    <Link to={`/platform/profile/${notification.fromUser.id}`}>
+                      <img
+                        src={api.getPicture(notification.fromUser.user_picture)}
+                        className="w-10 h-10 rounded-full object-cover"
+                        alt={`${notification.fromUser.name} ${notification.fromUser.surname}`}
+                      />
+                    </Link>
                     <div className="flex-1">
                       <p className="text-sm">
                         <span className="font-medium">

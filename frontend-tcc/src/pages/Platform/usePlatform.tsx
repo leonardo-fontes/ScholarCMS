@@ -21,6 +21,7 @@ type Props = {
   setPublications: React.Dispatch<React.SetStateAction<PublicationType[]>>;
   handleComment: SubmitHandler<Comments>;
   handleDeleteComment: (commentId: number, postId: number) => void;
+  fetchPublications: () => Promise<void>
 };
 
 const PlatformContext = createContext({} as Props);
@@ -38,44 +39,44 @@ export const PlatformProvider = ({
   const [publications, setPublications] = useState<PublicationType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchPublications = async () => {
-      try {
-        setIsLoading(true);
-        let response;
+  const fetchPublications = async () => {
+    try {
+      setIsLoading(true);
+      let response;
 
-        if (userId) {
-          response = await api.getPostByUserId(userId);
-        } else {
-          response = await api.getPostByUser();
-        }
-
-        const limitedResponse = response.slice(0, 10);
-        const formattedPublications = limitedResponse.map((post: Post) => ({
-          post: {
-            id: post.id,
-            user_id: post.user_id,
-            author_name: post.author_name,
-            author_photo: post.user_picture,
-            user_city: post.user_city,
-            description: post.description,
-            photos: post.photos,
-            created_at: post.created_at,
-            updated_at: post.updated_at,
-            comments: post.comments,
-            user_picture: post.user_picture,
-          },
-          comments: post.comments,
-        }));
-
-        setPublications(formattedPublications);
-      } catch (error) {
-        console.error("Error fetching publications:", error);
-      } finally {
-        setIsLoading(false);
+      if (userId) {
+        response = await api.getPostByUserId(userId);
+      } else {
+        response = await api.getPostByUser();
       }
-    };
 
+      const limitedResponse = response.slice(0, 10);
+      const formattedPublications = limitedResponse.map((post: Post) => ({
+        post: {
+          id: post.id,
+          user_id: post.user_id,
+          author_name: post.author_name,
+          author_photo: post.user_picture,
+          user_city: post.user_city,
+          description: post.description,
+          photos: post.photos,
+          created_at: post.created_at,
+          updated_at: post.updated_at,
+          comments: post.comments,
+          user_picture: post.user_picture,
+        },
+        comments: post.comments,
+      }));
+
+      setPublications(formattedPublications);
+    } catch (error) {
+      console.error("Error fetching publications:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchPublications();
   }, [userId]);
 
@@ -86,20 +87,25 @@ export const PlatformProvider = ({
     try {
       const payload = { content };
 
-      await api.createComment(payload, post_id);
-      toast.success("comentário criado com sucesso");
+      const resp = await api.createComment(payload, post_id);
+      if (resp === 201 || resp === 200) {
+        toast.success("comentário criado com sucesso");
 
-      const updatedPublication = await api.getPostbyId(post_id);
-      if (updatedPublication) {
-        setPublications((prevPublications) =>
-          prevPublications.map((publication) =>
-            publication.post.id === post_id
-              ? { ...publication, comments: updatedPublication.comments }
-              : publication
-          )
-        );
+        const updatedPublication = await api.getPostbyId(post_id);
+        if (updatedPublication) {
+          setPublications((prevPublications) =>
+            prevPublications.map((publication) =>
+              publication.post.id === post_id
+                ? { ...publication, comments: updatedPublication.comments }
+                : publication
+            )
+          );
+        }
       }
-      setIsLoading(false);
+      else {
+        toast.error("Ocorreu um erro ao inserir o comentário");
+      }
+      setIsLoading(false)
     } catch (err) {
       console.error(err);
     }
@@ -113,11 +119,11 @@ export const PlatformProvider = ({
           prevPublications.map((publication) =>
             publication.post.id === postId
               ? {
-                  ...publication,
-                  comments: publication.comments.filter(
-                    (comment) => comment.id !== commentId
-                  ),
-                }
+                ...publication,
+                comments: publication.comments.filter(
+                  (comment) => comment.id !== commentId
+                ),
+              }
               : publication
           )
         );
@@ -150,6 +156,7 @@ export const PlatformProvider = ({
         setPublications,
         handleComment,
         handleDeleteComment,
+        fetchPublications
       }}
     >
       {children}

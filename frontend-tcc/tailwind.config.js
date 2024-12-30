@@ -12,6 +12,7 @@ export default {
                 black: "#222222",
                 gray: "#858585",
                 lightGray: "#F3F4F6",
+                customGray: "#F3F5F6"
             },
         },
     },
