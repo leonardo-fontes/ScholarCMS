@@ -10,6 +10,7 @@ import api from "../../../service/api";
 import Loading from "../../../components/layout/Loading";
 import { PlatformProvider, usePlatform } from "../usePlatform";
 import Description from "../../../components/modals/Description";
+import { setRef } from "@mui/material";
 
 interface ProfileData {
   name: string;
@@ -47,14 +48,16 @@ function ProfilePageContent({
   const [isLoading, setIsLoading] = useState(false);
   const [isProfilePicFormOpen, setIsProfilePicFormOpen] = useState(false);
   const [isDescriptionModalOpen, setIsDescriptionModalOpen] = useState(false);
-  const { publications } = usePlatform();
+  const { publications, fetchPublications } = usePlatform();
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const getProfileExternal = async (
       isExternalProfile: boolean,
       id: string
     ) => {
+      setIsLoading(true)
       if (isExternalProfile) {
         const profileExternal = await api.profile(id);
         const pictureUrl = profileExternal?.user_picture
@@ -85,19 +88,16 @@ function ProfilePageContent({
           user_picture: pictureUrl,
         });
       }
+      setIsLoading(false)
     };
 
     getProfileExternal(Boolean(isExternalProfile), userId!);
   }, [isExternalProfile, user, userId]);
 
   useEffect(() => {
-    const fetchUserPicture = () => {
-      if (user?.user_picture) {
-        setIsLoading(false);
-      }
-    };
-    fetchUserPicture();
-  }, [user?.user_picture]);
+    if (refresh == true)
+      fetchPublications()
+  }, [refresh])
 
   const openProfilePicForm = () => setIsProfilePicFormOpen(true);
 
@@ -105,7 +105,9 @@ function ProfilePageContent({
     setIsProfilePicFormOpen(false);
   };
 
-  const handleUpdatePicture = () => {
+  const handleUpdatePicture = (newPictureUrl: string) => {
+    setProfileData((prevData) => prevData ? { ...prevData, user_picture: newPictureUrl } : null);
+    setRefresh((prev) => !prev);
     closeProfilePicForm();
   };
 
@@ -121,16 +123,18 @@ function ProfilePageContent({
     setProfileData((prevData) => prevData ? { ...prevData, description: newDescription } : null);
   };
 
+
   if (isLoading) {
     return <Loading size={60} />;
   }
+
 
   return (
     <div className={`flex flex-col w-full items-center`}>
       <div className="flex">
         <section className="w-full">
           <section className="md:flex w-full mb-4 mt-20 items-center justify-between relative border-r border-l border-primaryLight">
-            <div className="mx-2 flex items-center gap-4">
+            <div className={`${isExternalProfile ? 'mx-12 px-12 flex justify-start items-center gap-4' : 'mx-2 flex items-center gap-4'}`}>
               <img
                 className="rounded-full aspect-square object-cover w-12 md:w-24 mb-2"
                 src={profileData?.user_picture ? profileData?.user_picture : ""}
@@ -183,7 +187,7 @@ function ProfilePageContent({
             )}
           </section>
           {profileData?.description && (
-            <p className="bg-white rounded-md p-4 max-w-[560px]">
+            <p className="bg-white rounded-md p-4 max-w-[620px] mt-4 block w-full border border-purple-200 shadow-sm">
               {profileData?.description}
             </p>
           )}
@@ -232,7 +236,7 @@ function ProfilePageContent({
 
       <Button
         classname="w-full p-4 mb-16 text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white md:w-[500px] md:py-2"
-        href="/"
+        href="/platform"
         children={"VOLTAR PARA A PÁGINA INICIAL"}
       />
     </div>

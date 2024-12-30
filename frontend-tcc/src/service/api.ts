@@ -172,15 +172,25 @@ export default {
   createPost: async (data: FormData) => {
     try {
       // 'data' agora é do tipo FormData
-      await http.post("/posts", data, {
+      const response = await http.post("/posts", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      return true;
-    } catch (e) {
-      console.error(e);
-      return false;
+      return response;
+    } catch (error) {
+      console.error("Erro ao criar post" + error);
+      if (error instanceof Error) {
+        if ((error as any).response) {
+          const responseError = error as any;
+          throw new Error("Error do servidor: " + responseError.response.status + "" + responseError.response.data.message)
+        }
+        else if ((error as any).request) {
+          throw new Error("Error de rede, pois nenhuma resposta foi recebida do servidor");
+        }
+        else
+          throw new Error("Erro ao configurar a requisição " + error.message);
+      }
     }
   },
 
@@ -225,8 +235,8 @@ export default {
 
   createComment: async (data: { content: string }, postId: number) => {
     try {
-      await http.post(`/comments/${postId}`, data);
-      return true;
+      const response = await http.post(`/comments/${postId}`, data);
+      return response.status;
     } catch (e) {
       return false;
     }

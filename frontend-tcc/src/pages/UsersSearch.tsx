@@ -53,7 +53,9 @@ export default function UsersSearch() {
 
         if (formattedPublications.length === 0) {
           setShowModal(true);
+          reset({ city: "" });
         }
+
         reset({ city: "" });
         setCity("");
       } catch (error) {
@@ -87,18 +89,23 @@ export default function UsersSearch() {
     setShowModal(false);
   };
 
+  if (publications.length === 0 && city !== user?.city && !showModal) {
+    setSearchParams({ city })
+    fetchGetPublications(user.city);
+  }
+
   return (
-    <div className="w-full min-h-screen bg-white">
+    <div className="w-full min-h-screen bg-white mb-20">
       <div className="max-w-[600px] mx-auto px-4 md:px-6 pt-8 md:pt-12">
         {/* Search Form */}
-        <form onSubmit={handleSearch} className="w-full flex items-center">
+        <form onSubmit={handleSearch} className="w-full flex items-center gap-2">
           <Input
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
             placeholder="Digite a cidade para pesquisar"
             name="Digite a cidade para pesquisar"
-            className="h-12"
+            className="h-14 border-none bg-customGray text-black"
             containerClassName="w-full"
             register={register}
           />

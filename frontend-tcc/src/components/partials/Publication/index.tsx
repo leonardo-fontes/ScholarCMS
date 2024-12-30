@@ -10,6 +10,9 @@ import { useEffect, useState } from "react";
 import api from "../../../service/api";
 import Loading from "../../layout/Loading";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { Filter } from 'bad-words'
+import { toast } from "react-toastify";
+
 
 export default function Publication({ post, comments }: PublicationType) {
   const { handleComment, handleDeleteComment } = usePlatform();
@@ -30,7 +33,9 @@ export default function Publication({ post, comments }: PublicationType) {
 
   const [showAllComments, setShowAllComments] = useState(false);
   const displayedComments = showAllComments ? comments : comments?.slice(0, 4);
-  const hasMoreComments = comments?.length > 4;
+  const hasMoreComments = comments?.length > 4
+  const filter = new Filter();
+  filter.addWords('fdp', 'Corinthiano');
 
   useEffect(() => {
     const fetchUserPicture = async () => {
@@ -86,8 +91,14 @@ export default function Publication({ post, comments }: PublicationType) {
 
   const onSubmit = async (data: Comments) => {
     try {
-      await handleComment(data);
-      reset({ content: "", post_id: post.id });
+      if (filter.isProfane(data.content)) {
+        toast.error("Seu comentário contém palavras ofensivas");
+        return;
+      }
+      else {
+        await handleComment(data);
+        reset({ content: "", post_id: post.id });
+      }
     } catch (error) {
       console.error(error);
     }

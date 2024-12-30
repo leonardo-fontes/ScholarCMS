@@ -16,6 +16,7 @@ interface ProfilePicFormProps {
 export default function ProfilePicForm({ onClose, onUpdatePicture }: ProfilePicFormProps) {
   const { updateUserPicture } = useAuth();
   const { register, handleSubmit } = useForm();
+
   const onSubmit = async (data: any) => {
     const file = data.profilePicture[0]
     if (file) {
@@ -29,6 +30,7 @@ export default function ProfilePicForm({ onClose, onUpdatePicture }: ProfilePicF
     }
     onClose();
   }
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg p-8 shadow-lg max-w-md w-full">

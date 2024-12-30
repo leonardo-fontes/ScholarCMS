@@ -1,5 +1,5 @@
 import React from "react";
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegisterReturn } from "react-hook-form";
 import Icon from "../icons";
 
 type Props = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
@@ -8,7 +8,7 @@ type Props = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
     error?: string;
     label?: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    register: UseFormRegister<any>;
+    register: UseFormRegisterReturn;
 };
 
 const Textarea: React.FC<Props> = ({
@@ -24,7 +24,7 @@ const Textarea: React.FC<Props> = ({
         <div className={`flex flex-col gap-1 ${containerClassName}`}>
             <label htmlFor={name}>{label}</label>
             <textarea
-                {...register(name)}
+                {...register}
                 {...props}
                 className={`rounded-md mt-1 focus-visible:outline-none  font-light text-[14px] border-[1px]  
                             py-[12px] px-[12px] focus:shadow-input transition-all duration-500 placeholder:text-[#808080] 
