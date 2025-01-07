@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 export default function CreatePubPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { register, handleSubmit, watch, setValue, getValues, reset, formState: { errors } } =
+  const { register, handleSubmit, watch, setValue, getValues, formState: { errors } } =
     useForm<CreatePost>();
 
   const photos = watch("photos");

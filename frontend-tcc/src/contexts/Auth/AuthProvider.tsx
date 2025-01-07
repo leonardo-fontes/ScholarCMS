@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "../../types/User";
 import secureLocalStorage from "../../lib/secureLocalStorage";
 import Loading from "../../components/layout/Loading";
+import { toast } from "react-toastify";
+import { AxiosResponse } from "axios";
 
 // eslint-disable-next-line react-refresh/only-export-components
 
@@ -74,20 +76,34 @@ export const AuthProvider = ({
     }
   };
 
-  const signin = async (data: SigninData) => {
-    setIsLoading(true);
+  const signin = async (data: SigninData): Promise<AxiosResponse<any> | undefined> => {
     try {
+      setIsLoading(true)
       const response = await api.signin(data);
+      //response ? setIsLoading(true) : setIsLoading(false)
       const { access_token, refresh_token } = response.data;
       secureLocalStorage.set("token", access_token);
       secureLocalStorage.set("refresh_token", refresh_token);
       console.log(access_token);
+      console.log("response " + response?.data)
       await getUser();
-      return true;
-    } catch (e) {
-      console.error("Falha ao realizar login", e);
-      throw e;
-    } finally {
+      return response;
+    } catch (error) {
+      setIsLoading(false)
+      if (error instanceof Error) {
+        console.log(error.stack)
+        if ((error as any).response && (error as any).response.data.message) {
+          const serverError = (error as any).response.data;
+          console.log("log do erro: " + serverError.message)
+        }
+        else {
+          setTimeout(() => {
+            toast.error("Erro ao realizar login. Tente novamente");
+          }, 2)
+        }
+      }
+    }
+    finally {
       setTimeout(() => {
         setIsLoading(false);
       }, 2000);

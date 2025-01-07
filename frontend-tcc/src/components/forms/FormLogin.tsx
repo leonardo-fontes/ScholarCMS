@@ -26,8 +26,6 @@ function FormLogin() {
         const res = await auth.signin(data);
         if (res) {
             navigate("/platform");
-        } else {
-            //alert("deu errado o login");
         }
     };
 
