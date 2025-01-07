@@ -10,7 +10,6 @@ import api from "../../../service/api";
 import Loading from "../../../components/layout/Loading";
 import { PlatformProvider, usePlatform } from "../usePlatform";
 import Description from "../../../components/modals/Description";
-import { setRef } from "@mui/material";
 
 interface ProfileData {
   name: string;
