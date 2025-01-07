@@ -5,7 +5,6 @@ import { useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AuthContext } from "../../contexts/Auth/AuthContext";
 import Icon from "../icons";
-import { toast } from "react-toastify";
 type Inputs = {
     cpf: string;
     password: string;
