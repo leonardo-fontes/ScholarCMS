@@ -10,6 +10,7 @@ import api from "../../../service/api";
 import Loading from "../../../components/layout/Loading";
 import { PlatformProvider, usePlatform } from "../usePlatform";
 import Description from "../../../components/modals/Description";
+import NoProfilePicture from "../../../components/icons/source/NoProfilePicture";
 
 interface ProfileData {
   name: string;
@@ -56,7 +57,7 @@ function ProfilePageContent({
       isExternalProfile: boolean,
       id: string
     ) => {
-      setIsLoading(true)
+      setIsLoading(true);
       if (isExternalProfile) {
         const profileExternal = await api.profile(id);
         const pictureUrl = profileExternal?.user_picture
@@ -87,16 +88,15 @@ function ProfilePageContent({
           user_picture: pictureUrl,
         });
       }
-      setIsLoading(false)
+      setIsLoading(false);
     };
 
     getProfileExternal(Boolean(isExternalProfile), userId!);
   }, [isExternalProfile, user, userId]);
 
   useEffect(() => {
-    if (refresh == true)
-      fetchPublications()
-  }, [refresh])
+    if (refresh == true) fetchPublications();
+  }, [refresh]);
 
   const openProfilePicForm = () => setIsProfilePicFormOpen(true);
 
@@ -105,7 +105,9 @@ function ProfilePageContent({
   };
 
   const handleUpdatePicture = (newPictureUrl: string) => {
-    setProfileData((prevData) => prevData ? { ...prevData, user_picture: newPictureUrl } : null);
+    setProfileData((prevData) =>
+      prevData ? { ...prevData, user_picture: newPictureUrl } : null
+    );
     setRefresh((prev) => !prev);
     closeProfilePicForm();
   };
@@ -116,29 +118,39 @@ function ProfilePageContent({
 
   const handleAddDescription = () => {
     openDescriptionModal();
-  }
-
-  const handleSaveDescription = (newDescription: string) => {
-    setProfileData((prevData) => prevData ? { ...prevData, description: newDescription } : null);
   };
 
+  const handleSaveDescription = (newDescription: string) => {
+    setProfileData((prevData) =>
+      prevData ? { ...prevData, description: newDescription } : null
+    );
+  };
 
   if (isLoading) {
     return <Loading size={60} />;
   }
-
 
   return (
     <div className={`flex flex-col w-full items-center`}>
       <div className="flex">
         <section className="w-full">
           <section className="md:flex w-full mb-4 mt-20 items-center justify-between relative border-r border-l border-primaryLight">
-            <div className={`${isExternalProfile ? 'mx-12 px-12 flex justify-start items-center gap-4' : 'mx-2 flex items-center gap-4'}`}>
-              <img
-                className="rounded-full aspect-square object-cover w-12 md:w-24 mb-2"
-                src={profileData?.user_picture ? profileData?.user_picture : ""}
-                alt="Author"
-              />
+            <div
+              className={`${
+                isExternalProfile
+                  ? "mx-12 px-12 flex justify-start items-center gap-4"
+                  : "mx-2 flex items-center gap-4"
+              }`}
+            >
+              {profileData?.user_picture ? (
+                <img
+                  className="rounded-full aspect-square object-cover w-12 md:w-24 mb-2"
+                  src={profileData.user_picture}
+                  alt="Author"
+                />
+              ) : (
+                <NoProfilePicture className="rounded-full aspect-square object-cover w-12 md:w-24 mb-2" />
+              )}
               <div>
                 <p className="text-primary text-xl">
                   {profileData?.name} {profileData?.surname}
@@ -160,7 +172,10 @@ function ProfilePageContent({
                   </div>
                 </Button>
 
-                <Button classname="bg-primaryLight w-full md:w-auto" onClick={handleAddDescription}>
+                <Button
+                  classname="bg-primaryLight w-full md:w-auto"
+                  onClick={handleAddDescription}
+                >
                   <div className="flex items-center justify-center gap-2 w-full md:w-52 py-2 px-3 md:px-4 text-primary rounded-md">
                     <span className="text-sm md:text-base whitespace-nowrap">
                       Editar informações
@@ -202,8 +217,11 @@ function ProfilePageContent({
           {isDescriptionModalOpen && (
             <Description
               onClose={closeDescriptionModal}
-              description={profileData?.description ? profileData.description : ""}
-              onSave={handleSaveDescription} />
+              description={
+                profileData?.description ? profileData.description : ""
+              }
+              onSave={handleSaveDescription}
+            />
           )}
         </div>
       </div>
@@ -222,7 +240,7 @@ function ProfilePageContent({
       ) : (
         !isExternalProfile &&
         user?.role_id === parseInt(Role.Beneficiario) && (
-          <div className="max-w-[560px] mt-20 pt-20 border-t-[1px] border-primaryLight">
+          <div className="max-w-[560px] mt-20 pt-20 border-t-[1px] border-primaryLight mb-8">
             <div className="flex flex-col items-center justify-center bg-primaryLight text-primary text-xl rounded-md p-4 text-center">
               <p>
                 VOCÊ AINDA NÃO PUBLICOU NADA, CRIE SUA PRIMEIRA PUBLICAÇÃO PARA

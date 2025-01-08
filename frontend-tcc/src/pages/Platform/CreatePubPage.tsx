@@ -9,12 +9,19 @@ import { CreatePost } from "../../types/publications/Post";
 import Loading from "../../components/layout/Loading";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import NoProfilePicture from "../../components/icons/source/NoProfilePicture";
 
 export default function CreatePubPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { register, handleSubmit, watch, setValue, getValues, formState: { errors } } =
-    useForm<CreatePost>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm<CreatePost>();
 
   const photos = watch("photos");
   const [imageUrls, setImageUrls] = useState<string[]>([]);
@@ -50,14 +57,13 @@ export default function CreatePubPage() {
       }, 2000);
     } catch (error) {
       if (error instanceof Error) {
-        console.log("log do erro: " + error.message)
+        console.log("log do erro: " + error.message);
         toast.error("Erro ao criar publicação. Tente novamente.");
-      }
-      else {
+      } else {
         console.log("log do erro: Erro desconhecido");
         toast.error("Erro desconhecido");
       }
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -105,17 +111,24 @@ export default function CreatePubPage() {
   return (
     <div className="w-full flex flex-col items-center my-10">
       <div className="flex gap-6 items-center">
-        <img
-          className="rounded-full aspect-square object-cover w-12 md:w-24 mb-2"
-          src={userPicture || "/garotos.jpg"}
-          alt="Author"
-        />
+        {userPicture ? (
+          <img
+            className="rounded-full aspect-square object-cover w-12 md:w-24 mb-2"
+            src={userPicture}
+            alt="Author"
+          />
+        ) : (
+          <NoProfilePicture className="rounded-full aspect-square object-cover w-12 md:w-24 mb-2" />
+        )}
         <div className="px-4">
           <p className="text-lg">{`${user?.name} ${user?.surname}`}</p>
           <span className="text-gray text-base">{user?.city}</span>
         </div>
       </div>
-      <span className="inline-block text-2xl font-semibold mt-8 mb-2 font-sans text-black tracking-wide text-right md: w-2/4 border-r-4 border-primary pr-4"> CRIAR PUBLICAÇÃO </span>
+      <span className="inline-block text-2xl font-semibold mt-8 mb-2 font-sans text-black tracking-wide text-right md: w-2/4 border-r-4 border-primary pr-4">
+        {" "}
+        CRIAR PUBLICAÇÃO{" "}
+      </span>
       <form
         className="w-[50%] flex flex-col gap-4"
         onSubmit={handleSubmit(handleCreatePub)}
@@ -126,17 +139,20 @@ export default function CreatePubPage() {
           rows={4}
           label="Descrição"
           name="description"
-          register={register("description", { required: "Descrição é obrigatória" })}
+          register={register("description", {
+            required: "Descrição é obrigatória",
+          })}
           error={errors?.description?.message}
         />
         <div className="flex gap-4 items-end justify-between">
           <div className="flex items-end gap-4">
             <FileInput
               label="Adicionar fotos"
-              className={`${imageUrls.length < 3
-                ? "max-w-32 bg-primaryLight"
-                : "bg-gray border-none cursor-not-allowed"
-                }`}
+              className={`${
+                imageUrls.length < 3
+                  ? "max-w-32 bg-primaryLight"
+                  : "bg-gray border-none cursor-not-allowed"
+              }`}
               disabled={imageUrls.length >= 3}
               name="photos"
               register={register}

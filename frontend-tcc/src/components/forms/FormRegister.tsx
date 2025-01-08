@@ -13,6 +13,8 @@ import helpers from "../../helpers";
 import { Address } from "../../types/Addres";
 import { RegisterData } from "../../types/RegisterData";
 import { Role } from "../../types/User";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 function FormRegister() {
   const navigate = useNavigate();
@@ -46,6 +48,18 @@ function FormRegister() {
         "47262022865"
     ]; */
 
+  const onSubmit = async (data: RegisterData) => {
+    try {
+      await api.register(data);
+      navigate("/verify-email");
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response && err.response.data) {
+        const response = err.response.data.error;
+        toast.error("Erro ao criar conta: " + response);
+      }
+    }
+  };
+
   const handleRegister: SubmitHandler<RegisterData> = async (data) => {
     try {
       data.postal_code = helpers.validate.cep(data.postal_code);
@@ -60,8 +74,7 @@ function FormRegister() {
                 return;
             } */
 
-      await api.register(data);
-      navigate("/verify-email");
+      await onSubmit(data);
     } catch (err) {
       console.error(err);
     }

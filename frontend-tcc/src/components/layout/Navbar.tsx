@@ -48,8 +48,7 @@ export default function Navbar() {
     !["verify-email"].filter((page) => pathname.includes(page)).length && (
       <div className="bg-primary flex flex-col md:flex-row justify-between px-4 md:px-7 items-center py-4 z-10 fixed w-full top-0 shadow-lg">
         <div className="w-full flex justify-between items-center md:w-auto">
-          {/* <Link to={user ? "/platform" : "/"}> */}
-          <Link to="/">
+          <Link to={user ? "/platform" : "/"}>
             <Icon
               className="hover:cursor-pointer w-20 md:w-28"
               name="logo"
@@ -156,8 +155,9 @@ export default function Navbar() {
         </div>
 
         <div
-          className={`${isMobileMenuOpen ? "flex" : "hidden"
-            } md:hidden flex-col w-full pt-4 gap-4`}
+          className={`${
+            isMobileMenuOpen ? "flex" : "hidden"
+          } md:hidden flex-col w-full pt-4 gap-4`}
         >
           {user && (
             <>
@@ -229,7 +229,7 @@ export default function Navbar() {
             {user ? "Sair" : "Entrar"}
           </Button>
         </div>
-      </div >
+      </div>
     )
   );
 }

@@ -113,12 +113,7 @@ export default {
   },
 
   register: async (data: RegisterData) => {
-    try {
-      await http.post("/register", data);
-      return true;
-    } catch (e) {
-      return false;
-    }
+    await http.post("/register", data);
   },
 
   resetPassword: async (data: RecoverData) => {
@@ -183,12 +178,17 @@ export default {
       if (error instanceof Error) {
         if ((error as any).response) {
           const responseError = error as any;
-          throw new Error("Error do servidor: " + responseError.response.status + "" + responseError.response.data.message)
-        }
-        else if ((error as any).request) {
-          throw new Error("Error de rede, pois nenhuma resposta foi recebida do servidor");
-        }
-        else
+          throw new Error(
+            "Error do servidor: " +
+              responseError.response.status +
+              "" +
+              responseError.response.data.message
+          );
+        } else if ((error as any).request) {
+          throw new Error(
+            "Error de rede, pois nenhuma resposta foi recebida do servidor"
+          );
+        } else
           throw new Error("Erro ao configurar a requisição " + error.message);
       }
     }
@@ -370,11 +370,10 @@ export default {
     try {
       const response = await http.post("/description", { description });
       return response.data;
+    } catch (error) {
+      throw new Error();
     }
-    catch (error) {
-      throw new Error;
-    }
-  }
+  },
   // getTarefas: async () => {
   //   try {
   //     const response = await tarefa.get("tarefas");
