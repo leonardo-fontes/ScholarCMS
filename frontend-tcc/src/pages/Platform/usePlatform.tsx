@@ -50,9 +50,9 @@ export const PlatformProvider = ({
       let response;
 
       if (userId) {
-        response = await api.getPublications(user.city);
+        response = await api.getPostByUserId(userId);
       } else {
-        response = await api.getPostByUser();
+        response = await api.getPublications(user.city);
       }
 
       const limitedResponse = response.slice(0, 10);
