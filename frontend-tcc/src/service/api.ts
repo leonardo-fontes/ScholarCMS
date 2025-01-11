@@ -65,7 +65,6 @@ http.interceptors.response.use(
             refresh_token: refreshToken,
           })
           .catch((e) => {
-            console.log("Erro ao renovar o token " + e);
             secureLocalStorage.remove("token");
             secureLocalStorage.remove("refresh_token");
             secureLocalStorage.remove("user");
@@ -80,7 +79,6 @@ http.interceptors.response.use(
         originalRequest.headers["Authorization"] = `Bearer ${access_token}`;
         return http(originalRequest);
       } catch (e) {
-        console.error("Erro ao renovar o token " + e);
         secureLocalStorage.remove("token");
         secureLocalStorage.remove("refresh_token");
         secureLocalStorage.remove("user");

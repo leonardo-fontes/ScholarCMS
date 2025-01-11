@@ -76,8 +76,9 @@ export const NotificationModal = ({
                   onClick={() =>
                     !notification.isRead && handleMarkAsRead(notification.id)
                   }
-                  className={`p-4 hover:bg-gray-50 cursor-pointer ${notification.isRead ? "bg-white" : "bg-blue-50"
-                    }`}
+                  className={`p-4 hover:bg-gray-50 cursor-pointer ${
+                    notification.isRead ? "bg-white" : "bg-blue-50"
+                  }`}
                 >
                   <div className="flex gap-3">
                     <Link to={`/platform/profile/${notification.fromUser.id}`}>
@@ -101,13 +102,19 @@ export const NotificationModal = ({
                       </p>
                     </div>
                     <div className="flex flex-col justify-center">
-                      {loadingIds.includes(notification.id) && (
+                      {loadingIds.includes(notification.id) ? (
                         <span className="text-xs text-blue-500">
                           Marcando como lida...
                         </span>
-                      )}
-                      {!notification.isRead && (
-                        <span className="w-2 h-2 bg-blue-500 rounded-full" />
+                      ) : (
+                        !notification.isRead && (
+                          <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 bg-blue-500 rounded-full" />
+                            <span className="text-xs text-blue-500">
+                              Marcar como lida
+                            </span>
+                          </div>
+                        )
                       )}
                     </div>
                   </div>

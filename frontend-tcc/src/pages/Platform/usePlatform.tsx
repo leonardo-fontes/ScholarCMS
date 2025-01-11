@@ -24,7 +24,7 @@ type Props = {
   setPublications: React.Dispatch<React.SetStateAction<PublicationType[]>>;
   handleComment: SubmitHandler<Comments>;
   handleDeleteComment: (commentId: number, postId: number) => void;
-  fetchPublications: () => Promise<void>
+  fetchPublications: () => Promise<void>;
 };
 
 const PlatformContext = createContext({} as Props);
@@ -82,9 +82,10 @@ export const PlatformProvider = ({
   };
 
   useEffect(() => {
-    fetchPublications();
-  }, [location.pathname]);
-
+    if (user) {
+      fetchPublications();
+    }
+  }, [location.pathname, user]);
 
   const handleComment: SubmitHandler<Comments> = async ({
     content,
@@ -107,11 +108,10 @@ export const PlatformProvider = ({
             )
           );
         }
-      }
-      else {
+      } else {
         toast.error("Ocorreu um erro ao inserir o comentário");
       }
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (err) {
       console.error(err);
     }
@@ -125,11 +125,11 @@ export const PlatformProvider = ({
           prevPublications.map((publication) =>
             publication.post.id === postId
               ? {
-                ...publication,
-                comments: publication.comments.filter(
-                  (comment) => comment.id !== commentId
-                ),
-              }
+                  ...publication,
+                  comments: publication.comments.filter(
+                    (comment) => comment.id !== commentId
+                  ),
+                }
               : publication
           )
         );
@@ -162,7 +162,7 @@ export const PlatformProvider = ({
         setPublications,
         handleComment,
         handleDeleteComment,
-        fetchPublications
+        fetchPublications,
       }}
     >
       {children}

@@ -46,7 +46,6 @@ export default function CreatePubPage() {
       // Faz a requisição com o formData (que inclui as fotos se houver)
       setIsLoading(true);
       const response = await api.createPost(formData);
-      console.log(response);
       setIsLoading(false);
       if (response)
         toast.success("Publicação criada com sucesso", {
@@ -57,10 +56,8 @@ export default function CreatePubPage() {
       }, 2000);
     } catch (error) {
       if (error instanceof Error) {
-        console.log("log do erro: " + error.message);
         toast.error("Erro ao criar publicação. Tente novamente.");
       } else {
-        console.log("log do erro: Erro desconhecido");
         toast.error("Erro desconhecido");
       }
       setIsLoading(false);
@@ -182,9 +179,6 @@ export default function CreatePubPage() {
             classname="bg-primary text-white w-28 max-w-28 h-[70px] justify-self-end font-semibold"
           />
         </div>
-        <p className="text-xs self-start text-gray">
-          Quantidade maxima de fotos: 3
-        </p>
       </form>
     </div>
   );

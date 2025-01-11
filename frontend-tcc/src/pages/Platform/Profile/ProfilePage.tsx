@@ -63,8 +63,7 @@ function ProfilePageContent({
         const pictureUrl = profileExternal?.user_picture
           ? api.getPicture(profileExternal.user_picture)
           : "";
-        console.log("profileExternal", profileExternal);
-        console.log("pictureUrl", pictureUrl);
+
         setProfileData({
           city: profileExternal!.city,
           name: profileExternal!.name,

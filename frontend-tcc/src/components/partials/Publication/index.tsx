@@ -144,13 +144,13 @@ export default function Publication({ post, comments }: PublicationType) {
         <div className="w-full border border-lightGray rounded-t-lg overflow-hidden">
           {isLoading ? (
             <Loading size={40} />
-          ) : (
+          ) : photoPublication ? (
             <img
               className="w-full aspect-square object-cover"
-              src={photoPublication || "/cestaBasica.jpg"}
+              src={photoPublication}
               alt="foto da publicação"
             />
-          )}
+          ) : null}
           {post.user_id !== user?.id && (
             <div className="relative">
               <Button
@@ -248,7 +248,7 @@ export default function Publication({ post, comments }: PublicationType) {
           </div>
           <Button
             type="submit"
-            classname="w-full h-12 mt-1 md:w-20 py-2 md:py-3 bg-white border-[1px] border-primary text-primary"
+            classname="w-full h-12 mt-1 md:w-32 px-2 bg-white border-[1px] border-primary text-primary text-sm md:text-base"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Enviando..." : "Enviar"}

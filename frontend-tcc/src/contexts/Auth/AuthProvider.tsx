@@ -46,8 +46,6 @@ export const AuthProvider = ({
     ) {
       navigate("/platform");
     }
-    console.log("valor de hasUser:", JSON.stringify(hasUser, null, 2));
-    console.log("valor do user:", JSON.stringify(user, null, 2));
   }, [navigate, pathname, user, isVerifyingToken]);
 
   const delay = (ms: number) =>
@@ -76,34 +74,30 @@ export const AuthProvider = ({
     }
   };
 
-  const signin = async (data: SigninData): Promise<AxiosResponse<any> | undefined> => {
+  const signin = async (
+    data: SigninData
+  ): Promise<AxiosResponse<any> | undefined> => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const response = await api.signin(data);
       //response ? setIsLoading(true) : setIsLoading(false)
       const { access_token, refresh_token } = response.data;
       secureLocalStorage.set("token", access_token);
       secureLocalStorage.set("refresh_token", refresh_token);
-      console.log(access_token);
-      console.log("response " + response?.data)
       await getUser();
       return response;
     } catch (error) {
-      setIsLoading(false)
+      setIsLoading(false);
       if (error instanceof Error) {
-        console.log(error.stack)
         if ((error as any).response && (error as any).response.data.message) {
           const serverError = (error as any).response.data;
-          console.log("log do erro: " + serverError.message)
-        }
-        else {
+        } else {
           setTimeout(() => {
             toast.error("Erro ao realizar login. Tente novamente");
-          }, 2)
+          }, 2);
         }
       }
-    }
-    finally {
+    } finally {
       setTimeout(() => {
         setIsLoading(false);
       }, 2000);
@@ -130,10 +124,6 @@ export const AuthProvider = ({
   };
 
   const isLogged = user && user.id ? true : false;
-
-  useEffect(() => {
-    console.log("valor do user" + user);
-  }, []);
 
   return (
     <AuthContext.Provider

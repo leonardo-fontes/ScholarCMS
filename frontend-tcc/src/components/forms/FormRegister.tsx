@@ -33,7 +33,19 @@ function FormRegister() {
   const password = watch("password");
   const passValidate = useMemo(() => validatePassword(password), [password]);
 
-  const cadUnico = ["53683212012", "02956175009", "87841345003", "16488490087"];
+  const cadUnico = [
+    "53683212012",
+    "02956175009",
+    "87841345003",
+    "16488490087",
+    "44953443071",
+    "82639769014",
+    "55654553089",
+    "14668313084",
+    "84317438089",
+    "88180025039",
+    "32020273012",
+  ];
 
   const onSubmit = async (data: RegisterData) => {
     try {
