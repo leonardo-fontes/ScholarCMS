@@ -33,20 +33,7 @@ function FormRegister() {
   const password = watch("password");
   const passValidate = useMemo(() => validatePassword(password), [password]);
 
-  /*     const cadUnico = [
-        "12345678900",
-        "23456789011",
-        "34567890122",
-        "45678901233",
-        "56789012344",
-        "67890123455",
-        "78901234566",
-        "89012345677",
-        "90123456788",
-        "01234567899",
-        "04972704047",
-        "47262022865"
-    ]; */
+  const cadUnico = ["53683212012", "02956175009", "87841345003", "16488490087"];
 
   const onSubmit = async (data: RegisterData) => {
     try {
@@ -64,15 +51,15 @@ function FormRegister() {
     try {
       data.postal_code = helpers.validate.cep(data.postal_code);
       data.cpf = helpers.validate.cpf(data.cpf);
-      /*   if (
-                data.role_id === Role.Beneficiario &&
-                !cadUnico.find((value) => value === data.cpf)
-            ) {
-                alert(
-                    "O usuário não está cadastrado no cad único. Caso queira se registrar como doador, mude sua tag."
-                );
-                return;
-            } */
+      if (
+        data.role_id === Role.Beneficiario &&
+        !cadUnico.find((value) => value === data.cpf)
+      ) {
+        alert(
+          "O usuário não está cadastrado no cad único. Caso queira se registrar como doador, mude sua tag."
+        );
+        return;
+      }
 
       await onSubmit(data);
     } catch (err) {
