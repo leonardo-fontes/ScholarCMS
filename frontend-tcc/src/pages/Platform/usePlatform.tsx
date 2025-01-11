@@ -16,6 +16,8 @@ import Loading from "../../components/layout/Loading";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import { User } from "../../types/User";
 
 type Props = {
   publications: PublicationType[];
@@ -40,6 +42,7 @@ export const PlatformProvider = ({
   const [publications, setPublications] = useState<PublicationType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
+  const { user } = useAuth() as { user: User };
 
   const fetchPublications = async () => {
     try {
@@ -47,7 +50,7 @@ export const PlatformProvider = ({
       let response;
 
       if (userId) {
-        response = await api.getPostByUserId(userId);
+        response = await api.getPublications(user.city);
       } else {
         response = await api.getPostByUser();
       }
