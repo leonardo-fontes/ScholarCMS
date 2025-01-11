@@ -64,7 +64,7 @@ http.interceptors.response.use(
           .post(`${import.meta.env.VITE_BASE_URL}/api/refresh-token`, {
             refresh_token: refreshToken,
           })
-          .catch((e) => {
+          .catch(() => {
             secureLocalStorage.remove("token");
             secureLocalStorage.remove("refresh_token");
             secureLocalStorage.remove("user");

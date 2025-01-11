@@ -89,9 +89,7 @@ export const AuthProvider = ({
     } catch (error) {
       setIsLoading(false);
       if (error instanceof Error) {
-        if ((error as any).response && (error as any).response.data.message) {
-          const serverError = (error as any).response.data;
-        } else {
+        if (!(error as any).response && (error as any).response.data.message) {
           setTimeout(() => {
             toast.error("Erro ao realizar login. Tente novamente");
           }, 2);
