@@ -15,6 +15,7 @@ import { Post } from "../../types/publications/Post";
 import Loading from "../../components/layout/Loading";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLocation } from "react-router-dom";
 
 type Props = {
   publications: PublicationType[];
@@ -38,6 +39,7 @@ export const PlatformProvider = ({
 }: PlatformProviderProps) => {
   const [publications, setPublications] = useState<PublicationType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
 
   const fetchPublications = async () => {
     try {
@@ -78,7 +80,8 @@ export const PlatformProvider = ({
 
   useEffect(() => {
     fetchPublications();
-  }, [userId]);
+  }, [location.pathname]);
+
 
   const handleComment: SubmitHandler<Comments> = async ({
     content,

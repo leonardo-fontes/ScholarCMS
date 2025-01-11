@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Icon from "../icons";
 import Button from "../inputs/Button";
 import { useAuth } from "../../hooks/useAuth";
@@ -11,6 +11,7 @@ import api from "../../service/api";
 export default function Navbar() {
   const { signout, user } = useAuth();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,11 +45,15 @@ export default function Navbar() {
     return () => clearInterval(interval);
   }, [user]);
 
+  const handleLogoClick = () => {
+    navigate(user ? "/platform" : "/");
+  }
+
   return (
     !["verify-email"].filter((page) => pathname.includes(page)).length && (
       <div className="bg-primary flex flex-col md:flex-row justify-between px-4 md:px-7 items-center py-4 z-10 fixed w-full top-0 shadow-lg">
         <div className="w-full flex justify-between items-center md:w-auto">
-          <Link to={user ? "/platform" : "/"}>
+          <Link to={user ? "/platform" : "/"} onClick={handleLogoClick}>
             <Icon
               className="hover:cursor-pointer w-20 md:w-28"
               name="logo"
@@ -155,9 +160,8 @@ export default function Navbar() {
         </div>
 
         <div
-          className={`${
-            isMobileMenuOpen ? "flex" : "hidden"
-          } md:hidden flex-col w-full pt-4 gap-4`}
+          className={`${isMobileMenuOpen ? "flex" : "hidden"
+            } md:hidden flex-col w-full pt-4 gap-4`}
         >
           {user && (
             <>
