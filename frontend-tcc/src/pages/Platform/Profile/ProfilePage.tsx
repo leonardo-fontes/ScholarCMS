@@ -51,6 +51,8 @@ function ProfilePageContent({
   const { publications, fetchPublications } = usePlatform();
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [refresh, setRefresh] = useState(false);
+  // const [firstPublication, setFirstPublication] = useState<PublicationType | null>(null);
+
 
   useEffect(() => {
     const getProfileExternal = async (
@@ -95,7 +97,18 @@ function ProfilePageContent({
 
   useEffect(() => {
     if (refresh == true) fetchPublications();
+    setRefresh(false)
   }, [refresh]);
+
+
+  // Feature descontinuada
+  // useEffect(() => {
+  //   if (publications.length > 0) {
+  //     publications && setFirstPublication(publications[0])
+  //     console.log("First publication set: ", publications[0]);
+  //   };
+  // }, [publications]);
+
 
   const openProfilePicForm = () => setIsProfilePicFormOpen(true);
 
@@ -129,17 +142,24 @@ function ProfilePageContent({
     return <Loading size={60} />;
   }
 
+  // useEffect(() => {
+  //   console.log("isExternaProfile " + isExternalProfile);
+  //   console.log("userRoleId " + user?.role_id);
+  //   console.log("First publication: ", firstPublication);
+  //   console.log("Publications length: ", publications.length);
+  //   console.log("usefallback " + useFallBack)
+  // }, [isExternalProfile, user?.role_id, firstPublication, publications.length]);
+
   return (
     <div className={`flex flex-col w-full items-center`}>
       <div className="flex">
         <section className="w-full">
           <section className="md:flex w-full mb-4 mt-20 items-center justify-between relative border-r border-l border-primaryLight">
             <div
-              className={`${
-                isExternalProfile
-                  ? "mx-12 px-12 flex justify-start items-center gap-4"
-                  : "mx-2 flex items-center gap-4"
-              }`}
+              className={`${isExternalProfile
+                ? "mx-12 px-12 flex justify-start items-center gap-4"
+                : "mx-2 flex items-center gap-4"
+                }`}
             >
               {profileData?.user_picture ? (
                 <img
@@ -183,7 +203,7 @@ function ProfilePageContent({
                   </div>
                 </Button>
 
-                {user?.role_id !== parseInt(Role.Beneficiario) && (
+                {user?.role_id === parseInt(Role.Beneficiario) && (
                   <Button
                     classname="bg-primaryLight w-full md:w-auto"
                     href="/platform/create-pub"
@@ -250,8 +270,20 @@ function ProfilePageContent({
         )
       )}
 
+      {//Feature descontinuada
+      /* {!isExternalProfile && user?.role_id !== parseInt(Role.Beneficiario) && useFallBack && (
+        <div className="w-full align-middle max-w-[560px] mt-8">
+          {firstPublication && (
+            <div className="border-t-[1px] border-primaryLight mt-8">
+              <Publication {...firstPublication} />
+            </div>
+          )}
+        </div>
+      )} */}
+
       <Button
-        classname="w-full p-4 mb-16 text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white md:w-[500px] md:py-2"
+        classname={`w-full p-4 mb-16 text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white md:w-[500px] md:py-2 ${publications.length === 0 ? "mt-auto" : ""
+          }`}
         href="/platform"
         children={"VOLTAR PARA A PÁGINA INICIAL"}
       />
