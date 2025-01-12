@@ -40,7 +40,7 @@ const FileInput: React.FC<Props> = ({
             <button
                 type="button"
                 onClick={handleButtonClick}
-                className={`rounded-md mt-1 focus-visible:outline-none font-light text-[14px] border-[1px]  
+                className={`rounded-md w-full mt-1 focus-visible:outline-none font-light text-[14px] border-[1px]  
                             py-[23px] px-[23px] focus:shadow-input transition-all duration-500 placeholder:text-[#808080] 
                             ${error ? "border-[#800D0D]" : "border-gray-3"}
                             ${className}`}

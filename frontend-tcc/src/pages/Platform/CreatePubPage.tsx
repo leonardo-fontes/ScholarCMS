@@ -122,18 +122,18 @@ export default function CreatePubPage() {
           <span className="text-gray text-base">{user?.city}</span>
         </div>
       </div>
-      <span className="inline-block text-2xl font-semibold mt-8 mb-2 font-sans text-black tracking-wide text-right md: w-2/4 border-r-4 border-primary pr-4">
+      <span className="inline-block text-2xl font-semibold mt-8 md:mb-2 mb-8 font-sans text-black tracking-wide text-right md:w-2/4 border-r-4 border-primary pr-4">
         {" "}
         CRIAR PUBLICAÇÃO{" "}
       </span>
       <form
-        className="w-[50%] flex flex-col gap-4"
+        className="md:w-[50%] w-[80%] flex flex-col gap-4"
         onSubmit={handleSubmit(handleCreatePub)}
         encType="multipart/form-data"
       >
         <Textarea
           className="resize-none"
-          rows={4}
+          rows={6}
           label="Descrição"
           name="description"
           register={register("description", {
@@ -141,16 +141,16 @@ export default function CreatePubPage() {
           })}
           error={errors?.description?.message}
         />
-        <div className="flex gap-4 items-end justify-between">
-          <div className="flex items-end gap-4">
+        <div className="flex w-full md:flex-row flex-col gap-4 md:items-end items-center justify-end md:justify-between">
+          <div className="flex w-full items-end gap-4">
             <FileInput
               label="Adicionar fotos"
-              className={`${
-                imageUrls.length < 3
-                  ? "max-w-32 bg-primaryLight"
+              className={`min-h-[70px] ${
+                imageUrls.length < 1
+                  ? "md:max-w-32 bg-primaryLight"
                   : "bg-gray border-none cursor-not-allowed"
               }`}
-              disabled={imageUrls.length >= 3}
+              disabled={imageUrls.length >= 1}
               name="photos"
               register={register}
               onChange={(e) => {
@@ -166,7 +166,7 @@ export default function CreatePubPage() {
                     key={index}
                     src={url}
                     alt={`Foto ${index + 1}`}
-                    className="w-28 max-w-28 min-h-[70px] max-h-[70px] object-cover rounded-lg bg-lightGray"
+                    className="w-28 max-w-28 h-[70px] object-cover rounded-lg bg-lightGray"
                   />
                 ))}
               </div>
@@ -176,7 +176,7 @@ export default function CreatePubPage() {
           <Button
             type="submit"
             children="PUBLICAR"
-            classname="bg-primary text-white w-28 max-w-28 h-[70px] justify-self-end font-semibold"
+            classname="bg-primary md:mt-0 mt-6 text-white md:w-28 md:max-w-28 w-full h-[70px] justify-self-end font-semibold"
           />
         </div>
       </form>
