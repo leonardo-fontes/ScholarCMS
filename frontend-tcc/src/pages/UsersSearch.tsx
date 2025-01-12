@@ -120,7 +120,7 @@ export default function UsersSearch() {
           />
           <Button
             type="submit"
-            classname="h-12 mt-1 w-full md:w-auto px-6 bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+            classname="w-36 h-12 mt-1 md:w-auto px-6 bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors"
           >
             Pesquisar
           </Button>

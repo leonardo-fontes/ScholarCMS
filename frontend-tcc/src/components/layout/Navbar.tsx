@@ -194,7 +194,8 @@ export default function Navbar() {
                 <Icon name="profileIcon" size={24} color="white" />
               </Link>
 
-              <div className="flex justify-center py-3">
+              <div className="flex justify-center items-center gap-2 text-white py-3 hover:bg-primary-dark">
+                Notificações
                 <button
                   onClick={() => {
                     setShowNotifications(true);
