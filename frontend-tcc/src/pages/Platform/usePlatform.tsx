@@ -25,6 +25,8 @@ type Props = {
   handleComment: SubmitHandler<Comments>;
   handleDeleteComment: (commentId: number, postId: number) => void;
   fetchPublications: () => Promise<void>;
+  isLoading?: boolean;
+  //useFallBack?: boolean
 };
 
 const PlatformContext = createContext({} as Props);
@@ -41,6 +43,7 @@ export const PlatformProvider = ({
 }: PlatformProviderProps) => {
   const [publications, setPublications] = useState<PublicationType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  //const [useFallBack, setUseFallBack] = useState(false)
   const location = useLocation();
   const { user } = useAuth() as { user: User };
 
@@ -51,29 +54,37 @@ export const PlatformProvider = ({
 
       if (userId) {
         response = await api.getPostByUserId(userId);
+        // 
+        // feature descontinuada 
+        // if (response == null) {
+        //   console.log('vinnao da pra usar aqui')
+        //   setUseFallBack(true)
+        //   response = await api.getPublications()
+        // }
       } else {
         response = await api.getPublications(user.city);
       }
-
-      const limitedResponse = response.slice(0, 10);
-      const formattedPublications = limitedResponse.map((post: Post) => ({
-        post: {
-          id: post.id,
-          user_id: post.user_id,
-          author_name: post.author_name,
-          author_photo: post.user_picture,
-          user_city: post.user_city,
-          description: post.description,
-          photos: post.photos,
-          created_at: post.created_at,
-          updated_at: post.updated_at,
+      if (response) {
+        const limitedResponse = response.slice(0, 10);
+        const formattedPublications = limitedResponse.map((post: Post) => ({
+          post: {
+            id: post.id,
+            user_id: post.user_id,
+            author_name: post.author_name,
+            author_photo: post.user_picture,
+            user_city: post.user_city,
+            description: post.description,
+            photos: post.photos,
+            created_at: post.created_at,
+            updated_at: post.updated_at,
+            comments: post.comments,
+            user_picture: post.user_picture,
+          },
           comments: post.comments,
-          user_picture: post.user_picture,
-        },
-        comments: post.comments,
-      }));
-
-      setPublications(formattedPublications);
+        }));
+        setPublications(formattedPublications);
+      }
+      else console.error("API response is null")
     } catch (error) {
       console.error("Error fetching publications:", error);
     } finally {
@@ -125,11 +136,11 @@ export const PlatformProvider = ({
           prevPublications.map((publication) =>
             publication.post.id === postId
               ? {
-                  ...publication,
-                  comments: publication.comments.filter(
-                    (comment) => comment.id !== commentId
-                  ),
-                }
+                ...publication,
+                comments: publication.comments.filter(
+                  (comment) => comment.id !== commentId
+                ),
+              }
               : publication
           )
         );
@@ -163,6 +174,8 @@ export const PlatformProvider = ({
         handleComment,
         handleDeleteComment,
         fetchPublications,
+        isLoading
+        //useFallBack
       }}
     >
       {children}

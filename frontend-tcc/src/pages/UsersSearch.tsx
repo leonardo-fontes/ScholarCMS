@@ -12,19 +12,20 @@ import { useForm } from "react-hook-form";
 import Loading from "../components/layout/Loading";
 import Modal from "../components/modals/ModalPublications";
 import { useSearchParams } from "react-router-dom";
+import EmptyState from "../components/EmptyState/EmptyState";
 
 export default function UsersSearch() {
   const { user } = useAuth() as { user: User };
   const { publications, setPublications } = usePlatform();
   const [city, setCity] = useState(user?.city || "");
   const { register, reset } = useForm();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
+  const [noResults, setNoResults] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchGetPublications = useCallback(
-    async (city?: string) => {
+    async (city?: string, isFallback = false) => {
       try {
         setIsLoading(true);
         const response = await api.getPublications(city);
@@ -49,49 +50,57 @@ export default function UsersSearch() {
           })
         );
         setPublications(formattedPublications);
-        setIsLoading(false);
-
         if (formattedPublications.length === 0) {
-          setShowModal(true);
-          reset({ city: "" });
+          if (isFallback) {
+            setNoResults(true)
+          }
+          else {
+            setShowModal(true);
+            reset({ city: "" });
+          }
         }
-
         reset({ city: "" });
         setCity("");
+        console.log("valor de noResults " + noResults)
       } catch (error) {
         console.error("Ocorreu um erro ao buscar as publicações", error);
+      }
+      finally {
+        setIsLoading(false)
       }
     },
     [reset, setPublications]
   );
 
   useEffect(() => {
-    const cityParam = searchParams.get("city");
-    fetchGetPublications(cityParam || user.city);
-  }, [fetchGetPublications, searchParams, user.city]);
+    const cityParam = searchParams.get("city") || user.city;
+    if (publications.length === 0 && !noResults) {
+      fetchGetPublications(cityParam, true);
+    }
+  }, [fetchGetPublications, searchParams, user.city, publications.length]);
+
+
 
   const handleSearch = async (event: React.FormEvent) => {
     event.preventDefault();
-    fetchGetPublications(city);
+    setNoResults(false)
+    await fetchGetPublications(city);
     setSearchParams({ city });
   };
-
-  if (isLoading) {
-    return (
-      <>
-        {" "}
-        <Loading size={60} />{" "}
-      </>
-    );
-  }
 
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
-  if (publications.length === 0 && city !== user?.city && !showModal) {
-    setSearchParams({ city })
-    fetchGetPublications(user.city);
+  useEffect(() => {
+    if (publications.length === 0 && city !== user?.city && !showModal && !noResults) {
+      fetchGetPublications(user.city);
+      setSearchParams({ city });
+    }
+  }, [city, user.city, showModal, fetchGetPublications]);
+
+  if (isLoading) {
+    return <Loading size={60} />;
   }
 
   return (
@@ -118,11 +127,15 @@ export default function UsersSearch() {
         </form>
 
         {/* Publications List */}
-        <div className="w-full space-y-6">
-          {publications.map((publication) => (
-            <Publication key={publication.post.id} {...publication} />
-          ))}
-        </div>
+        {noResults ? ( // Linha adicionada
+          <EmptyState message="Nenhuma publicação foi encontrada." /> // Linha adicionada
+        ) : (
+          <div className="w-full space-y-6">
+            {publications.map((publication) => (
+              <Publication key={publication.post.id} {...publication} />
+            ))}
+          </div>
+        )}
 
         {showModal && (
           <Modal
