@@ -239,7 +239,7 @@ export default function Publication({ post, comments }: PublicationType) {
             )}
 
             <Input
-              className="w-full py-2 md:py-0 h-12"
+              className="md:w-full py-2 md:py-0 h-12 w-64"
               containerClassName="md:w-full"
               placeholder="Digite seu comentário..."
               name="content"
