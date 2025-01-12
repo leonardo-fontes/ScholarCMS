@@ -109,7 +109,6 @@ function ProfilePageContent({
   //   };
   // }, [publications]);
 
-
   const openProfilePicForm = () => setIsProfilePicFormOpen(true);
 
   const closeProfilePicForm = () => {
@@ -282,7 +281,7 @@ function ProfilePageContent({
       )} */}
 
       <Button
-        classname={`w-full p-4 mb-16 text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white md:w-[500px] md:py-2 ${publications.length === 0 ? "mt-auto" : ""
+        classname={`w-9/12 p-4 mb-16 text-lg md:text-2xl font-semibold md:font-bold text-white bg-primary hover:text-primary hover:bg-white md:w-[500px] md:py-2 mt-8 ${publications.length === 0 ? "md:mt-[33%] mt-80" : ""
           }`}
         href="/platform"
         children={"VOLTAR PARA A PÁGINA INICIAL"}
