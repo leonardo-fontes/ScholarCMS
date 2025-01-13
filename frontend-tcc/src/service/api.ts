@@ -178,9 +178,9 @@ export default {
           const responseError = error as any;
           throw new Error(
             "Error do servidor: " +
-              responseError.response.status +
-              "" +
-              responseError.response.data.message
+            responseError.response.status +
+            "" +
+            responseError.response.data.message
           );
         } else if ((error as any).request) {
           throw new Error(

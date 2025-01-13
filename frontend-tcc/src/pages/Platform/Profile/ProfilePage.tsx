@@ -11,6 +11,7 @@ import Loading from "../../../components/layout/Loading";
 import { PlatformProvider, usePlatform } from "../usePlatform";
 import Description from "../../../components/modals/Description";
 import NoProfilePicture from "../../../components/icons/source/NoProfilePicture";
+import { toast } from "react-toastify";
 
 interface ProfileData {
   name: string;
@@ -132,10 +133,18 @@ function ProfilePageContent({
     openDescriptionModal();
   };
 
-  const handleSaveDescription = (newDescription: string) => {
-    setProfileData((prevData) =>
-      prevData ? { ...prevData, description: newDescription } : null
-    );
+  const handleSaveDescription = async (newDescription: string) => {
+    try {
+      const response = await api.sendDescription(newDescription)
+      setProfileData((prevData) =>
+        prevData ? { ...prevData, description: newDescription } : null
+      );
+      toast.success("Descrição atualizada com sucesso")
+      console.log(response)
+    }
+    catch (error) {
+      toast.error("Erro ao atualizar a descrição")
+    }
   };
 
   if (isLoading) {
